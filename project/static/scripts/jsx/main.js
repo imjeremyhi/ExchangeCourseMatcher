@@ -1,18 +1,21 @@
-var DynamicSearch = React.createClass({
+class DynamicSearch extends React.Component {
 
   // sets initial state
-  getInitialState: function(){
-    return { searchString: '' };
-  },
+  constructor(props){
+    super(props)
+    this.state = { 
+      searchString: '' 
+    };
+  }
 
   // sets state, triggers render method
-  handleChange: function(event){
+  handleChange(event){
     // grab value form input box
     this.setState({searchString:event.target.value});
     console.log("scope updated!");
-  },
+  }
 
-  render: function() {
+  render() {
 
     var countries = this.props.items;
     var searchString = this.state.searchString.trim().toLowerCase();
@@ -34,7 +37,7 @@ var DynamicSearch = React.createClass({
     )
   }
 
-});
+};
 
 // list of countries, defined with JavaScript object literals
 var countries = [
@@ -44,7 +47,7 @@ var countries = [
   {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
   {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
   {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
-  {"name": "Spain"}, {"name": "Poland"}, {"name": "Haiti"}
+  {"name": "Spain"}, {"name": "Poland"}, {"name": "Hawaii"}, {"name": "Iraq"}
 ];
 
 ReactDOM.render(

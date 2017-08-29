@@ -1,19 +1,22 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var DynamicSearch = React.createClass({displayName: "DynamicSearch",
+class DynamicSearch extends React.Component {
 
   // sets initial state
-  getInitialState: function(){
-    return { searchString: '' };
-  },
+  constructor(props){
+    super(props)
+    this.state = { 
+      searchString: '' 
+    };
+  }
 
   // sets state, triggers render method
-  handleChange: function(event){
+  handleChange(event){
     // grab value form input box
     this.setState({searchString:event.target.value});
     console.log("scope updated!");
-  },
+  }
 
-  render: function() {
+  render() {
 
     var countries = this.props.items;
     var searchString = this.state.searchString.trim().toLowerCase();
@@ -26,16 +29,16 @@ var DynamicSearch = React.createClass({displayName: "DynamicSearch",
     }
 
     return (
-      React.createElement("div", null,
-        React.createElement("input", {type: "text", value: this.state.searchString, onChange: this.handleChange, placeholder: "Search!"}),
-        React.createElement("ul", null,
-           countries.map(function(country){ return React.createElement("li", null, country.name, " ") })
+      React.createElement("div", null, 
+        React.createElement("input", {type: "text", value: this.state.searchString, onChange: this.handleChange, placeholder: "Search!"}), 
+        React.createElement("ul", null, 
+           countries.map(function(country){ return React.createElement("li", null, country.name, " ") }) 
         )
       )
     )
   }
 
-});
+};
 
 // list of countries, defined with JavaScript object literals
 var countries = [
@@ -45,7 +48,7 @@ var countries = [
   {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
   {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
   {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
-  {"name": "Spain"}, {"name": "Poland"}, {"name": "Haiti"}
+  {"name": "Spain"}, {"name": "Poland"}, {"name": "Hawaii"}, {"name": "Iraq"}
 ];
 
 ReactDOM.render(
