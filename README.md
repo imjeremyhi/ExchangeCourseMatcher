@@ -1,4 +1,7 @@
-Be sure to check out the blog posts-
+Based on tutorial at: https://realpython.com/blog/python/the-ultimate-flask-front-end/
+Cloned from repo: https://github.com/realpython/ultimate-flask-front-end
 
-1. https://realpython.com/blog/python/the-ultimate-flask-front-end/
-1. https://realpython.com/blog/python/the-ultimate-flask-front-end-part-2/
+Commands to run:
+$ pip install -r requirements.txt
+$ npm install
+$ bower install
