@@ -81,13 +81,16 @@ class UniversitiesTable extends React.Component {
     super(props)
     this.state = { 
       universities: props.universities,
-      countries: props.countries,
-      selectAll: false
+      selectAll: false,
+      universitiesFilter: '',
+      countriesFilter: ''
     };
     this.toggleSelected = this.toggleSelected.bind(this)
     this.selectAll = this.selectAll.bind(this)
     this.handleUniversityFilterChange = this.handleUniversityFilterChange.bind(this)
     this.handleCountryFilterChange = this.handleCountryFilterChange.bind(this)
+    this.filterByUniversity = this.filterByUniversity.bind(this)
+    this.filterByCountry = this.filterByCountry.bind(this)
   }
 
   toggleSelected(event) {
@@ -111,11 +114,31 @@ class UniversitiesTable extends React.Component {
   }
 
   handleUniversityFilterChange(event) {
+    var universitiesNext = this.filterByCountry(this.state.countriesFilter, this.props.universities)
+    var universitiesNextNext = this.filterByUniversity(event.target.value, universitiesNext)
+    this.setState({ universities: universitiesNextNext, universitiesFilter: event.target.value })
+  }
 
+  filterByUniversity(value, universities) {
+    var universitiesNext = universities.filter((university) => {
+      console.log('filtering universities')
+      return university.name.includes(value.toUpperCase())
+    })
+    return universitiesNext
   }
 
   handleCountryFilterChange(event) {
+    var universitiesNext = this.filterByUniversity(this.state.universitiesFilter, this.props.universities)
+    var universitiesNextNext = this.filterByCountry(event.target.value, universitiesNext)
+    this.setState({ universities: universitiesNextNext, countriesFilter: event.target.value })
+  }
 
+  filterByCountry(value, universities) {
+    var universitiesNext = universities.filter((university) => {
+      console.log('filtering universities by countries')
+      return university.country.includes(value.toUpperCase())
+    })
+    return universitiesNext
   }
 
   render() {
@@ -127,7 +150,7 @@ class UniversitiesTable extends React.Component {
             <th><Input type="checkbox" label=" " name={"all"} id={"all"} 
               onChange={this.selectAll} checked={this.state.selectAll} /></th>
             <th>
-              <Input list="universities" onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
+              <Input list="universities" value={this.state.universitiesFilter} onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
               <datalist id="universities">
                 { this.state.universities.map((universityFilter) => { 
                   return <option value={universityFilter.name}/> 
@@ -136,9 +159,9 @@ class UniversitiesTable extends React.Component {
               </datalist>
             </th>
             <th>
-              <Input list="countries" onChange={this.handleCountryFilterChange} label="Country" id="countryFilter" />
+              <Input list="countries" value={this.state.countriesFilter} onChange={this.handleCountryFilterChange} label="Country" id="countryFilter" />
               <datalist id="countries">
-                { this.state.countries.map((countryFilter) => { 
+                { this.props.countries.map((countryFilter) => { 
                   return <option value={countryFilter}/> 
                 }
                 )}

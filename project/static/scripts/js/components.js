@@ -26421,13 +26421,16 @@ var UniversitiesTable = function (_React$Component3) {
 
     _this3.state = {
       universities: props.universities,
-      countries: props.countries,
-      selectAll: false
+      selectAll: false,
+      universitiesFilter: '',
+      countriesFilter: ''
     };
     _this3.toggleSelected = _this3.toggleSelected.bind(_this3);
     _this3.selectAll = _this3.selectAll.bind(_this3);
     _this3.handleUniversityFilterChange = _this3.handleUniversityFilterChange.bind(_this3);
     _this3.handleCountryFilterChange = _this3.handleCountryFilterChange.bind(_this3);
+    _this3.filterByUniversity = _this3.filterByUniversity.bind(_this3);
+    _this3.filterByCountry = _this3.filterByCountry.bind(_this3);
     return _this3;
   }
 
@@ -26455,10 +26458,36 @@ var UniversitiesTable = function (_React$Component3) {
     }
   }, {
     key: 'handleUniversityFilterChange',
-    value: function handleUniversityFilterChange(event) {}
+    value: function handleUniversityFilterChange(event) {
+      var universitiesNext = this.filterByCountry(this.state.countriesFilter, this.props.universities);
+      var universitiesNextNext = this.filterByUniversity(event.target.value, universitiesNext);
+      this.setState({ universities: universitiesNextNext, universitiesFilter: event.target.value });
+    }
+  }, {
+    key: 'filterByUniversity',
+    value: function filterByUniversity(value, universities) {
+      var universitiesNext = universities.filter(function (university) {
+        console.log('filtering universities');
+        return university.name.includes(value.toUpperCase());
+      });
+      return universitiesNext;
+    }
   }, {
     key: 'handleCountryFilterChange',
-    value: function handleCountryFilterChange(event) {}
+    value: function handleCountryFilterChange(event) {
+      var universitiesNext = this.filterByUniversity(this.state.universitiesFilter, this.props.universities);
+      var universitiesNextNext = this.filterByCountry(event.target.value, universitiesNext);
+      this.setState({ universities: universitiesNextNext, countriesFilter: event.target.value });
+    }
+  }, {
+    key: 'filterByCountry',
+    value: function filterByCountry(value, universities) {
+      var universitiesNext = universities.filter(function (university) {
+        console.log('filtering universities by countries');
+        return university.country.includes(value.toUpperCase());
+      });
+      return universitiesNext;
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -26483,7 +26512,7 @@ var UniversitiesTable = function (_React$Component3) {
             React.createElement(
               'th',
               null,
-              React.createElement(_reactMaterialize.Input, { list: 'universities', onChange: this.handleUniversityFilterChange, label: 'University', id: 'universityFilter' }),
+              React.createElement(_reactMaterialize.Input, { list: 'universities', value: this.state.universitiesFilter, onChange: this.handleUniversityFilterChange, label: 'University', id: 'universityFilter' }),
               React.createElement(
                 'datalist',
                 { id: 'universities' },
@@ -26495,11 +26524,11 @@ var UniversitiesTable = function (_React$Component3) {
             React.createElement(
               'th',
               null,
-              React.createElement(_reactMaterialize.Input, { list: 'countries', onChange: this.handleCountryFilterChange, label: 'Country', id: 'countryFilter' }),
+              React.createElement(_reactMaterialize.Input, { list: 'countries', value: this.state.countriesFilter, onChange: this.handleCountryFilterChange, label: 'Country', id: 'countryFilter' }),
               React.createElement(
                 'datalist',
                 { id: 'countries' },
-                this.state.countries.map(function (countryFilter) {
+                this.props.countries.map(function (countryFilter) {
                   return React.createElement('option', { value: countryFilter });
                 })
               )
