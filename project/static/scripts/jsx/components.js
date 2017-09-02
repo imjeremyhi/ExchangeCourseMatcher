@@ -23,15 +23,6 @@ class FacultyDropDown extends React.Component {
         }
         )}
       </Input>
-        /*
-      <SelectField value={this.state.facultyChosen} onChange={ this.props.handleChange }>
-        <MenuItem value='' primaryText="All" />
-        { this.props.faculties.map((faculty) => { 
-          return <MenuItem value={faculty} primaryText={faculty} /> 
-        }
-        )}
-      </SelectField>
-      */
     )
   }
 }
@@ -108,7 +99,7 @@ class UniversitiesTable extends React.Component {
   }
 
   handleUniversityFilterChange(event) {
-
+    
   }
 
   handleCountryFilterChange(event) {
