@@ -1,7 +1,7 @@
 //import { Input, Table, Button } from 'react-materialize'
-import RaisedButton from 'material-ui/RaisedButton'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
+//import RaisedButton from 'material-ui/RaisedButton'
+//import SelectField from 'material-ui/SelectField'
+//import MenuItem from 'material-ui/MenuItem'
 import { Input, Table } from 'react-materialize'
 /*
 import {
@@ -13,8 +13,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table'
 */
-import Checkbox from 'material-ui/Checkbox'
-import AutoComplete from 'material-ui/AutoComplete'
+//import Checkbox from 'material-ui/Checkbox'
+//import { AutoComplete } from 'material-ui/AutoComplete'
 
 class FacultyDropDown extends React.Component {
   constructor(props){
@@ -32,6 +32,14 @@ class FacultyDropDown extends React.Component {
 
   render() {
     return (
+      <Input type='select' label='Select your faculty'value={this.state.facultyChosen} onChange={ this.props.handleChange }>
+        <option value=''>All</option>
+        { this.props.faculties.map((faculty) => { 
+          return <option value={faculty}>{faculty}</option> 
+        }
+        )}
+      </Input>
+        /*
       <SelectField value={this.state.facultyChosen} onChange={ this.props.handleChange }>
         <MenuItem value='' primaryText="All" />
         { this.props.faculties.map((faculty) => { 
@@ -39,6 +47,7 @@ class FacultyDropDown extends React.Component {
         }
         )}
       </SelectField>
+      */
     )
   }
 }
@@ -80,7 +89,7 @@ class CourseSearch extends React.Component {
   render() {
     return (
       <div>
-        <input list="courses" value={this.state.searchedCourse} onChange={this.handleChange} placeholder="Course" id="coursesList" />
+        <Input list="courses" value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" />
         <datalist id="courses">
           { this.state.courses.map((courseFilter) => { 
             return <option value={courseFilter.name}/> 
@@ -111,17 +120,6 @@ class UniversitiesTable extends React.Component {
       return university.name == event.target.name
     })
     cur.isSelected = (cur.isSelected == true) ? false : true
-/*
-    var universities = []
-    this.state.universities.forEach((university) => {
-      if (university.name == event.target.name) {
-        var selected = (university.isSelected) ? false : true
-        universities.push({univ})
-      } else {
-        universities.push(university)
-      }
-    })
-    */
     this.setState({ universities: universities })
   }
 
@@ -171,9 +169,10 @@ class UniversitiesTable extends React.Component {
       <Table>
         <thead>
           <tr>
-            <th><button type="button">SELECT ALL</button></th>
+            <th><Input type="checkbox" label=" " name={"all"} id={"all"} 
+              onChange={this.selectAll} defaultChecked={false} /></th>
             <th>
-              <input list="universities" onChange={this.handleUniversityFilterChange} placeholder="University" />
+              <Input list="universities" onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
               <datalist id="universities">
                 { this.state.universities.map((universityFilter) => { 
                   return <option value={universityFilter.name}/> 
@@ -182,7 +181,7 @@ class UniversitiesTable extends React.Component {
               </datalist>
             </th>
             <th>
-              <input list="countries" onChange={this.handleCountryFilterChange} placeholder="Country" />
+              <Input list="countries" onChange={this.handleCountryFilterChange} label="Country" id="countryFilter" />
               <datalist id="countries">
                 { this.state.countries.map((countryFilter) => { 
                   return <option value={countryFilter}/> 

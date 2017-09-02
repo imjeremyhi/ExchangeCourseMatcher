@@ -1,14 +1,15 @@
 /* custom styles */
-/*
 thead {
-  background-color: #1565c0;
+  border-top-width: 10px;
+  border-bottom-width: 1px;
+  border-top-color: #1565c0;
+  border-bottom-color: #1565c0;
 }
-*/
 /*
-#universityFilter, label[for=universityFilter], #countryFilter, label[for=countryFilter] {
+#universityFilter, #countryFilter, th {
   color: #ffffff !important;
 }
 */
-#coursesList {
+#coursesList, #universityFilter, #countryFilter {
   text-transform: uppercase;
 }
