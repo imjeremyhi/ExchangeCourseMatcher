@@ -4,6 +4,11 @@ thead {
   background-color: #1565c0;
 }
 */
+/*
 #universityFilter, label[for=universityFilter], #countryFilter, label[for=countryFilter] {
   color: #ffffff !important;
+}
+*/
+#coursesList {
+  text-transform: uppercase;
 }
