@@ -84,6 +84,7 @@ class UniversitiesTable extends React.Component {
       countries: props.countries
     };
     this.toggleSelected = this.toggleSelected.bind(this)
+    this.selectAll = this.selectAll.bind(this)
     this.handleUniversityFilterChange = this.handleUniversityFilterChange.bind(this)
     this.handleCountryFilterChange = this.handleCountryFilterChange.bind(this)
   }
@@ -95,6 +96,13 @@ class UniversitiesTable extends React.Component {
       return university.name == event.target.name
     })
     cur.isSelected = (cur.isSelected == true) ? false : true
+    this.setState({ universities: universities })
+  }
+
+  selectAll(event) {
+    var universities = this.state.universities.map((university) => {
+      return university.isSelected = true
+    })
     this.setState({ universities: universities })
   }
 
