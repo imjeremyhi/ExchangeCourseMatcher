@@ -81,7 +81,8 @@ class UniversitiesTable extends React.Component {
     super(props)
     this.state = { 
       universities: props.universities,
-      countries: props.countries
+      countries: props.countries,
+      selectAll: false
     };
     this.toggleSelected = this.toggleSelected.bind(this)
     this.selectAll = this.selectAll.bind(this)
@@ -100,14 +101,17 @@ class UniversitiesTable extends React.Component {
   }
 
   selectAll(event) {
+    var selectVal = (this.state.selectAll == true) ? false : true
     var universities = this.state.universities.map((university) => {
-      return university.isSelected = true
+      var uniNew = university
+      uniNew.isSelected = selectVal
+      return uniNew
     })
-    this.setState({ universities: universities })
+    this.setState({ universities: universities, selectAll: selectVal })
   }
 
   handleUniversityFilterChange(event) {
-    
+
   }
 
   handleCountryFilterChange(event) {
@@ -115,12 +119,13 @@ class UniversitiesTable extends React.Component {
   }
 
   render() {
+    console.log('rerendering table')
     return (
       <Table>
         <thead>
           <tr>
             <th><Input type="checkbox" label=" " name={"all"} id={"all"} 
-              onChange={this.selectAll} defaultChecked={false} /></th>
+              onChange={this.selectAll} checked={this.state.selectAll} /></th>
             <th>
               <Input list="universities" onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
               <datalist id="universities">
@@ -147,7 +152,7 @@ class UniversitiesTable extends React.Component {
               <tr>
                 <td>
                   <Input type="checkbox" label=" " name={university.name} id={university.name} 
-                  onChange={this.toggleSelected} defaultChecked={university.isSelected} />
+                  onChange={this.toggleSelected} checked={university.isSelected} />
                 </td>
                 <td>{university.name}</td>
                 <td>{university.country}</td>

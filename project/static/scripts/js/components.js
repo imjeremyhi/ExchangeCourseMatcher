@@ -26300,24 +26300,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import { Input, Table, Button } from 'react-materialize'
-//import RaisedButton from 'material-ui/RaisedButton'
-//import SelectField from 'material-ui/SelectField'
-//import MenuItem from 'material-ui/MenuItem'
-
-
-/*
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table'
-*/
-//import Checkbox from 'material-ui/Checkbox'
-//import { AutoComplete } from 'material-ui/AutoComplete'
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var FacultyDropDown = function (_React$Component) {
   _inherits(FacultyDropDown, _React$Component);
@@ -26358,17 +26341,7 @@ var FacultyDropDown = function (_React$Component) {
             faculty
           );
         })
-      )
-      /*
-      <SelectField value={this.state.facultyChosen} onChange={ this.props.handleChange }>
-      <MenuItem value='' primaryText="All" />
-      { this.props.faculties.map((faculty) => { 
-        return <MenuItem value={faculty} primaryText={faculty} /> 
-      }
-      )}
-      </SelectField>
-      */
-      ;
+      );
     }
   }]);
 
@@ -26448,9 +26421,11 @@ var UniversitiesTable = function (_React$Component3) {
 
     _this3.state = {
       universities: props.universities,
-      countries: props.countries
+      countries: props.countries,
+      selectAll: false
     };
     _this3.toggleSelected = _this3.toggleSelected.bind(_this3);
+    _this3.selectAll = _this3.selectAll.bind(_this3);
     _this3.handleUniversityFilterChange = _this3.handleUniversityFilterChange.bind(_this3);
     _this3.handleCountryFilterChange = _this3.handleCountryFilterChange.bind(_this3);
     return _this3;
@@ -26468,50 +26443,28 @@ var UniversitiesTable = function (_React$Component3) {
       this.setState({ universities: universities });
     }
   }, {
+    key: 'selectAll',
+    value: function selectAll(event) {
+      var selectVal = this.state.selectAll == true ? false : true;
+      var universities = this.state.universities.map(function (university) {
+        var uniNew = university;
+        uniNew.isSelected = selectVal;
+        return uniNew;
+      });
+      this.setState({ universities: universities, selectAll: selectVal });
+    }
+  }, {
     key: 'handleUniversityFilterChange',
     value: function handleUniversityFilterChange(event) {}
   }, {
     key: 'handleCountryFilterChange',
     value: function handleCountryFilterChange(event) {}
-    /*
-    
-                <TableHeaderColumn><AutoComplete floatingLabelText="University" dataSource={universities} openOnFocus={true} onUpdateInput={this.handleUniversityFilterChange} /></TableHeaderColumn>
-                <TableHeaderColumn><AutoComplete floatingLabelText="Country" dataSource={countries} openOnFocus={true} onUpdateInput={this.handleCountryFilterChange} /></TableHeaderColumn>
-                */
-
   }, {
     key: 'render',
     value: function render() {
       var _this4 = this;
 
-      /*
-      const Temp = () => (
-        <TableBody>
-        {this.state.universities.map((university) => { 
-            return 
-              <TableRow>
-                <TableRowColumn>
-                  <Checkbox label=" " onCheck={this.toggleSelected} checked={university.isSelected} />
-                </TableRowColumn>
-                <TableRowColumn>{university.name}</TableRowColumn>
-                <TableRowColumn>{university.country}</TableRowColumn>
-              </TableRow>
-          })}
-        </TableBody>
-      )
-              <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn><RaisedButton label="Select all" /></TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableRowColumn>a</TableRowColumn>
-            </TableRow>
-          </TableBody>
-        </Table>
-      */
+      console.log('rerendering table');
       return React.createElement(
         _reactMaterialize.Table,
         null,
@@ -26525,7 +26478,7 @@ var UniversitiesTable = function (_React$Component3) {
               'th',
               null,
               React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', name: "all", id: "all",
-                onChange: this.selectAll, defaultChecked: false })
+                onChange: this.selectAll, checked: this.state.selectAll })
             ),
             React.createElement(
               'th',
@@ -26564,7 +26517,7 @@ var UniversitiesTable = function (_React$Component3) {
                 'td',
                 null,
                 React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', name: university.name, id: university.name,
-                  onChange: _this4.toggleSelected, defaultChecked: university.isSelected })
+                  onChange: _this4.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',
