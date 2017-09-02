@@ -25,6 +25,11 @@
     "gulp": "^3.9.1",
     "gulp-browser": "^2.1.4",
     "gulp-size": "^2.1.0",
+    "material-ui": "^0.19.0",
     "reactify": "^1.1.1"
+  },
+  "dependencies": {
+    "react-materialize": "^1.0.10",
+    "save-dev": "^2.0.0"
   }
 }

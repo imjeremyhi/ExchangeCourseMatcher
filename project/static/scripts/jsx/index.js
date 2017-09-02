@@ -1,4 +1,5 @@
-import { FacultyDropDown, CourseSearch } from './components.js'
+import { FacultyDropDown, CourseSearch, UniversitiesTable } from './components.js'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 class HomePage extends React.Component {
   constructor(props){
@@ -19,7 +20,7 @@ class HomePage extends React.Component {
 
   render() {
     const faculties = Object.freeze(["Business School", "Engineering"])
-    var courses = [
+    const courses = [
       {"name": "ECON1203", "faculty": "Business School"}, {"name": "COMP1000", "faculty": "Engineering"}, 
       {"name": "INFS1603", "faculty": "Business School"}, {"name": "INFS1602", "faculty": "Business School"}
       /*,
@@ -30,18 +31,20 @@ class HomePage extends React.Component {
       {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
       {"name": "Spain"}, {"name": "Poland"}, {"name": "Hawaii"}, {"name": "Iraq"}*/
     ]
-    if (this.state.facultyChosen.length > 0) {
-      courses = courses.filter((course) => {
-        console.log('filtering')
-        return course.faculty == this.state.facultyChosen
-      })
-    }
+
+    var universities = [
+      {"name": "UNIVERSITY OF NEW YORK", "country": "USA", "isSelected": true},
+      {"name": "UNIVERSITY OF HONG KONG", "country": "HONG KONG", "isSelected": false}
+    ]
 
     return (
-      <div>
-        <FacultyDropDown faculties={ faculties } handleChange = { this.handleFacultyChange } />
-        <CourseSearch courses={ courses } />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <FacultyDropDown faculties={ faculties } handleChange={ this.handleFacultyChange } />
+          <CourseSearch courses={ courses } facultyChosen={this.state.facultyChosen} />
+          <UniversitiesTable universities={ universities } />
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
