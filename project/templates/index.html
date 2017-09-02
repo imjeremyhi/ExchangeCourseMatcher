@@ -7,15 +7,16 @@
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.min.css') }}">
+
   </head>
   <body>
     <div class="header">
     </div>
     <div class="container">
-      <h1>Flask React</h1>
+      <h1>Unit Match</h1>
       <br>
       <div id="main">
-        
       </div>
     </div>
     <div class="footer">
@@ -24,7 +25,14 @@
     <!-- scripts -->
     <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/js/components.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/js/index.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+      $('select').material_select();
+    });
+    </script>
   </body>
 </html>

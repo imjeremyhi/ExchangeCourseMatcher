@@ -35,11 +35,11 @@ var FacultyDropDown = function (_React$Component) {
         null,
         React.createElement(
           'select',
-          { onChange: this.props.handleChange },
+          { className: 'browser-default', onChange: this.props.handleChange },
           React.createElement(
             'option',
-            { value: '', selected: true, disabled: true, hidden: true },
-            'Select faculty'
+            { value: '', selected: true, disabled: true },
+            'Choose your option'
           ),
           React.createElement(
             'option',
@@ -53,6 +53,11 @@ var FacultyDropDown = function (_React$Component) {
               faculty
             );
           })
+        ),
+        React.createElement(
+          'label',
+          null,
+          'Select faculty'
         )
       );
     }
@@ -103,17 +108,12 @@ var CourseSearch = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        React.createElement('input', { type: 'text', value: this.state.course, onChange: this.handleChange, placeholder: 'Course' }),
+        React.createElement('input', { list: 'courses', value: this.state.course, onChange: this.handleChange, placeholder: 'Course' }),
         React.createElement(
-          'ul',
-          null,
+          'datalist',
+          { id: 'courses' },
           courses.map(function (courseFilter) {
-            return React.createElement(
-              'li',
-              null,
-              courseFilter.name,
-              ' '
-            );
+            return React.createElement('option', { value: courseFilter.name });
           })
         )
       );

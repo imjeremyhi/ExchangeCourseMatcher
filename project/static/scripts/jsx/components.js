@@ -9,14 +9,15 @@ class FacultyDropDown extends React.Component {
   render() {
     return (
       <div>
-        <select onChange={ this.props.handleChange }>
-          <option value='' selected disabled hidden>Select faculty</option>
+        <select className="browser-default" onChange={ this.props.handleChange }>
+          <option value='' selected disabled>Choose your option</option>
           <option value=''>All</option>
           { this.props.faculties.map((faculty) => { 
             return <option value={faculty}>{faculty}</option> 
           }
           )}
         </select>
+        <label>Select faculty</label>
       </div>
     )
   }
@@ -53,13 +54,13 @@ class CourseSearch extends React.Component {
 
     return (
       <div>
-        <input type="text" value={this.state.course} onChange={this.handleChange} placeholder="Course" />
-        <ul>
+        <input list="courses" value={this.state.course} onChange={this.handleChange} placeholder="Course" />
+        <datalist id="courses">
           { courses.map((courseFilter) => { 
-            return <li>{courseFilter.name} </li> 
+            return <option value={courseFilter.name}/> 
           }
           )}
-        </ul>
+        </datalist>
       </div>
     )
   }
