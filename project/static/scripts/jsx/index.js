@@ -1,6 +1,4 @@
 import { FacultyDropDown, CourseSearch, UniversitiesTable } from './components.js'
-//import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-//import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import { Button } from 'react-materialize'
 
 class HomePage extends React.Component {
@@ -39,14 +37,12 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      //<MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
           <FacultyDropDown faculties={ this.state.faculties } handleChange={ this.handleFacultyChange } facultyChosen={this.state.facultyChosen} />
           <CourseSearch courses={ this.state.courses } facultyChosen={this.state.facultyChosen} />
           <UniversitiesTable universities={ this.state.universities } countries={ this.state.countries } />
           <Button waves='light'>MATCH</Button>
         </div>
-      //</MuiThemeProvider>
     )
   }
 }

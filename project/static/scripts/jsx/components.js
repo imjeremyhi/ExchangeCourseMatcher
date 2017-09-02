@@ -1,20 +1,4 @@
-//import { Input, Table, Button } from 'react-materialize'
-//import RaisedButton from 'material-ui/RaisedButton'
-//import SelectField from 'material-ui/SelectField'
-//import MenuItem from 'material-ui/MenuItem'
 import { Input, Table } from 'react-materialize'
-/*
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table'
-*/
-//import Checkbox from 'material-ui/Checkbox'
-//import { AutoComplete } from 'material-ui/AutoComplete'
 
 class FacultyDropDown extends React.Component {
   constructor(props){
@@ -130,41 +114,8 @@ class UniversitiesTable extends React.Component {
   handleCountryFilterChange(event) {
 
   }
-/*
 
-            <TableHeaderColumn><AutoComplete floatingLabelText="University" dataSource={universities} openOnFocus={true} onUpdateInput={this.handleUniversityFilterChange} /></TableHeaderColumn>
-            <TableHeaderColumn><AutoComplete floatingLabelText="Country" dataSource={countries} openOnFocus={true} onUpdateInput={this.handleCountryFilterChange} /></TableHeaderColumn>
-            */
   render() {
-    /*
-    const Temp = () => (
-      <TableBody>
-      {this.state.universities.map((university) => { 
-          return 
-            <TableRow>
-              <TableRowColumn>
-                <Checkbox label=" " onCheck={this.toggleSelected} checked={university.isSelected} />
-              </TableRowColumn>
-              <TableRowColumn>{university.name}</TableRowColumn>
-              <TableRowColumn>{university.country}</TableRowColumn>
-            </TableRow>
-        })}
-      </TableBody>
-    )
-
-          <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHeaderColumn><RaisedButton label="Select all" /></TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableRowColumn>a</TableRowColumn>
-          </TableRow>
-        </TableBody>
-      </Table>
-    */
     return (
       <Table>
         <thead>
