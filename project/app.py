@@ -10,8 +10,10 @@ def index():
             if key == "facultyFilter" or key == "courseFilter":
                 user_request[key] = value
             else:
-                user_request["universities"].push()
-        print(user_request)
+                user_request["universities"].append(value)
+        #print(user_request["facultyFilter"])
+        #print(user_request["courseFilter"])
+        #print(user_request["universities"])
     return render_template('index.html')
 
 
