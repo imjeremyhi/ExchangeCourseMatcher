@@ -26328,7 +26328,7 @@ var FacultyDropDown = function (_React$Component) {
     value: function render() {
       return React.createElement(
         _reactMaterialize.Input,
-        { type: 'select', label: 'Select your faculty', value: this.state.facultyChosen, onChange: this.props.handleChange },
+        { type: 'select', label: 'Select your faculty', name: 'facultyFilter', value: this.state.facultyChosen, onChange: this.props.handleChange },
         React.createElement(
           'option',
           { value: '' },
@@ -26396,7 +26396,7 @@ var CourseSearch = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        React.createElement(_reactMaterialize.Input, { list: 'courses', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList' }),
+        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList' }),
         React.createElement(
           'datalist',
           { id: 'courses' },
@@ -26421,6 +26421,7 @@ var UniversitiesTable = function (_React$Component3) {
 
     _this3.state = {
       universities: props.universities,
+      universitiesSelected: {},
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
@@ -26431,6 +26432,7 @@ var UniversitiesTable = function (_React$Component3) {
     _this3.handleCountryFilterChange = _this3.handleCountryFilterChange.bind(_this3);
     _this3.filterByUniversity = _this3.filterByUniversity.bind(_this3);
     _this3.filterByCountry = _this3.filterByCountry.bind(_this3);
+    _this3.mapOverPriorSelection = _this3.mapOverPriorSelection.bind(_this3);
     return _this3;
   }
 
@@ -26443,7 +26445,17 @@ var UniversitiesTable = function (_React$Component3) {
         return university.name == event.target.name;
       });
       cur.isSelected = cur.isSelected == true ? false : true;
-      this.setState({ universities: universities });
+      // set universities selected
+      var universitiesSelected = this.state.universitiesSelected;
+      if (cur.isSelected == true) {
+        universitiesSelected[cur.name] = cur;
+      } else if (cur.name in universitiesSelected) {
+        delete universitiesSelected[cur.name];
+      }
+      this.setState({
+        universities: universities,
+        universitiesSelected: universitiesSelected
+      });
     }
   }, {
     key: 'selectAll',
@@ -26454,14 +26466,48 @@ var UniversitiesTable = function (_React$Component3) {
         uniNew.isSelected = selectVal;
         return uniNew;
       });
-      this.setState({ universities: universities, selectAll: selectVal });
+      var universitiesSelected = this.state.universitiesSelected;
+      if (selectVal == true) {
+        universities.forEach(function (university) {
+          universitiesSelected[university.name] = university;
+        });
+      } else {
+        universities.forEach(function (university) {
+          if (university.name in universitiesSelected) {
+            delete universitiesSelected[university.name];
+          }
+        });
+      }
+
+      this.setState({
+        universities: universities,
+        universitiesSelected: universitiesSelected,
+        selectAll: selectVal
+      });
+    }
+  }, {
+    key: 'mapOverPriorSelection',
+    value: function mapOverPriorSelection(universities) {
+      var _this4 = this;
+
+      var universitiesWithPriorSelection = universities.map(function (university) {
+        if (university.name in _this4.state.universitiesSelected) {
+          university.isSelected = true;
+        }
+        return university;
+      });
+      return universitiesWithPriorSelection;
     }
   }, {
     key: 'handleUniversityFilterChange',
     value: function handleUniversityFilterChange(event) {
       var universitiesNext = this.filterByCountry(this.state.countriesFilter, this.props.universities);
       var universitiesNextNext = this.filterByUniversity(event.target.value, universitiesNext);
-      this.setState({ universities: universitiesNextNext, universitiesFilter: event.target.value });
+      var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext);
+      this.setState({
+        universities: universitiesWithPriorSelection,
+        universitiesFilter: event.target.value
+      });
     }
   }, {
     key: 'filterByUniversity',
@@ -26477,7 +26523,11 @@ var UniversitiesTable = function (_React$Component3) {
     value: function handleCountryFilterChange(event) {
       var universitiesNext = this.filterByUniversity(this.state.universitiesFilter, this.props.universities);
       var universitiesNextNext = this.filterByCountry(event.target.value, universitiesNext);
-      this.setState({ universities: universitiesNextNext, countriesFilter: event.target.value });
+      var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext);
+      this.setState({
+        universities: universitiesWithPriorSelection,
+        countriesFilter: event.target.value
+      });
     }
   }, {
     key: 'filterByCountry',
@@ -26491,7 +26541,7 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       console.log('rerendering table');
       return React.createElement(
@@ -26546,7 +26596,7 @@ var UniversitiesTable = function (_React$Component3) {
                 'td',
                 null,
                 React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', name: university.name, id: university.name,
-                  onChange: _this4.toggleSelected, checked: university.isSelected })
+                  onChange: _this5.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',

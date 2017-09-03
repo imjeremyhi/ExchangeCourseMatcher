@@ -16,7 +16,7 @@ class FacultyDropDown extends React.Component {
 
   render() {
     return (
-      <Input type='select' label='Select your faculty'value={this.state.facultyChosen} onChange={ this.props.handleChange }>
+      <Input type='select' label='Select your faculty' name='facultyFilter' value={this.state.facultyChosen} onChange={ this.props.handleChange }>
         <option value=''>All</option>
         { this.props.faculties.map((faculty) => { 
           return <option value={faculty}>{faculty}</option> 
@@ -64,7 +64,7 @@ class CourseSearch extends React.Component {
   render() {
     return (
       <div>
-        <Input list="courses" value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" />
+        <Input list="courses" name='courseFilter' value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" />
         <datalist id="courses">
           { this.state.courses.map((courseFilter) => { 
             return <option value={courseFilter.name}/> 
@@ -81,6 +81,7 @@ class UniversitiesTable extends React.Component {
     super(props)
     this.state = { 
       universities: props.universities,
+      universitiesSelected: {},
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
@@ -91,6 +92,7 @@ class UniversitiesTable extends React.Component {
     this.handleCountryFilterChange = this.handleCountryFilterChange.bind(this)
     this.filterByUniversity = this.filterByUniversity.bind(this)
     this.filterByCountry = this.filterByCountry.bind(this)
+    this.mapOverPriorSelection = this.mapOverPriorSelection.bind(this)
   }
 
   toggleSelected(event) {
@@ -100,7 +102,17 @@ class UniversitiesTable extends React.Component {
       return university.name == event.target.name
     })
     cur.isSelected = (cur.isSelected == true) ? false : true
-    this.setState({ universities: universities })
+    // set universities selected
+    var universitiesSelected = this.state.universitiesSelected
+    if (cur.isSelected == true) {
+      universitiesSelected[cur.name] = cur
+    } else if (cur.name in universitiesSelected) {
+      delete universitiesSelected[cur.name]
+    }
+    this.setState({ 
+      universities: universities,
+      universitiesSelected: universitiesSelected
+    })
   }
 
   selectAll(event) {
@@ -110,13 +122,44 @@ class UniversitiesTable extends React.Component {
       uniNew.isSelected = selectVal
       return uniNew
     })
-    this.setState({ universities: universities, selectAll: selectVal })
+    var universitiesSelected = this.state.universitiesSelected
+    if (selectVal == true) {
+      universities.forEach((university) => {
+        universitiesSelected[university.name] = university
+      })
+    } else {
+      universities.forEach((university) => {
+        if (university.name in universitiesSelected) {
+          delete universitiesSelected[university.name]
+        }
+      })
+    }
+
+    this.setState({ 
+      universities: universities, 
+      universitiesSelected: universitiesSelected, 
+      selectAll: selectVal 
+    })
+  }
+
+  mapOverPriorSelection(universities) {
+    var universitiesWithPriorSelection = universities.map((university) => {
+      if (university.name in this.state.universitiesSelected) {
+        university.isSelected = true
+      }
+      return university
+    })
+    return universitiesWithPriorSelection
   }
 
   handleUniversityFilterChange(event) {
     var universitiesNext = this.filterByCountry(this.state.countriesFilter, this.props.universities)
     var universitiesNextNext = this.filterByUniversity(event.target.value, universitiesNext)
-    this.setState({ universities: universitiesNextNext, universitiesFilter: event.target.value })
+    var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext)
+    this.setState({ 
+      universities: universitiesWithPriorSelection,
+      universitiesFilter: event.target.value,
+    })
   }
 
   filterByUniversity(value, universities) {
@@ -130,7 +173,11 @@ class UniversitiesTable extends React.Component {
   handleCountryFilterChange(event) {
     var universitiesNext = this.filterByUniversity(this.state.universitiesFilter, this.props.universities)
     var universitiesNextNext = this.filterByCountry(event.target.value, universitiesNext)
-    this.setState({ universities: universitiesNextNext, countriesFilter: event.target.value })
+    var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext)
+    this.setState({ 
+      universities: universitiesWithPriorSelection, 
+      countriesFilter: event.target.value 
+    })
   }
 
   filterByCountry(value, universities) {
