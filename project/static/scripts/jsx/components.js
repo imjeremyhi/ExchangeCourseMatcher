@@ -79,9 +79,15 @@ class CourseSearch extends React.Component {
 class UniversitiesTable extends React.Component {
   constructor(props){
     super(props)
+    var universitiesSelected = {}
+    props.universities.forEach((university) => {
+      if (university.isSelected == true) {
+        universitiesSelected[university.name] = university
+      }
+    })
     this.state = { 
       universities: props.universities,
-      universitiesSelected: {},
+      universitiesSelected: universitiesSelected,
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
@@ -99,7 +105,7 @@ class UniversitiesTable extends React.Component {
     console.log('handling is selected')
     var universities = this.state.universities
     var cur = universities.find((university) => {
-      return university.name == event.target.name
+      return university.name == event.target.id
     })
     cur.isSelected = (cur.isSelected == true) ? false : true
     // set universities selected
@@ -220,7 +226,7 @@ class UniversitiesTable extends React.Component {
             return (
               <tr>
                 <td>
-                  <Input type="checkbox" label=" " onChange={this.toggleSelected} checked={university.isSelected} />
+                  <Input type="checkbox" label=" " id={university.name} onChange={this.toggleSelected} checked={university.isSelected} />
                 </td>
                 <td>{university.name}</td>
                 <td>{university.country}</td>

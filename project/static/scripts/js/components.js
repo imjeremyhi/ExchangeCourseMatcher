@@ -26419,9 +26419,15 @@ var UniversitiesTable = function (_React$Component3) {
 
     var _this3 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
 
+    var universitiesSelected = {};
+    props.universities.forEach(function (university) {
+      if (university.isSelected == true) {
+        universitiesSelected[university.name] = university;
+      }
+    });
     _this3.state = {
       universities: props.universities,
-      universitiesSelected: {},
+      universitiesSelected: universitiesSelected,
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
@@ -26442,7 +26448,7 @@ var UniversitiesTable = function (_React$Component3) {
       console.log('handling is selected');
       var universities = this.state.universities;
       var cur = universities.find(function (university) {
-        return university.name == event.target.name;
+        return university.name == event.target.id;
       });
       cur.isSelected = cur.isSelected == true ? false : true;
       // set universities selected
@@ -26594,7 +26600,7 @@ var UniversitiesTable = function (_React$Component3) {
               React.createElement(
                 'td',
                 null,
-                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', onChange: _this5.toggleSelected, checked: university.isSelected })
+                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this5.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',
