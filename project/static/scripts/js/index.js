@@ -26346,7 +26346,7 @@ var HomePage = function (_React$Component) {
         React.createElement(_components.UniversitiesTable, { universities: this.state.universities, countries: this.state.countries }),
         React.createElement(
           _reactMaterialize.Button,
-          { waves: 'light' },
+          { waves: 'light', type: 'submit' },
           'MATCH'
         )
       );
@@ -26630,8 +26630,7 @@ var UniversitiesTable = function (_React$Component3) {
             React.createElement(
               'th',
               null,
-              React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', name: "all", id: "all",
-                onChange: this.selectAll, checked: this.state.selectAll })
+              React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', onChange: this.selectAll, checked: this.state.selectAll })
             ),
             React.createElement(
               'th',
@@ -26669,8 +26668,7 @@ var UniversitiesTable = function (_React$Component3) {
               React.createElement(
                 'td',
                 null,
-                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', name: university.name, id: university.name,
-                  onChange: _this5.toggleSelected, checked: university.isSelected })
+                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', onChange: _this5.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',
@@ -26683,7 +26681,8 @@ var UniversitiesTable = function (_React$Component3) {
                 university.country
               )
             );
-          })
+          }),
+          React.createElement('input', { type: 'hidden', name: 'universitiesSelected', value: this.state.universitiesSelected })
         )
       );
     }

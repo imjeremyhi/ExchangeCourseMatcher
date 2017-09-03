@@ -41,7 +41,7 @@ class HomePage extends React.Component {
           <FacultyDropDown faculties={ this.state.faculties } handleChange={ this.handleFacultyChange } facultyChosen={this.state.facultyChosen} />
           <CourseSearch courses={ this.state.courses } facultyChosen={this.state.facultyChosen} />
           <UniversitiesTable universities={ this.state.universities } countries={ this.state.countries } />
-          <Button waves='light'>MATCH</Button>
+          <Button waves='light' type="submit">MATCH</Button>
         </form>
     )
   }

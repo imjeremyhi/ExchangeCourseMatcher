@@ -194,8 +194,7 @@ class UniversitiesTable extends React.Component {
       <Table>
         <thead>
           <tr>
-            <th><Input type="checkbox" label=" " name={"all"} id={"all"} 
-              onChange={this.selectAll} checked={this.state.selectAll} /></th>
+            <th><Input type="checkbox" label=" " onChange={this.selectAll} checked={this.state.selectAll} /></th>
             <th>
               <Input list="universities" value={this.state.universitiesFilter} onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
               <datalist id="universities">
@@ -221,14 +220,14 @@ class UniversitiesTable extends React.Component {
             return (
               <tr>
                 <td>
-                  <Input type="checkbox" label=" " name={university.name} id={university.name} 
-                  onChange={this.toggleSelected} checked={university.isSelected} />
+                  <Input type="checkbox" label=" " onChange={this.toggleSelected} checked={university.isSelected} />
                 </td>
                 <td>{university.name}</td>
                 <td>{university.country}</td>
               </tr>
             )
           })}
+          <input type="hidden" name="universitiesSelected" value={this.state.universitiesSelected} />
         </tbody>
       </Table>
     )
