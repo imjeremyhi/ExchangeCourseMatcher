@@ -26396,7 +26396,7 @@ var CourseSearch = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList' }),
+        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList', autocomplete: 'false' }),
         React.createElement(
           'datalist',
           { id: 'courses' },

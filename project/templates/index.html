@@ -11,15 +11,17 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.min.css') }}">
   </head>
   <body>
-    <div class="header">
+    <div class="header">{{ sql }}
     </div>
+    <div id="universitiesState" style="display:none">{{ universities }}</div>
+    <div id="coursesState" style="display:none">{{ courses }}</div>
     <div class="container">
       <h1>Unit Match</h1>
       <br>
       <div id="main">
       </div>
     </div>
-    <div class="footer">
+    <div class="footer">{{ sql2 }}
     </div>
 
     <!-- scripts -->

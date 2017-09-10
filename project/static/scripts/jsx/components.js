@@ -16,7 +16,7 @@ class FacultyDropDown extends React.Component {
 
   render() {
     return (
-      <Input type='select' label='Select your faculty' name='facultyFilter' value={this.state.facultyChosen} onChange={ this.props.handleChange }>
+      <Input type='select' label='Select your faculty' name='facultyFilter' value={this.state.facultyChosen} onChange={ this.props.handleChange } >
         <option value=''>All</option>
         { this.props.faculties.map((faculty) => { 
           return <option value={faculty}>{faculty}</option> 
@@ -64,7 +64,7 @@ class CourseSearch extends React.Component {
   render() {
     return (
       <div>
-        <Input list="courses" name='courseFilter' value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" />
+        <Input list="courses" name='courseFilter' value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" autocomplete="false" />
         <datalist id="courses">
           { this.state.courses.map((courseFilter) => { 
             return <option value={courseFilter.name}/> 

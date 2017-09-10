@@ -7,23 +7,11 @@ class HomePage extends React.Component {
     this.state = { 
       facultyChosen: '',
       faculties: Object.freeze(["Business School", "Engineering"]),
-      courses: [
-        {"name": "ECON1203", "faculty": "Business School"}, {"name": "COMP1000", "faculty": "Engineering"}, 
-        {"name": "INFS1603", "faculty": "Business School"}, {"name": "INFS1602", "faculty": "Business School"}
-        /*,
-        {"name": "Bolivia"}, {"name": "Latvia"}, {"name": "Samoa"}, {"name": "Armenia"},
-        {"name": "Greenland"}, {"name": "Cuba"}, {"name": "Western Sahara"}, {"name": "Ethiopia"},
-        {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
-        {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
-        {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
-        {"name": "Spain"}, {"name": "Poland"}, {"name": "Hawaii"}, {"name": "Iraq"}*/
-      ],
-      universities: [
-        {"name": "UNIVERSITY OF NEW YORK", "country": "USA", "isSelected": true},
-        {"name": "UNIVERSITY OF HONG KONG", "country": "HONG KONG", "isSelected": false}
-      ],
+      courses: props.courses,
+      universities: props.universities,
       countries: ["USA", "HONG KONG"]
     }
+    console.log(this.state)
     this.handleFacultyChange = this.handleFacultyChange.bind(this)
   }
 
@@ -47,7 +35,11 @@ class HomePage extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <HomePage />,
-  document.getElementById('main')
-);
+window.onload = () => {
+  let universities = JSON.parse(document.getElementById("universitiesState").innerHTML)
+  let courses = JSON.parse(document.getElementById("coursesState").innerHTML)
+  ReactDOM.render(
+    <HomePage universities={ universities } courses={ courses } />,
+    document.getElementById('main')
+  );
+}

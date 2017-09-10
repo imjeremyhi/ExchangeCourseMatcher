@@ -26310,18 +26310,11 @@ var HomePage = function (_React$Component) {
     _this.state = {
       facultyChosen: '',
       faculties: Object.freeze(["Business School", "Engineering"]),
-      courses: [{ "name": "ECON1203", "faculty": "Business School" }, { "name": "COMP1000", "faculty": "Engineering" }, { "name": "INFS1603", "faculty": "Business School" }, { "name": "INFS1602", "faculty": "Business School"
-        /*,
-        {"name": "Bolivia"}, {"name": "Latvia"}, {"name": "Samoa"}, {"name": "Armenia"},
-        {"name": "Greenland"}, {"name": "Cuba"}, {"name": "Western Sahara"}, {"name": "Ethiopia"},
-        {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
-        {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
-        {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
-        {"name": "Spain"}, {"name": "Poland"}, {"name": "Hawaii"}, {"name": "Iraq"}*/
-      }],
-      universities: [{ "name": "UNIVERSITY OF NEW YORK", "country": "USA", "isSelected": true }, { "name": "UNIVERSITY OF HONG KONG", "country": "HONG KONG", "isSelected": false }],
+      courses: props.courses,
+      universities: props.universities,
       countries: ["USA", "HONG KONG"]
     };
+    console.log(_this.state);
     _this.handleFacultyChange = _this.handleFacultyChange.bind(_this);
     return _this;
   }
@@ -26356,7 +26349,11 @@ var HomePage = function (_React$Component) {
   return HomePage;
 }(React.Component);
 
-ReactDOM.render(React.createElement(HomePage, null), document.getElementById('main'));
+window.onload = function () {
+  var universities = JSON.parse(document.getElementById("universitiesState").innerHTML);
+  var courses = JSON.parse(document.getElementById("coursesState").innerHTML);
+  ReactDOM.render(React.createElement(HomePage, { universities: universities, courses: courses }), document.getElementById('main'));
+};
 
 },{"./components.js":237,"react-materialize":209}],237:[function(require,module,exports){
 'use strict';
@@ -26470,7 +26467,7 @@ var CourseSearch = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList' }),
+        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList', autocomplete: 'false' }),
         React.createElement(
           'datalist',
           { id: 'courses' },
