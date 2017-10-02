@@ -26290,7 +26290,7 @@ module.exports = require('./lib/React');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UniversitiesTable = exports.CourseSearch = exports.FacultyDropDown = undefined;
+exports.UniversitiesTable = exports.Search = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -26302,117 +26302,82 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var FacultyDropDown = function (_React$Component) {
-  _inherits(FacultyDropDown, _React$Component);
+var Search = function (_React$Component) {
+  _inherits(Search, _React$Component);
 
-  function FacultyDropDown(props) {
-    _classCallCheck(this, FacultyDropDown);
+  function Search(props) {
+    _classCallCheck(this, Search);
 
-    var _this = _possibleConstructorReturn(this, (FacultyDropDown.__proto__ || Object.getPrototypeOf(FacultyDropDown)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
     _this.state = {
-      facultyChosen: props.facultyChosen
+      searchedText: '',
+      appendedList: []
     };
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.formatData = _this.formatData.bind(_this);
+    _this.add = _this.add.bind(_this);
     return _this;
   }
 
-  _createClass(FacultyDropDown, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      this.setState({
-        facultyChosen: nextProps.facultyChosen
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        _reactMaterialize.Input,
-        { type: 'select', label: 'Select your faculty', name: 'facultyFilter', value: this.state.facultyChosen, onChange: this.props.handleChange },
-        React.createElement(
-          'option',
-          { value: '' },
-          'All'
-        ),
-        this.props.faculties.map(function (faculty) {
-          return React.createElement(
-            'option',
-            { value: faculty },
-            faculty
-          );
-        })
-      );
-    }
-  }]);
-
-  return FacultyDropDown;
-}(React.Component);
-
-var CourseSearch = function (_React$Component2) {
-  _inherits(CourseSearch, _React$Component2);
-
-  function CourseSearch(props) {
-    _classCallCheck(this, CourseSearch);
-
-    var _this2 = _possibleConstructorReturn(this, (CourseSearch.__proto__ || Object.getPrototypeOf(CourseSearch)).call(this, props));
-
-    _this2.state = {
-      searchedCourse: '',
-      facultyChosen: props.facultyChosen,
-      courses: props.courses
-    };
-    _this2.handleChange = _this2.handleChange.bind(_this2);
-    return _this2;
-  }
-
-  _createClass(CourseSearch, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (this.state.facultyChosen != nextProps.facultyChosen) {
-        var coursesNext = nextProps.courses;
-        if (nextProps.facultyChosen.length > 0) {
-          coursesNext = coursesNext.filter(function (course) {
-            console.log('filtering');
-            return course.faculty == nextProps.facultyChosen;
-          });
-        }
-
-        this.setState({
-          searchedCourse: '',
-          facultyChosen: nextProps.facultyChosen,
-          courses: coursesNext
-        });
-      }
-    }
-  }, {
+  _createClass(Search, [{
     key: 'handleChange',
     value: function handleChange(event) {
-      this.setState({ searchedCourse: event.target.value });
-      console.log("course updated!");
+      this.setState({ searchedText: event.target.value });
+      console.log("text updated!");
     }
+  }, {
+    key: 'add',
+    value: function add(event) {
+      var _this2 = this;
+
+      console.log('hi');
+      console.log(event);
+      console.log(this.state.searchedText);
+      setTimeout(function () {
+        var curVal = $("#" + _this2.props.dataType).children().first().val();
+        console.log(curVal);
+        _this2.props.data.forEach(function (data) {
+          if (data["name"] == curVal) {
+            _this2.state.appendedList.push(curVal);
+          }
+        });
+      }, 100);
+    }
+  }, {
+    key: 'formatData',
+    value: function formatData() {
+      var formattedData = {};
+      this.props.data.forEach(function (data) {
+        formattedData[data["name"]] = null;
+      });
+      return formattedData;
+    }
+    // todo collection onClick delete, have hover effect of bin
+
   }, {
     key: 'render',
     value: function render() {
       return React.createElement(
-        'div',
+        _reactMaterialize.Row,
         null,
-        React.createElement(_reactMaterialize.Input, { list: 'courses', name: 'courseFilter', value: this.state.searchedCourse, onChange: this.handleChange, label: 'Course', id: 'coursesList', autocomplete: 'false' }),
-        React.createElement(
-          'datalist',
-          { id: 'courses' },
-          this.state.courses.map(function (courseFilter) {
-            return React.createElement('option', { value: courseFilter.name });
-          })
-        )
+        React.createElement(_reactMaterialize.Autocomplete, {
+          id: this.props.dataType,
+          title: this.props.dataType,
+          data: this.formatData(),
+          value: this.state.searchedText,
+          onClick: this.add
+        }),
+        React.createElement(_reactMaterialize.Collection, null)
       );
     }
   }]);
 
-  return CourseSearch;
+  return Search;
 }(React.Component);
 
-var UniversitiesTable = function (_React$Component3) {
-  _inherits(UniversitiesTable, _React$Component3);
+var UniversitiesTable = function (_React$Component2) {
+  _inherits(UniversitiesTable, _React$Component2);
 
   function UniversitiesTable(props) {
     _classCallCheck(this, UniversitiesTable);
@@ -26623,8 +26588,7 @@ var UniversitiesTable = function (_React$Component3) {
   return UniversitiesTable;
 }(React.Component);
 
-exports.FacultyDropDown = FacultyDropDown;
-exports.CourseSearch = CourseSearch;
+exports.Search = Search;
 exports.UniversitiesTable = UniversitiesTable;
 
 },{"react-materialize":209}]},{},[236]);

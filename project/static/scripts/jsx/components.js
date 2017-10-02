@@ -1,77 +1,60 @@
-import { Input, Table } from 'react-materialize'
+import { Input, Table, Row, Autocomplete, Button, Collection } from 'react-materialize'
 
-class FacultyDropDown extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      facultyChosen: props.facultyChosen
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      facultyChosen: nextProps.facultyChosen
-    })
-  }
-
-  render() {
-    return (
-      <Input type='select' label='Select your faculty' name='facultyFilter' value={this.state.facultyChosen} onChange={ this.props.handleChange } >
-        <option value=''>All</option>
-        { this.props.faculties.map((faculty) => { 
-          return <option value={faculty}>{faculty}</option> 
-        }
-        )}
-      </Input>
-    )
-  }
-}
-
-class CourseSearch extends React.Component {
-  constructor(props){
+class Search extends React.Component {
+  constructor(props) {
     super(props)
     this.state = { 
-      searchedCourse: '',
-      facultyChosen: props.facultyChosen,
-      courses: props.courses
-    };
-    this.handleChange = this.handleChange.bind(this)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.state.facultyChosen != nextProps.facultyChosen) {
-      var coursesNext = nextProps.courses
-      if (nextProps.facultyChosen.length > 0) {
-        coursesNext = coursesNext.filter((course) => {
-          console.log('filtering')
-          return course.faculty == nextProps.facultyChosen
-        })
-      }
-
-      this.setState({ 
-        searchedCourse: '',
-        facultyChosen: nextProps.facultyChosen,
-        courses: coursesNext
-      })
+      searchedText: '',
+      appendedList: []
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.formatData = this.formatData.bind(this)
+    this.add = this.add.bind(this)
   }
 
-  handleChange(event){
-    this.setState({searchedCourse: event.target.value })
-    console.log("course updated!")
+  handleChange(event) {
+    this.setState({searchedText: event.target.value })
+    console.log("text updated!")
   }
 
+  add(event) {
+    console.log('hi')
+    console.log(event)
+    console.log(this.state.searchedText)
+    setTimeout(() => {
+      var curVal = $("#" + this.props.dataType).children().first().val()
+      console.log(curVal)
+      this.props.data.forEach((data) => {
+        if (data["name"] == curVal) {
+          this.state.appendedList.push(curVal)
+        }
+      })
+    }, 100)
+  }
+
+  formatData() {
+    var formattedData = {}
+    this.props.data.forEach((data) => {
+      formattedData[data["name"]] = null
+    })
+    return formattedData
+  }
+  // todo collection onClick delete, have hover effect of bin
   render() {
     return (
-      <div>
-        <Input list="courses" name='courseFilter' value={this.state.searchedCourse} onChange={this.handleChange} label="Course" id="coursesList" autocomplete="false" />
-        <datalist id="courses">
-          { this.state.courses.map((courseFilter) => { 
-            return <option value={courseFilter.name}/> 
+      <Row>
+        <Autocomplete
+          id={ this.props.dataType }
+          title={ this.props.dataType }
+          data={
+            this.formatData()
           }
-          )}
-        </datalist>
-      </div>
+          value={this.state.searchedText}
+          onClick={this.add}
+        />
+        <Collection>
+        </Collection>
+      </Row>
     )
   }
 }
@@ -241,5 +224,5 @@ class UniversitiesTable extends React.Component {
 }
 
 export {
-  FacultyDropDown, CourseSearch, UniversitiesTable
+  Search, UniversitiesTable
 }
