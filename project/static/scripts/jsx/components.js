@@ -1,4 +1,4 @@
-import { Input, Table, Row, Autocomplete, Button, Collection } from 'react-materialize'
+import { Input, Table, Row, Autocomplete, Button, Collection, CollectionItem, Collapsible, CollapsibleItem, Icon, Col, Tabs, Tab, Card, CardTitle } from 'react-materialize'
 
 class Search extends React.Component {
   constructor(props) {
@@ -6,10 +6,11 @@ class Search extends React.Component {
     this.state = { 
       searchedText: '',
       appendedList: []
-    }
+    };
     this.handleChange = this.handleChange.bind(this)
     this.formatData = this.formatData.bind(this)
     this.add = this.add.bind(this)
+    this.remove = this.remove.bind(this)
   }
 
   handleChange(event) {
@@ -26,10 +27,36 @@ class Search extends React.Component {
       console.log(curVal)
       this.props.data.forEach((data) => {
         if (data["name"] == curVal) {
-          this.state.appendedList.push(curVal)
+          var curList = this.state.appendedList
+          curList.push(curVal)
+          console.log(curList)
+          this.setState({
+            searchedText: "",
+            appendedList: curList
+          })
+          $("#" + this.props.dataType).children().first().val("")
         }
       })
     }, 100)
+  }
+
+  remove(listItem) {
+    console.log('REACHED IN REMOVE')
+    console.log(listItem)
+    // event.target.value or id
+    // remove index from appendedList state
+    var curList = this.state.appendedList
+    var index = curList.indexOf(listItem)
+    if (index > -1) {
+      curList.splice(index, 1)
+    }
+    this.setState({
+      searchedText: "",
+      appendedList: curList
+    })
+    setTimeout(() => {
+      $("#" + this.props.dataType).children().first().val("")
+    }, 1)
   }
 
   formatData() {
@@ -40,24 +67,118 @@ class Search extends React.Component {
     return formattedData
   }
   // todo collection onClick delete, have hover effect of bin
+  //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
   render() {
     return (
-      <Row>
-        <Autocomplete
-          id={ this.props.dataType }
-          title={ this.props.dataType }
-          data={
-            this.formatData()
-          }
-          value={this.state.searchedText}
-          onClick={this.add}
-        />
-        <Collection>
-        </Collection>
-      </Row>
+      <Card className='large' title={"Add " + this.props.dataType} id={this.props.dataType + "-card"}>
+        <Row>
+          <Autocomplete
+            id={ this.props.dataType }
+            title={ this.props.dataType }
+            data={
+              this.formatData()
+            }
+            value=""
+            onClick={this.add}
+          />
+        </Row>
+        { this.state.appendedList.length > 0 &&
+          <Collection>
+            {this.state.appendedList.map((listItem) => {
+              return (
+                <Row>
+                  <Input name={this.props.dataType} value={listItem} type="hidden" />
+                  <Col s={9}>
+                    <CollectionItem>{listItem}</CollectionItem>
+                  </Col>
+                  <Col s={2}>
+                    <Button href="#" type="button" onClick={() => this.remove(listItem)} style={{margin:"5px", float: "right", marginRight: "-40%"}}>Remove</Button>
+                  </Col>
+                </Row>
+              )
+              })
+            }
+          </Collection>
+        }
+      </Card>
     )
   }
 }
+/*
+will need to map return tabs and inner content map return
+  <Tabs className='tab-demo z-depth-1'>
+    <Tab title="Test 1">Test 1</Tab>
+    <Tab title="Test 2" active>Test 2</Tab>
+    <Tab title="Test 3">Test 3</Tab>
+    <Tab title="Test 4">Test 4</Tab>
+  </Tabs>
+
+        <Collection>
+        {this.state.appendedList.map((listItem) => {
+          return (
+              <CollectionItem>listItem</CollectionItem>
+          )
+          })
+        }
+        </Collection>
+*/
+//<Button onClick={this.remove(listItem)}>Remove</Button>
+
+class ResultsTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.compare = this.compare.bind(this)
+  }
+
+  compare() {
+    console.log('here in compare')
+    setTimeout(() => {
+      $("iframe").width("50%")
+      $("iframe").css({'float': 'left'})
+
+      var node = $("<iframe class='fancybox-iframe' src='https://codepen.io/about/' style='width: 50%; float: right'>")
+      $(".fancybox-content").append(node)
+    }, 1000)
+  }
+  // need to have unsw course and this course - unsw courses as tabs
+  render() {
+    return (
+      <div id="results-table">
+      { this.props.data.length > 0 &&
+        <Collapsible>
+        { 
+          this.props.data.map((result) => {
+            return (
+              <CollapsibleItem header={result.university}>
+                <Collapsible>
+                {
+                  result.courses.map((course) => {
+                    return (
+                      <CollapsibleItem header={ course.similarity_score + " " + course.name } icon="expand_more">
+                        <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare}>
+                          <Icon small>compare</Icon>
+                        </a>
+                      </CollapsibleItem>
+                    )
+                  })
+                }
+                </Collapsible>
+              </CollapsibleItem>
+            )
+          })
+        }
+        </Collapsible>
+      }
+      </div>
+    )
+  }
+}
+// https://mozilla.github.io/pdf.js/getting_started/
+// <a data-fancybox data-type="iframe" data-src="https://mozilla.github.io/pdf.js/web/viewer.html" href="javascript:;">
+  //    Sample PDF file
+  // </a>
+//                        <Button onClick={() => this.compare(course)}>Compare</Button>
+
 
 class UniversitiesTable extends React.Component {
   constructor(props){
@@ -224,5 +345,5 @@ class UniversitiesTable extends React.Component {
 }
 
 export {
-  Search, UniversitiesTable
+  Search, ResultsTable, UniversitiesTable
 }

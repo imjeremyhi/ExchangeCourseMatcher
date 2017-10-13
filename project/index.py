@@ -5,21 +5,29 @@ index_page = Blueprint('index_page', __name__, template_folder='templates')
 
 @index_page.route('/', methods=['GET', 'POST'])
 def index():
+    results = []
     if request.method == "POST":
-        user_request = {
-            "courses": [],
-            "countries": [],
-            "universities": []
-        }
-        for key, value in request.form.items():
-            if key == "courseFilter":
-                user_request["courses"].append(value)
-            elif key == "countryFilter":
-                user_request["countries"].append(value)
-            elif key == "universityFilter":
-                user_request["universities"].append(value)
-            else:
-                print("Error")
+        request.form.getlist('Courses')
+        request.form.getlist('Universities')
+        request.form.getlist('Countries')
+        # for key, value in request.form:
+        #     print(key + " " + value)
+        #     a
+        # user_request = {
+        #     "courses": [],
+        #     "countries": [],
+        #     "universities": []
+        # }
+        # for key, value in request.form.items():
+        #     if key == "courseFilter":
+        #         user_request["courses"].append(value)
+        #     elif key == "countryFilter":
+        #         user_request["countries"].append(value)
+        #     elif key == "universityFilter":
+        #         user_request["universities"].append(value)
+        #     else:
+        #         print("Error")
+
         #print(user_request["facultyFilter"])
         #print(user_request["courseFilter"])
         #print(user_request["universities"])
@@ -29,6 +37,8 @@ def index():
     # ])
     #uni_query = json.dumps(db_result[0])
     #print(uni_query)
+        results = [{"university": "Georgia Tech", "courses": [{"name": "ACCT1821 - Something", "similarity_score": "45%"}, {"name": "TEST1231 - Something different", "similarity_score": "37%"}]}]
+        
     courses_from_db = get_courses()
     countries_from_db = get_countries()
     universities_from_db = get_universities()
@@ -41,7 +51,7 @@ def index():
     #     {"name": "ECON1203", "faculty": "Business School"}, {"name": "COMP1000", "faculty": "Engineering"}, 
     #     {"name": "INFS1603", "faculty": "Business School"}, {"name": "INFS1602", "faculty": "Business School"}
     # ])
-    return render_template('index.html', courses=json.dumps(courses), countries=json.dumps(countries), universities=json.dumps(universities))
+    return render_template('index.html', courses=json.dumps(courses), countries=json.dumps(countries), universities=json.dumps(universities), results=json.dumps(results))
 
 def courses_from_db_to_json(courses_from_db):
     courses = []

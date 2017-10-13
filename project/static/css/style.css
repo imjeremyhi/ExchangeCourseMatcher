@@ -10,6 +10,41 @@ thead {
   color: #ffffff !important;
 }
 */
-#coursesList, #universityFilter, #countryFilter {
+/*#coursesList, #universityFilter, #countryFilter {
   text-transform: uppercase;
+}*/
+
+.collapsible-body {
+	padding: 0px !important;
+}
+
+.collapsible {
+	margin: 0px !important;
+}
+
+.row {
+	margin-bottom: 0px !important;
+}
+/*
+.large {
+	height: auto !important;
+}*/
+
+.card-title {
+	text-align: center !important;
+	border-bottom: thin solid #333333 !important;
+}
+
+#Countries-card {
+	width: 49% !important;
+	float: left !important;
+}
+
+#Universities-card {
+	width: 49% !important;
+	float: right !important;
+}
+
+#results-table {
+	margin-bottom: 50px;
 }

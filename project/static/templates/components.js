@@ -26384,7 +26384,6 @@ var Search = function (_React$Component) {
       return formattedData;
     }
     // todo collection onClick delete, have hover effect of bin
-    //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
 
   }, {
     key: 'render',
@@ -26392,8 +26391,8 @@ var Search = function (_React$Component) {
       var _this4 = this;
 
       return React.createElement(
-        _reactMaterialize.Card,
-        { className: 'large', title: "Add " + this.props.dataType, id: this.props.dataType + "-card" },
+        'div',
+        null,
         React.createElement(
           _reactMaterialize.Row,
           null,
@@ -26405,31 +26404,23 @@ var Search = function (_React$Component) {
             onClick: this.add
           })
         ),
-        this.state.appendedList.length > 0 && React.createElement(
+        React.createElement(
           _reactMaterialize.Collection,
           null,
           this.state.appendedList.map(function (listItem) {
             return React.createElement(
-              _reactMaterialize.Row,
+              'div',
               null,
               React.createElement(_reactMaterialize.Input, { name: _this4.props.dataType, value: listItem, type: 'hidden' }),
               React.createElement(
-                _reactMaterialize.Col,
-                { s: 9 },
-                React.createElement(
-                  _reactMaterialize.CollectionItem,
-                  null,
-                  listItem
-                )
-              ),
-              React.createElement(
-                _reactMaterialize.Col,
-                { s: 2 },
+                _reactMaterialize.CollectionItem,
+                null,
+                listItem,
                 React.createElement(
                   _reactMaterialize.Button,
-                  { href: '#', type: 'button', onClick: function onClick() {
+                  { href: '', type: 'button', onClick: function onClick() {
                       return _this4.remove(listItem);
-                    }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
+                    }, style: { float: 'right' } },
                   'Remove'
                 )
               )
@@ -26443,14 +26434,6 @@ var Search = function (_React$Component) {
   return Search;
 }(React.Component);
 /*
-will need to map return tabs and inner content map return
-  <Tabs className='tab-demo z-depth-1'>
-    <Tab title="Test 1">Test 1</Tab>
-    <Tab title="Test 2" active>Test 2</Tab>
-    <Tab title="Test 3">Test 3</Tab>
-    <Tab title="Test 4">Test 4</Tab>
-  </Tabs>
-
         <Collection>
         {this.state.appendedList.map((listItem) => {
           return (
@@ -26468,75 +26451,46 @@ var ResultsTable = function (_React$Component2) {
   function ResultsTable(props) {
     _classCallCheck(this, ResultsTable);
 
-    var _this5 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
-
-    _this5.compare = _this5.compare.bind(_this5);
-    return _this5;
+    return _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
   }
 
   _createClass(ResultsTable, [{
-    key: 'compare',
-    value: function compare() {
-      console.log('here in compare');
-      setTimeout(function () {
-        $("iframe").width("50%");
-        $("iframe").css({ 'float': 'left' });
-
-        var node = $("<iframe class='fancybox-iframe' src='https://codepen.io/about/' style='width: 50%; float: right'>");
-        $(".fancybox-content").append(node);
-      }, 1000);
-    }
-    // need to have unsw course and this course - unsw courses as tabs
-
-  }, {
     key: 'render',
     value: function render() {
       var _this6 = this;
 
       return React.createElement(
-        'div',
-        { id: 'results-table' },
-        this.props.data.length > 0 && React.createElement(
-          _reactMaterialize.Collapsible,
-          null,
-          this.props.data.map(function (result) {
-            return React.createElement(
-              _reactMaterialize.CollapsibleItem,
-              { header: result.university },
-              React.createElement(
-                _reactMaterialize.Collapsible,
-                null,
-                result.courses.map(function (course) {
-                  return React.createElement(
-                    _reactMaterialize.CollapsibleItem,
-                    { header: course.similarity_score + " " + course.name, icon: 'expand_more' },
-                    React.createElement(
-                      'a',
-                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare },
-                      React.createElement(
-                        _reactMaterialize.Icon,
-                        { small: true },
-                        'compare'
-                      )
-                    )
-                  );
-                })
-              )
-            );
-          })
-        )
+        _reactMaterialize.Collapsible,
+        null,
+        this.props.results.map(function (result) {
+          return React.createElement(
+            _reactMaterialize.CollapsibleItem,
+            { header: result.university },
+            React.createElement(
+              _reactMaterialize.Collapsible,
+              null,
+              result.courses.map(function (course) {
+                return React.createElement(
+                  _reactMaterialize.CollapsibleItem,
+                  null,
+                  course.similarity_score + " " + course.name,
+                  React.createElement(
+                    _reactMaterialize.Button,
+                    { onClick: _this6.compare(course) },
+                    'Compare'
+                  ),
+                  React.createElement(_reactMaterialize.Icon, null)
+                );
+              })
+            )
+          );
+        })
       );
     }
   }]);
 
   return ResultsTable;
 }(React.Component);
-// https://mozilla.github.io/pdf.js/getting_started/
-// <a data-fancybox data-type="iframe" data-src="https://mozilla.github.io/pdf.js/web/viewer.html" href="javascript:;">
-//    Sample PDF file
-// </a>
-//                        <Button onClick={() => this.compare(course)}>Compare</Button>
-
 
 var UniversitiesTable = function (_React$Component3) {
   _inherits(UniversitiesTable, _React$Component3);
