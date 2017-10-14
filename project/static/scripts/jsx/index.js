@@ -35,18 +35,27 @@ class HomePage extends React.Component {
     $(".search-list-item-Courses").each(function() {
       courses.push($(this).text());
     });
-
     var universities = [];
     $(".search-list-item-Universities").each(function() {
       universities.push($(this).text());
     });
-
     var countries = [];
     $(".search-list-item-Countries").each(function() {
       countries.push($(this).text());
     });
 
-    var params = "/ajax/" + courses + "/" + universities + "/" + countries;
+    if (courses.length == 0) {
+      courses = [];
+    }
+    if (universities.length == 0) {
+      universities = [];
+    }
+    if (countries.length == 0) {
+      countries = [];
+    }
+
+    var params = "/ajax/" + JSON.stringify(courses) + "/" + JSON.stringify(universities) + "/" + JSON.stringify(countries);
+    console.log(params)
     xhttp.open("GET", params);
     xhttp.send();
 
@@ -104,4 +113,6 @@ window.onload = () => {
     <HomePage universities={ universities } courses={ courses } countries={ countries } results={ results } />,
     document.getElementById('main')
   );
+
+  $('#instructions-popup').fancybox().trigger('click');
 }

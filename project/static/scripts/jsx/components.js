@@ -154,6 +154,7 @@ class ResultsTable extends React.Component {
     }, 1000)
   }
   // // need to have unsw course and this course - unsw courses as tabs
+  // need course unsw name few spaces and then course other name
   render() {
     return (
       <div id="results-table">
@@ -167,10 +168,18 @@ class ResultsTable extends React.Component {
                 {
                   result.courses.map((course) => {
                     return (
-                      <CollapsibleItem header={ course.similarity_score + " " + course.name } icon="expand_more">
-                        <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare}>
+                      <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
+                        <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare} className="compare-img">
                           <Icon small>compare</Icon>
                         </a>
+                        <p>{ "Email: " /*+ course.email*/ }</p>
+                        <p>{ "Assessments: " /*+ course.assessments*/ }</p>
+                        <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
+                        <Tabs className='tab-demo z-depth-1'>
+                          <Tab title="Course content">Test 1</Tab>
+                          <Tab title="Course outcomes" active>Test 2</Tab>
+                          <Tab title="Textbook">Test 3</Tab>
+                        </Tabs>
                       </CollapsibleItem>
                     )
                   })

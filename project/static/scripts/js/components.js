@@ -26501,6 +26501,7 @@ var ResultsTable = function (_React$Component2) {
       }, 1000);
     }
     // // need to have unsw course and this course - unsw courses as tabs
+    // need course unsw name few spaces and then course other name
 
   }, {
     key: 'render',
@@ -26523,14 +26524,48 @@ var ResultsTable = function (_React$Component2) {
                 result.courses.map(function (course) {
                   return React.createElement(
                     _reactMaterialize.CollapsibleItem,
-                    { header: course.similarity_score + " " + course.name, icon: 'expand_more' },
+                    { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
                     React.createElement(
                       'a',
-                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare },
+                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare, className: 'compare-img' },
                       React.createElement(
                         _reactMaterialize.Icon,
                         { small: true },
                         'compare'
+                      )
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      "Email: " /*+ course.email*/
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      "Assessments: " /*+ course.assessments*/
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      "Contact hours: " /*+ course.contactHours*/
+                    ),
+                    React.createElement(
+                      _reactMaterialize.Tabs,
+                      { className: 'tab-demo z-depth-1' },
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Course content' },
+                        'Test 1'
+                      ),
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Course outcomes', active: true },
+                        'Test 2'
+                      ),
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Textbook' },
+                        'Test 3'
                       )
                     )
                   );
