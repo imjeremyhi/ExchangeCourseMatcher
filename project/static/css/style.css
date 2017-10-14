@@ -84,3 +84,12 @@ thead {
 	overflow-y: scroll !important;
 	height: 330px !important;
 }
+
+#loading-img {
+	float: right;
+	height: 40px;
+}
+
+#arrow-line-img {
+	width: 100%;
+}

@@ -9,7 +9,9 @@ class HomePage extends React.Component {
       // courses: props.courses,
       // countries: props.countries,
       // universities: props.universities
-      results: props.results
+      results: props.results,
+      isLoading: false,
+      showArrowLine: false
     };
 
     this.getResults = this.getResults.bind(this);
@@ -47,13 +49,19 @@ class HomePage extends React.Component {
     var params = "/ajax/" + courses + "/" + universities + "/" + countries;
     xhttp.open("GET", params);
     xhttp.send();
+
+    this.setState({
+      isLoading: true
+    });
   }
 
   // Get value of all form elements to send to ajax request
   updateResultValues(responseText) {
     console.log(typeof(responseText))
     this.setState({
-      results: JSON.parse(responseText)
+      results: JSON.parse(responseText),
+      isLoading: false,
+      showArrowLine: true
     });
     console.log(responseText);
   }
@@ -61,14 +69,16 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <form method="POST">
-          <Search data={ this.props.courses } dataType="Courses" />
-          <Search data={ this.props.countries } dataType="Countries" />
-          <Search data={ this.props.universities } dataType="Universities" />
-          <br/>
-          <Button waves='light' type="button" onClick={this.getResults} id="match-button">MATCH</Button>
-        </form>
-        <br/><br/>
+        <Search data={ this.props.courses } dataType="Courses" />
+        <Search data={ this.props.countries } dataType="Countries" />
+        <Search data={ this.props.universities } dataType="Universities" />
+        <br/>
+        <Button waves='light' type="button" onClick={this.getResults} id="match-button">MATCH</Button>
+        { this.state.isLoading == true ? <img src="static/imgs/loading.gif" id="loading-img" /> : <img src="" /> }
+        <br/>
+        { this.state.showArrowLine == true ? <img src="static/imgs/arrow-line.png" id="arrow-line-img" /> : <img src="" /> }
+        <br/>
+        <br/>
         <ResultsTable data={ this.state.results } />
       </div>
     )
