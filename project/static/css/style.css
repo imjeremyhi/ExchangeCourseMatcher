@@ -69,9 +69,11 @@ thead {
 	background-color: #FEC412 !important;
 }
 
-.autocomplete-content {
+.dropdown-content {
 	position: absolute !important;
 	z-index: 100 !important;
+	max-height: 350px !important;
+	min-width: 0px !important;
 }
 
 .autocomplete-content > li {
