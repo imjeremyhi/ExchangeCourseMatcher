@@ -21,7 +21,7 @@
     <div id="countriesProps" style="display:none">{{ countries }}</div>
     <div id="resultsProps" style="display:none">{{ results }}</div>
 
-    <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" id="instructions-popup">
+    <a data-fancybox data-type="iframe" data-src="{{ url_for('static', filename='html/instructions.html')}}" href="javascript:;" id="instructions-popup">
       ?
     </a>
     <div class="container">

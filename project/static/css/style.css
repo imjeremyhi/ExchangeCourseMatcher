@@ -101,3 +101,7 @@ thead {
 #instructions-popup {
 	float: right;
 }
+
+#instructions-html {
+	font-weight: bold;
+}
