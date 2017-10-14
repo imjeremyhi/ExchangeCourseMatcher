@@ -93,6 +93,7 @@ class Search extends React.Component {
             onClick={this.add}
           />
         </Row>
+        <Row id={"collection-" + this.props.dataType}>
         { this.state.appendedList.length > 0 &&
           <Collection>
             {this.state.appendedList.map((listItem) => {
@@ -111,6 +112,7 @@ class Search extends React.Component {
             }
           </Collection>
         }
+        </Row>
       </Card>
     )
   }

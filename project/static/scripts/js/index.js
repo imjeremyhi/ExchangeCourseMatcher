@@ -26541,36 +26541,40 @@ var Search = function (_React$Component) {
             onClick: this.add
           })
         ),
-        this.state.appendedList.length > 0 && React.createElement(
-          _reactMaterialize.Collection,
-          null,
-          this.state.appendedList.map(function (listItem) {
-            return React.createElement(
-              _reactMaterialize.Row,
-              null,
-              React.createElement(_reactMaterialize.Input, { name: _this4.props.dataType, value: listItem, type: 'hidden' }),
-              React.createElement(
-                _reactMaterialize.Col,
-                { s: 9 },
+        React.createElement(
+          _reactMaterialize.Row,
+          { id: "collection-" + this.props.dataType },
+          this.state.appendedList.length > 0 && React.createElement(
+            _reactMaterialize.Collection,
+            null,
+            this.state.appendedList.map(function (listItem) {
+              return React.createElement(
+                _reactMaterialize.Row,
+                null,
+                React.createElement(_reactMaterialize.Input, { name: _this4.props.dataType, value: listItem, type: 'hidden' }),
                 React.createElement(
-                  _reactMaterialize.CollectionItem,
-                  { className: "search-list-item-" + _this4.props.dataType },
-                  listItem
-                )
-              ),
-              React.createElement(
-                _reactMaterialize.Col,
-                { s: 2 },
+                  _reactMaterialize.Col,
+                  { s: 9 },
+                  React.createElement(
+                    _reactMaterialize.CollectionItem,
+                    { className: "search-list-item-" + _this4.props.dataType },
+                    listItem
+                  )
+                ),
                 React.createElement(
-                  _reactMaterialize.Button,
-                  { href: '#', type: 'button', onClick: function onClick() {
-                      return _this4.remove(listItem);
-                    }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
-                  'Remove'
+                  _reactMaterialize.Col,
+                  { s: 2 },
+                  React.createElement(
+                    _reactMaterialize.Button,
+                    { href: '#', type: 'button', onClick: function onClick() {
+                        return _this4.remove(listItem);
+                      }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
+                    'Remove'
+                  )
                 )
-              )
-            );
-          })
+              );
+            })
+          )
         )
       );
     }

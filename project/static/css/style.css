@@ -68,3 +68,17 @@ thead {
 #university-result-header {
 	background-color: #FEC412 !important;
 }
+
+.autocomplete-content {
+	position: absolute !important;
+	z-index: 100 !important;
+}
+
+.autocomplete-content > li {
+	position: relative !important;
+}
+
+#collection-Courses, #collection-Universities, #collection-Countries {
+	overflow-y: scroll !important;
+	height: 330px !important;
+}
