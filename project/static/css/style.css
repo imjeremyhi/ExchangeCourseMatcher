@@ -10,9 +10,14 @@ thead {
   color: #ffffff !important;
 }
 */
-/*#coursesList, #universityFilter, #countryFilter {
-  text-transform: uppercase;
-}*/
+#Courses, #Universities, #Countries {
+  /*text-transform: uppercase;*/
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+  width: 50% !important;
+}
 
 .collapsible-body {
 	padding: 0px !important;
@@ -47,4 +52,19 @@ thead {
 
 #results-table {
 	margin-bottom: 50px;
+}
+
+#header-img {
+	max-width: 100%;
+}
+
+#match-button {
+	display: block !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	background-color: #FEC412 !important;
+}
+
+#university-result-header {
+	background-color: #FEC412 !important;
 }

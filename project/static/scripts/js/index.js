@@ -26313,7 +26313,9 @@ var HomePage = function (_React$Component) {
       // universities: props.universities
       results: props.results
     };
+
     _this.getResults = _this.getResults.bind(_this);
+    _this.updateResultValues = _this.updateResultValues.bind(_this);
     return _this;
   }
   //          <Results results={ this.state.results } />
@@ -26324,14 +26326,43 @@ var HomePage = function (_React$Component) {
 
   _createClass(HomePage, [{
     key: 'getResults',
-    value: function getResults() {}
-    // button onClick ajax call
+    value: function getResults() {
+      // button onClick ajax call
+      var self = this;
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          self.updateResultValues(this.responseText);
+        }
+      };
+
+      var courses = [];
+      $(".search-list-item-Courses").each(function () {
+        courses.push($(this).text());
+      });
+
+      var universities = [];
+      $(".search-list-item-Universities").each(function () {
+        universities.push($(this).text());
+      });
+
+      var countries = [];
+      $(".search-list-item-Countries").each(function () {
+        countries.push($(this).text());
+      });
+
+      var params = "/ajax/" + courses + "/" + universities + "/" + countries;
+      xhttp.open("GET", params);
+      xhttp.send();
+    }
 
     // Get value of all form elements to send to ajax request
 
   }, {
-    key: 'getFormValues',
-    value: function getFormValues() {}
+    key: 'updateResultValues',
+    value: function updateResultValues(responseText) {
+      console.log(responseText);
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -26347,7 +26378,7 @@ var HomePage = function (_React$Component) {
           React.createElement('br', null),
           React.createElement(
             _reactMaterialize.Button,
-            { waves: 'light', type: 'submit' },
+            { waves: 'light', type: 'button', onClick: this.getResults, id: 'match-button' },
             'MATCH'
           )
         ),
@@ -26405,10 +26436,13 @@ var Search = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
+    var data = _this.formatData();
     _this.state = {
       searchedText: '',
-      appendedList: []
+      appendedList: [],
+      data: data
     };
+
     _this.handleChange = _this.handleChange.bind(_this);
     _this.formatData = _this.formatData.bind(_this);
     _this.add = _this.add.bind(_this);
@@ -26427,24 +26461,24 @@ var Search = function (_React$Component) {
     value: function add(event) {
       var _this2 = this;
 
-      console.log('hi');
-      console.log(event);
-      console.log(this.state.searchedText);
       setTimeout(function () {
         var curVal = $("#" + _this2.props.dataType).children().first().val();
-        console.log(curVal);
-        _this2.props.data.forEach(function (data) {
-          if (data["name"] == curVal) {
-            var curList = _this2.state.appendedList;
-            curList.push(curVal);
-            console.log(curList);
-            _this2.setState({
-              searchedText: "",
-              appendedList: curList
-            });
-            $("#" + _this2.props.dataType).children().first().val("");
-          }
-        });
+        var data = _this2.state.data;
+
+        if (curVal in data) {
+          var curList = _this2.state.appendedList;
+          curList.push(curVal);
+
+          delete data[curVal];
+
+          _this2.setState({
+            searchedText: "",
+            appendedList: curList,
+            data: data
+          });
+
+          $("#" + _this2.props.dataType).children().first().val("");
+        }
       }, 100);
     }
   }, {
@@ -26452,19 +26486,23 @@ var Search = function (_React$Component) {
     value: function remove(listItem) {
       var _this3 = this;
 
-      console.log('REACHED IN REMOVE');
-      console.log(listItem);
-      // event.target.value or id
-      // remove index from appendedList state
       var curList = this.state.appendedList;
+
       var index = curList.indexOf(listItem);
+      var item = curList[index];
       if (index > -1) {
         curList.splice(index, 1);
       }
+
+      var data = this.state.data;
+      data[item] = null;
+
       this.setState({
         searchedText: "",
-        appendedList: curList
+        appendedList: curList,
+        data: data
       });
+
       setTimeout(function () {
         $("#" + _this3.props.dataType).children().first().val("");
       }, 1);
@@ -26473,11 +26511,14 @@ var Search = function (_React$Component) {
     key: 'formatData',
     value: function formatData() {
       var formattedData = {};
+
       this.props.data.forEach(function (data) {
         formattedData[data["name"]] = null;
       });
+
       return formattedData;
     }
+
     // todo collection onClick delete, have hover effect of bin
     //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
 
@@ -26495,7 +26536,7 @@ var Search = function (_React$Component) {
           React.createElement(_reactMaterialize.Autocomplete, {
             id: this.props.dataType,
             title: this.props.dataType,
-            data: this.formatData(),
+            data: this.state.data,
             value: '',
             onClick: this.add
           })
@@ -26513,7 +26554,7 @@ var Search = function (_React$Component) {
                 { s: 9 },
                 React.createElement(
                   _reactMaterialize.CollectionItem,
-                  null,
+                  { className: "search-list-item-" + _this4.props.dataType },
                   listItem
                 )
               ),
@@ -26581,7 +26622,7 @@ var ResultsTable = function (_React$Component2) {
         $(".fancybox-content").append(node);
       }, 1000);
     }
-    // need to have unsw course and this course - unsw courses as tabs
+    // // need to have unsw course and this course - unsw courses as tabs
 
   }, {
     key: 'render',
@@ -26597,7 +26638,7 @@ var ResultsTable = function (_React$Component2) {
           this.props.data.map(function (result) {
             return React.createElement(
               _reactMaterialize.CollapsibleItem,
-              { header: result.university },
+              { header: result.university, id: 'university-result-header' },
               React.createElement(
                 _reactMaterialize.Collapsible,
                 null,

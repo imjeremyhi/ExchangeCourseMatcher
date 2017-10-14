@@ -1,28 +1,16 @@
-from flask import Blueprint, render_template, request, json, redirect, url_for
+from flask import Blueprint, render_template, request, json
 from db import get_courses, get_countries, get_universities
 
 index_page = Blueprint('index_page', __name__, template_folder='templates')
+from app import app
 
-@index_page.route('/', methods=['GET', 'POST'])
-def index():
-    results = []
-    courses_from_db = get_courses()
-    countries_from_db = get_countries()
-    universities_from_db = get_universities()
-
-    courses = courses_from_db_to_json(courses_from_db)
-    countries = countries_from_db_to_json(countries_from_db)
-    universities = universities_from_db_to_json(universities_from_db)
-
-    return render_template('index.html', courses=json.dumps(courses), countries=json.dumps(countries), universities=json.dumps(universities), results=json.dumps(results))
-
-@index_page.route('/ajax/<courses>/<universities>/<countries>', methods=['GET'])
-def handle_ajax_request(courses = None, universities = None, countries = None):
-    #return courses + universities + countries
+@app.route('/ajax/<courses>/<universities>/<countries>', methods=['GET'])
+def ajax(courses = None, universities = None, countries = None):
+    a
     if courses is not None:
-        #json.loads(courses)
+        a
         results = [{"university": "Georgia Tech", "courses": [{"name": "ACCT1821 - Something", "similarity_score": "45%"}, {"name": "TEST1231 - Something different", "similarity_score": "37%"}]}]
-        return json.dumps(results)
+        return results
 
 def courses_from_db_to_json(courses_from_db):
     courses = []

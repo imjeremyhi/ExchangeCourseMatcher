@@ -14,7 +14,7 @@
   </head>
   <body>
     <div class="header">
-      <img src="{{ url_for('static', filename='imgs/banner.png')}}" />
+      <img id="header-img" src="{{ url_for('static', filename='imgs/banner.png')}}" />
     </div>
     <div id="universitiesProps" style="display:none">{{ universities }}</div>
     <div id="coursesProps" style="display:none">{{ courses }}</div>
@@ -30,7 +30,7 @@
     <!-- scripts -->
     <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
     <script src="{{ url_for('static', filename='scripts/js/components.js') }}"></script>

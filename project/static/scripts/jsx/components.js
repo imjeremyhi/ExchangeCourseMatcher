@@ -2,70 +2,81 @@ import { Input, Table, Row, Autocomplete, Button, Collection, CollectionItem, Co
 
 class Search extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    const data = this.formatData();
     this.state = { 
       searchedText: '',
-      appendedList: []
+      appendedList: [],
+      data: data
     };
-    this.handleChange = this.handleChange.bind(this)
-    this.formatData = this.formatData.bind(this)
-    this.add = this.add.bind(this)
-    this.remove = this.remove.bind(this)
+
+    this.handleChange = this.handleChange.bind(this);
+    this.formatData = this.formatData.bind(this);
+    this.add = this.add.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   handleChange(event) {
-    this.setState({searchedText: event.target.value })
-    console.log("text updated!")
+    this.setState({searchedText: event.target.value });
+    console.log("text updated!");
   }
 
   add(event) {
-    console.log('hi')
-    console.log(event)
-    console.log(this.state.searchedText)
     setTimeout(() => {
-      var curVal = $("#" + this.props.dataType).children().first().val()
-      console.log(curVal)
-      this.props.data.forEach((data) => {
-        if (data["name"] == curVal) {
-          var curList = this.state.appendedList
-          curList.push(curVal)
-          console.log(curList)
-          this.setState({
-            searchedText: "",
-            appendedList: curList
-          })
-          $("#" + this.props.dataType).children().first().val("")
-        }
-      })
-    }, 100)
+      var curVal = $("#" + this.props.dataType).children().first().val();
+      var data = this.state.data;
+
+      if (curVal in data) {
+        var curList = this.state.appendedList;
+        curList.push(curVal);
+
+        delete data[curVal];
+
+        this.setState({
+          searchedText: "",
+          appendedList: curList,
+          data: data
+        });
+
+        $("#" + this.props.dataType).children().first().val("");
+      }
+    }, 100);
   }
 
   remove(listItem) {
-    console.log('REACHED IN REMOVE')
-    console.log(listItem)
-    // event.target.value or id
-    // remove index from appendedList state
-    var curList = this.state.appendedList
-    var index = curList.indexOf(listItem)
+    var curList = this.state.appendedList;
+
+    var index = curList.indexOf(listItem);
+    var item = curList[index];
     if (index > -1) {
-      curList.splice(index, 1)
+      curList.splice(index, 1);
     }
+
+    var data = this.state.data;
+    data[item] = null;
+
     this.setState({
       searchedText: "",
-      appendedList: curList
-    })
+      appendedList: curList,
+      data: data
+    });
+
     setTimeout(() => {
-      $("#" + this.props.dataType).children().first().val("")
-    }, 1)
+      $("#" + this.props.dataType).children().first().val("");
+    }, 1);
   }
 
   formatData() {
-    var formattedData = {}
+    var formattedData = {};
+
     this.props.data.forEach((data) => {
-      formattedData[data["name"]] = null
-    })
-    return formattedData
+      formattedData[data["name"]] = null;
+    });
+
+    return formattedData;
   }
+
   // todo collection onClick delete, have hover effect of bin
   //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
   render() {
@@ -76,7 +87,7 @@ class Search extends React.Component {
             id={ this.props.dataType }
             title={ this.props.dataType }
             data={
-              this.formatData()
+              this.state.data
             }
             value=""
             onClick={this.add}
@@ -89,7 +100,7 @@ class Search extends React.Component {
                 <Row>
                   <Input name={this.props.dataType} value={listItem} type="hidden" />
                   <Col s={9}>
-                    <CollectionItem>{listItem}</CollectionItem>
+                    <CollectionItem className={"search-list-item-" + this.props.dataType}>{listItem}</CollectionItem>
                   </Col>
                   <Col s={2}>
                     <Button href="#" type="button" onClick={() => this.remove(listItem)} style={{margin:"5px", float: "right", marginRight: "-40%"}}>Remove</Button>
@@ -140,7 +151,7 @@ class ResultsTable extends React.Component {
       $(".fancybox-content").append(node)
     }, 1000)
   }
-  // need to have unsw course and this course - unsw courses as tabs
+  // // need to have unsw course and this course - unsw courses as tabs
   render() {
     return (
       <div id="results-table">
@@ -149,7 +160,7 @@ class ResultsTable extends React.Component {
         { 
           this.props.data.map((result) => {
             return (
-              <CollapsibleItem header={result.university}>
+              <CollapsibleItem header={result.university} id="university-result-header">
                 <Collapsible>
                 {
                   result.courses.map((course) => {
