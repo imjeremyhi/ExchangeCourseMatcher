@@ -19,8 +19,18 @@ def index():
 @index_page.route('/ajax/<courses>/<universities>/<countries>', methods=['GET'])
 def handle_ajax_request(courses = None, universities = None, countries = None):
     #return courses + universities + countries
-    if courses is not None:
+    if courses is not None and universities is not None and countries is not None:
+        courses_query_list = None
+        universities_query_list = None
+        countries_query_list = None
+        if courses != "null":
+            courses_query_list = json.loads(courses)
+        if universities != "null":
+            universities_query_list = json.loads(universities)
+        if countries != "null":
+            countries_query_list = json.loads(countries)
         #json.loads(courses)
+        get_matches(courses_query_list, universities_query_list, countries_query_list)
         results = [{"university": "Georgia Tech", "courses": [{"name": "ACCT1821 - Something", "similarity_score": "45%"}, {"name": "TEST1231 - Something different", "similarity_score": "37%"}]}]
         return json.dumps(results)
 

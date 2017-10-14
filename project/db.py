@@ -46,7 +46,7 @@ def get_universities():
     results = execute_query(query)
     return results
 
-def get_matches(courses, countries, universities):
+def get_matches(courses, universities, countries):
     # similarity table = similarity_score, components_of_score, unsw_course, partner_course, partner_uni
     # precondition at least one course passed
     query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
@@ -54,11 +54,11 @@ def get_matches(courses, countries, universities):
     for course in courses:
         query += " or unsw_course = '%s'" % course
 
-    for country in countries:
-        query += " or country = '%s'" % country
-
     for university in universities:
         query += " or university = '%s'" % university
+
+    for country in countries:
+        query += " or country = '%s'" % country
 
     results = execute_query(query)
     # todo add to query the or conditions from input

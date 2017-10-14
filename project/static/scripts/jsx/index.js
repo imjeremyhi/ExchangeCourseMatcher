@@ -35,16 +35,24 @@ class HomePage extends React.Component {
     $(".search-list-item-Courses").each(function() {
       courses.push($(this).text());
     });
-
     var universities = [];
     $(".search-list-item-Universities").each(function() {
       universities.push($(this).text());
     });
-
     var countries = [];
     $(".search-list-item-Countries").each(function() {
       countries.push($(this).text());
     });
+
+    if (courses.length == 0) {
+      courses = "null";
+    }
+    if (universities.length == 0) {
+      universities = "null";
+    }
+    if (countries.length == 0) {
+      countries = "null";
+    }
 
     var params = "/ajax/" + courses + "/" + universities + "/" + countries;
     xhttp.open("GET", params);

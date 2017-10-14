@@ -26355,6 +26355,16 @@ var HomePage = function (_React$Component) {
         countries.push($(this).text());
       });
 
+      if (courses.length == 0) {
+        courses = "null";
+      }
+      if (universities.length == 0) {
+        universities = "null";
+      }
+      if (countries.length == 0) {
+        countries = "null";
+      }
+
       var params = "/ajax/" + courses + "/" + universities + "/" + countries;
       xhttp.open("GET", params);
       xhttp.send();
