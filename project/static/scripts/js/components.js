@@ -26537,7 +26537,36 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       'p',
                       null,
-                      'Test'
+                      "Email: " /*+ course.email*/
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      "Assessments: " /*+ course.assessments*/
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      "Contact hours: " /*+ course.contactHours*/
+                    ),
+                    React.createElement(
+                      _reactMaterialize.Tabs,
+                      { className: 'tab-demo z-depth-1' },
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Course content' },
+                        'Test 1'
+                      ),
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Course outcomes', active: true },
+                        'Test 2'
+                      ),
+                      React.createElement(
+                        _reactMaterialize.Tab,
+                        { title: 'Textbook' },
+                        'Test 3'
+                      )
                     )
                   );
                 })

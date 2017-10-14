@@ -172,7 +172,14 @@ class ResultsTable extends React.Component {
                         <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare} className="compare-img">
                           <Icon small>compare</Icon>
                         </a>
-                        <p>Test</p>
+                        <p>{ "Email: " /*+ course.email*/ }</p>
+                        <p>{ "Assessments: " /*+ course.assessments*/ }</p>
+                        <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
+                        <Tabs className='tab-demo z-depth-1'>
+                          <Tab title="Course content">Test 1</Tab>
+                          <Tab title="Course outcomes" active>Test 2</Tab>
+                          <Tab title="Textbook">Test 3</Tab>
+                        </Tabs>
                       </CollapsibleItem>
                     )
                   })

@@ -45,16 +45,17 @@ class HomePage extends React.Component {
     });
 
     if (courses.length == 0) {
-      courses = "null";
+      courses = [];
     }
     if (universities.length == 0) {
-      universities = "null";
+      universities = [];
     }
     if (countries.length == 0) {
-      countries = "null";
+      countries = [];
     }
 
-    var params = "/ajax/" + courses + "/" + universities + "/" + countries;
+    var params = "/ajax/" + JSON.stringify(courses) + "/" + JSON.stringify(universities) + "/" + JSON.stringify(countries);
+    console.log(params)
     xhttp.open("GET", params);
     xhttp.send();
 
