@@ -26313,7 +26313,9 @@ var HomePage = function (_React$Component) {
       // courses: props.courses,
       // countries: props.countries,
       // universities: props.universities
-      results: props.results
+      results: props.results,
+      isLoading: false,
+      showArrowLine: false
     };
 
     _this.getResults = _this.getResults.bind(_this);
@@ -26356,6 +26358,10 @@ var HomePage = function (_React$Component) {
       var params = "/ajax/" + courses + "/" + universities + "/" + countries;
       xhttp.open("GET", params);
       xhttp.send();
+
+      this.setState({
+        isLoading: true
+      });
     }
 
     // Get value of all form elements to send to ajax request
@@ -26365,7 +26371,9 @@ var HomePage = function (_React$Component) {
     value: function updateResultValues(responseText) {
       console.log(typeof responseText === 'undefined' ? 'undefined' : _typeof(responseText));
       this.setState({
-        results: JSON.parse(responseText)
+        results: JSON.parse(responseText),
+        isLoading: false,
+        showArrowLine: true
       });
       console.log(responseText);
     }
@@ -26375,19 +26383,18 @@ var HomePage = function (_React$Component) {
       return React.createElement(
         'div',
         null,
+        React.createElement(_components.Search, { data: this.props.courses, dataType: 'Courses' }),
+        React.createElement(_components.Search, { data: this.props.countries, dataType: 'Countries' }),
+        React.createElement(_components.Search, { data: this.props.universities, dataType: 'Universities' }),
+        React.createElement('br', null),
         React.createElement(
-          'form',
-          { method: 'POST' },
-          React.createElement(_components.Search, { data: this.props.courses, dataType: 'Courses' }),
-          React.createElement(_components.Search, { data: this.props.countries, dataType: 'Countries' }),
-          React.createElement(_components.Search, { data: this.props.universities, dataType: 'Universities' }),
-          React.createElement('br', null),
-          React.createElement(
-            _reactMaterialize.Button,
-            { waves: 'light', type: 'button', onClick: this.getResults, id: 'match-button' },
-            'MATCH'
-          )
+          _reactMaterialize.Button,
+          { waves: 'light', type: 'button', onClick: this.getResults, id: 'match-button' },
+          'MATCH'
         ),
+        this.state.isLoading == true ? React.createElement('img', { src: 'static/imgs/loading.gif', id: 'loading-img' }) : React.createElement('img', { src: '' }),
+        React.createElement('br', null),
+        this.state.showArrowLine == true ? React.createElement('img', { src: 'static/imgs/arrow-line.png', id: 'arrow-line-img' }) : React.createElement('img', { src: '' }),
         React.createElement('br', null),
         React.createElement('br', null),
         React.createElement(_components.ResultsTable, { data: this.state.results })
