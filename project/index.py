@@ -34,7 +34,7 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
         results = [{"university": "Georgia Tech", "courses": [{"name": "ACCT1821 - Something", "similarity_score": "45%"}, {"name": "TEST1231 - Something different", "similarity_score": "37%"}]}]
         return json.dumps(results)
     else:
-        return "[]"
+        return json.dumps([])
 
 def courses_from_db_to_json(courses_from_db):
     courses = []
