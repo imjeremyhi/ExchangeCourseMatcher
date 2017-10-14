@@ -51,6 +51,10 @@ class HomePage extends React.Component {
 
   // Get value of all form elements to send to ajax request
   updateResultValues(responseText) {
+    console.log(typeof(responseText))
+    this.setState({
+      results: JSON.parse(responseText)
+    });
     console.log(responseText);
   }
 
