@@ -104,4 +104,6 @@ window.onload = () => {
     <HomePage universities={ universities } courses={ courses } countries={ countries } results={ results } />,
     document.getElementById('main')
   );
+
+  $('#instructions-popup').fancybox().trigger('click');
 }

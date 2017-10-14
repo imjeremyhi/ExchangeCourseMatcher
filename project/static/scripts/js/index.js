@@ -26421,6 +26421,8 @@ window.onload = function () {
   // console.log(universities)
 
   ReactDOM.render(React.createElement(HomePage, { universities: universities, courses: courses, countries: countries, results: results }), document.getElementById('main'));
+
+  $('#instructions-popup').fancybox().trigger('click');
 };
 
 },{"./components.js":237,"react-materialize":209}],237:[function(require,module,exports){
@@ -26640,6 +26642,7 @@ var ResultsTable = function (_React$Component2) {
       }, 1000);
     }
     // // need to have unsw course and this course - unsw courses as tabs
+    // need course unsw name few spaces and then course other name
 
   }, {
     key: 'render',
@@ -26662,15 +26665,20 @@ var ResultsTable = function (_React$Component2) {
                 result.courses.map(function (course) {
                   return React.createElement(
                     _reactMaterialize.CollapsibleItem,
-                    { header: course.similarity_score + " " + course.name, icon: 'expand_more' },
+                    { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
                     React.createElement(
                       'a',
-                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare },
+                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare, className: 'compare-img' },
                       React.createElement(
                         _reactMaterialize.Icon,
                         { small: true },
                         'compare'
                       )
+                    ),
+                    React.createElement(
+                      'p',
+                      null,
+                      'Test'
                     )
                   );
                 })

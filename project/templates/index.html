@@ -15,13 +15,15 @@
   <body>
     <div class="header">
       <img id="header-img" src="{{ url_for('static', filename='imgs/banner.png')}}" />
-      <img style="display: none" src="{{ url_for('static', filename='imgs/loading.gif') }}" />
-      <img style="display: none" src="{{ url_for('static', filename='imgs/arrow-line.png') }}" />
     </div>
     <div id="universitiesProps" style="display:none">{{ universities }}</div>
     <div id="coursesProps" style="display:none">{{ courses }}</div>
     <div id="countriesProps" style="display:none">{{ countries }}</div>
     <div id="resultsProps" style="display:none">{{ results }}</div>
+
+    <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" id="instructions-popup">
+      ?
+    </a>
     <div class="container">
       <div id="main">
       </div>

@@ -66,7 +66,7 @@ thead {
 }
 
 #university-result-header {
-	background-color: #FEC412 !important;
+	background-color: #E4E4E4 !important;
 }
 
 .dropdown-content {
@@ -92,4 +92,12 @@ thead {
 
 #arrow-line-img {
 	width: 100%;
+}
+
+.compare-img {
+	float: right;
+}
+
+#instructions-popup {
+	float: right;
 }
