@@ -13,6 +13,9 @@ def set_connection(app):
     app.config['MYSQL_DATABASE_PASSWORD'] = credentials[1]
     app.config['MYSQL_DATABASE_DB'] = credentials[2]
     app.config['MYSQL_DATABASE_HOST'] = credentials[3]
+
+    credentials_file.close()
+    
     mysql.init_app(app)
     global conn
     conn = mysql.connect()
