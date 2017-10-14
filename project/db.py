@@ -60,7 +60,7 @@ def get_matches(courses, universities, countries):
     for country in countries:
         query += " or country = '%s'" % country
 
-    results = execute_query(query)
+    results = []#execute_query(query)
     # todo add to query the or conditions from input
     # eg for all courses add or blah etc to the query and execute that
     return results
