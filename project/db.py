@@ -6,10 +6,13 @@ conn = None
 def set_connection(app):
     mysql = MySQL()
     # MySQL configurations
-    app.config['MYSQL_DATABASE_USER'] = 'scraper'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'runescrape'
-    app.config['MYSQL_DATABASE_DB'] = 'scrape'
-    app.config['MYSQL_DATABASE_HOST'] = '104.236.9.215'
+    credentials_file = open("project/credentials.txt", "r")
+    credentials = credentials_file.read().splitlines()
+
+    app.config['MYSQL_DATABASE_USER'] = credentials[0]
+    app.config['MYSQL_DATABASE_PASSWORD'] = credentials[1]
+    app.config['MYSQL_DATABASE_DB'] = credentials[2]
+    app.config['MYSQL_DATABASE_HOST'] = credentials[3]
     mysql.init_app(app)
     global conn
     conn = mysql.connect()
