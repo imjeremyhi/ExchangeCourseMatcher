@@ -121,3 +121,11 @@ html {
 	margin-right: auto;
 	margin-bottom: 20px;
 }
+
+#matches-title-header {
+	background-color: #282828;
+}
+
+.results-course-field {
+	font-weight: bold;
+}

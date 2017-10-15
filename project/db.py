@@ -1,5 +1,6 @@
 from flask.ext.mysql import MySQL
 import re
+import sys
 
 conn = None
 
@@ -79,11 +80,9 @@ def get_target_courses(universities):
         uni_mysql_list += "'"+uni+"', "
 
 
-    query = "SELECT university, course_code, course_title, id, keywords FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    print query
+    query = "SELECT university, course_code, course_title, id, keywords, emails FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
     results = execute_query(query)
 
-    print "Number of results: " + str(len(results))
     uni_dict_list = []
     for uni in universities:
         uni_dict = {}
@@ -99,12 +98,40 @@ def get_target_courses(universities):
             if uni_dict["university"] == course[0]:
                 target_dict = uni_dict
                 break
+
+        emails = []
+        if course[5] != "":
+            emails = course[5].split(",")
+        # bad making queries per course will change later if have time
+        sentence_table_list = get_text_from_sentence_table(course[3])
+        sentences_in_classes = {
+            "assessments": [],
+            "contact_hours": [],
+            "course_content": [],
+            "course_outcomes": [],
+            "textbooks": []
+        }
+        for sentence in sentence_table_list:
+            # sentence[0] is text, sentence[1] is class
+            sentences_in_classes[sentence[1]].append(sentence[0])
+        # print("stderr", file=sys.stderr)
+        # print(sentence_table_list, file=sys.stderr)
+        # print("stdout", file=sys.stdout)
+        # print(sentence_table_list, file=sys.stdout)
+
         uni_dict["courses"].append( {
             "name": course[1] + " " + course[2],
             "id": course[3],
             "keywords": course[4],
-            "similarity_score": "50%"
+            "similarity_score": "50%",
+            "emails": emails,
+            "assessments": sentences_in_classes["assessments"],
+            "contact_hours": sentences_in_classes["contact_hours"],
+            "course_content": sentences_in_classes["course_content"],
+            "course_outcomes": sentences_in_classes["course_outcomes"],
+            "textbooks": sentences_in_classes["textbooks"]
         })
+
     # print uni_dict_list
     return uni_dict_list
 
@@ -112,7 +139,7 @@ def get_similarity(course1, course2):
     query = "SELECT similarity FROM similarity WHERE course1 = %d and course2 = %d;" % (int(course1), int(course2))
 
     results = execute_query(query)
-    print results
+    # print results
     if len(results) == 0:
         # do the sim
         return None
@@ -124,4 +151,9 @@ def get_course_keywords_by_id(course):
     results = execute_query(query)
     return results
 
+#assessments, contact_hours, course_content, course_outcomes, textbooks
+def get_text_from_sentence_table(course):
+    query = "SELECT text, class FROM sentence where course = %d;" % (int(course))
+    results = execute_query(query)
+    return results
 #conn = get_connection(app)

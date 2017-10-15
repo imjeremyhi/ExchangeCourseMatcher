@@ -19,6 +19,10 @@ class Search extends React.Component {
     this.setState({
       data: nextProps.data
     });
+
+    setTimeout(() => {
+      $("#" + this.props.dataType).children().first().val("");
+    }, 100);
   }
 
   handleChange(event) {
@@ -76,7 +80,7 @@ class Search extends React.Component {
 
     setTimeout(() => {
       $("#" + this.props.dataType).children().first().val("");
-    }, 1);
+    }, 100);
   }
 
   // todo collection onClick delete, have hover effect of bin
@@ -143,6 +147,8 @@ class ResultsTable extends React.Component {
     return (
       <div id="results-table">
       { this.props.data.length > 0 &&
+        <div>
+        <div id="matches-title-header">MATCHES</div>
         <Collapsible>
         { 
           this.props.data.map((result) => {
@@ -153,21 +159,78 @@ class ResultsTable extends React.Component {
                   result.courses.map((course) => {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
-                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" + /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
+                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
-                        <p>{ "Email: " /*+ course.email*/ }</p>
-                        <p>{ "Assessments: " /*+ course.assessments*/ }</p>
-                        <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
+                        <p className="results-course-field">Emails:</p>
+                        { course.emails.length > 0 ? 
+                          <div>
+                          { course.emails.map(email => {
+                            return (
+                              <p>{email}</p>
+                            )})
+                          }
+                          </div> :
+                          <p>Not available</p>
+                        }
+                        <p className="results-course-field">Assessments:</p>
+                        { course.assessments.length > 0 ? 
+                          <div>
+                          { course.assessments.map(assessment => {
+                            return (
+                              <p>{assessment}</p>
+                            )})
+                          }
+                          </div> :
+                          <p>Not available</p>
+                        }
+                        <p className="results-course-field">Contact hours:</p>
+                        { course.contact_hours.length > 0 ? 
+                          <div>
+                          { course.contact_hours.map(contact_hour => {
+                            return (
+                              <p>{contact_hour}</p>
+                            )})
+                          }
+                          </div> :
+                          <p>Not available</p>
+                        }
                         <Tabs className='tab-demo z-depth-1'>
-                          <Tab title="Course content" /*active*/ /* course.content */>
-                            Test 1 
+                          <Tab title="Course content">
+                            { course.course_content.length > 0 ? 
+                              <div>
+                              { course.course_content.map(course_content => {
+                                return (
+                                  <p>{course_content}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
-                          <Tab title="Course outcomes" /* course.outcomes */>
-                            Test 2
+                          <Tab title="Course outcomes">
+                            { course.course_outcomes.length > 0 ? 
+                              <div>
+                              { course.course_outcomes.map(course_outcome => {
+                                return (
+                                  <p>{course_outcome}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
                           <Tab title="Textbook" /* course.textbook */>
-                            Test 3
+                            { course.textbooks.length > 0 ? 
+                              <div>
+                              { course.textbooks.map(textbook => {
+                                return (
+                                  <p>{textbook}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
                         </Tabs>
                       </CollapsibleItem>
@@ -180,6 +243,7 @@ class ResultsTable extends React.Component {
           })
         }
         </Collapsible>
+        </div>
       }
       </div>
     )
