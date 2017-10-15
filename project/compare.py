@@ -106,7 +106,7 @@ def compare_keywords(list1, list2, sim_type="path"):
         except Exception as e:
             print "Exception: " + str(e)
             continue
-    return similarity_dict
+    return simdict_avg(similarity_dict)
 
 def simdict_avg(simdict):
     vals = []

@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, json, redirect, url_for
-from db import get_courses, get_countries, get_universities, get_matches
+from db import get_courses, get_countries, get_universities, get_matches, get_similarity, get_course_keywords_by_id
+
+import compare
 
 index_page = Blueprint('index_page', __name__, template_folder='templates')
 
@@ -24,16 +26,32 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
     countries_query_list = json.loads(countries)
 
     if len(courses_query_list) > 0:
-        #json.loads(courses)
+        course_list = json.loads(courses)
         results = get_matches(courses_query_list, universities_query_list, countries_query_list)
-        for unsw_course in courses:
+        for unsw_course in course_list:
+            print unsw_course
+            unsw_keywords = get_course_keywords_by_id(unsw_course)[0]
 
-          for university_dict in results:
+            # acct1501
+            for university_dict in results:
+            # gatech
+                for target_course in university_dict["courses"]:
 
-               for target_course in university_dict["courses"]:
-                  print target_course
+                    print target_course
 
-        #      
+                    #compare unsw_course vs target_course
+                    similarity = get_similarity(unsw_course, target_course["id"])
+
+                    if similarity == None:
+                        print "No existing sim found for %d vs %d. Processing..." % (int(unsw_course), int(target_course["id"]))
+                        # do sim
+                        print get_course_keywords_by_id(unsw_course)
+                        sim = compare.compare_keywords(get_course_keywords_by_id(unsw_course)[0],[target_course["keywords"]])
+                        print sim
+
+
+
+        #
 
         # for course in results
 

@@ -79,7 +79,7 @@ def get_target_courses(universities):
         uni_mysql_list += "'"+uni+"', "
 
 
-    query = "SELECT university, course_code, course_title, id FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
+    query = "SELECT university, course_code, course_title, id, keywords FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
     # print query
     results = execute_query(query)
 
@@ -99,14 +99,26 @@ def get_target_courses(universities):
         uni_dict["courses"].append( {
             "name": course[1] + " " + course[2],
             "id": course[3],
+            "keywords": course[4],
             "similarity_score": "50%"
         })
     # print uni_dict_list
     return uni_dict_list
 
+def get_similarity(course1, course2):
+    query = "SELECT similarity FROM similarity WHERE course1 = %d and course2 = %d;" % (int(course1), int(course2))
 
+    results = execute_query(query)
+    print results
+    if len(results) == 0:
+        # do the sim
+        return None
+    else:
+        return results[0][2]
 
-
+def get_course_keywords_by_id(course):
+    query = "SELECT keywords FROM course_scrape WHERE id = %d;" % int(course)
+    results = execute_query(query)
     return results
 
 #conn = get_connection(app)
