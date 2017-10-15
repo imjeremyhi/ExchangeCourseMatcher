@@ -70,5 +70,6 @@ def universities_from_db_to_json(universities_from_db):
     for record in universities_from_db:
         university = {}
         university["name"] = record[0]
+        university["country"] = record[1]
         universities.append(university)
     return universities

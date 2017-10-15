@@ -9,12 +9,14 @@ class HomePage extends React.Component {
     const coursesids = this.getCourseIds(props.courses);
     const countries = this.formatData(props.countries);
     const universities = this.formatData(props.universities);
+    const universitiesCountries = this.formatData(props.universities);
 
     this.state = { 
       courses: courses,
       coursesids: coursesids,
       countries: countries,
       universities: universities,
+      universitiesCountries: universitiesCountries,
       results: props.results,
       isLoading: false,
       showArrowLine: false
@@ -45,7 +47,9 @@ class HomePage extends React.Component {
 
   handleCountriesFilterChange(countriesSelected) {
     countriesSelected.forEach(country => {
-      
+      if (this.state.universitiesCountries) {
+        
+      }
     });
   }
 
