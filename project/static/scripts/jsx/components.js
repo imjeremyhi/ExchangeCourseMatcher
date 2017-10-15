@@ -170,7 +170,7 @@ class ResultsTable extends React.Component {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
                         <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare} className="compare-img">
-                          <Icon small>compare</Icon>
+                          <img src="./static/imgs/scales.png" />
                         </a>
                         <p>{ "Email: " /*+ course.email*/ }</p>
                         <p>{ "Assessments: " /*+ course.assessments*/ }</p>

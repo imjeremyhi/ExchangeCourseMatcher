@@ -26528,11 +26528,7 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       'a',
                       { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare, className: 'compare-img' },
-                      React.createElement(
-                        _reactMaterialize.Icon,
-                        { small: true },
-                        'compare'
-                      )
+                      React.createElement('img', { src: './static/imgs/scales.png' })
                     ),
                     React.createElement(
                       'p',

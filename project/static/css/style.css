@@ -105,3 +105,15 @@ thead {
 #instructions-html {
 	font-weight: bold;
 }
+
+html {
+	font-family: 'Roboto', sans-serif !important;
+}
+
+.instruction-img {
+	height: 70px !important;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
