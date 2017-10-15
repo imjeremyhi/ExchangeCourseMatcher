@@ -4,15 +4,13 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
 
-    const data = this.formatData();
     this.state = { 
       searchedText: '',
       appendedList: [],
-      data: data
+      data: props.data
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.formatData = this.formatData.bind(this);
     this.add = this.add.bind(this);
     this.remove = this.remove.bind(this);
   }
@@ -67,16 +65,6 @@ class Search extends React.Component {
     }, 1);
   }
 
-  formatData() {
-    var formattedData = {};
-
-    this.props.data.forEach((data) => {
-      formattedData[data["name"]] = null;
-    });
-
-    return formattedData;
-  }
-
   // todo collection onClick delete, have hover effect of bin
   //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
   render() {
@@ -99,9 +87,9 @@ class Search extends React.Component {
             {this.state.appendedList.map((listItem) => {
               return (
                 <Row>
-                  <Input name={this.props.dataType} value={listItem} type="hidden" />
                   <Col s={9}>
-                    <CollectionItem className={"search-list-item-" + this.props.dataType}>{listItem}</CollectionItem>
+                    <input type="hidden" className={"search-list-item-" + this.props.dataType + "-ids"} value={listItem.id} />
+                    <CollectionItem className={"search-list-item-" + this.props.dataType}>{listItem.name}</CollectionItem>
                   </Col>
                   <Col s={2}>
                     <Button href="#" type="button" onClick={() => this.remove(listItem)} style={{margin:"5px", float: "right", marginRight: "-40%"}}>Remove</Button>
@@ -117,25 +105,6 @@ class Search extends React.Component {
     )
   }
 }
-/*
-will need to map return tabs and inner content map return
-  <Tabs className='tab-demo z-depth-1'>
-    <Tab title="Test 1">Test 1</Tab>
-    <Tab title="Test 2" active>Test 2</Tab>
-    <Tab title="Test 3">Test 3</Tab>
-    <Tab title="Test 4">Test 4</Tab>
-  </Tabs>
-
-        <Collection>
-        {this.state.appendedList.map((listItem) => {
-          return (
-              <CollectionItem>listItem</CollectionItem>
-          )
-          })
-        }
-        </Collection>
-*/
-//<Button onClick={this.remove(listItem)}>Remove</Button>
 
 class ResultsTable extends React.Component {
   constructor(props) {
@@ -170,15 +139,21 @@ class ResultsTable extends React.Component {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
                         <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare} className="compare-img">
-                          <img src="./static/imgs/scales.png" />
+                          <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
                         <p>{ "Email: " /*+ course.email*/ }</p>
                         <p>{ "Assessments: " /*+ course.assessments*/ }</p>
                         <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
                         <Tabs className='tab-demo z-depth-1'>
-                          <Tab title="Course content">Test 1</Tab>
-                          <Tab title="Course outcomes" active>Test 2</Tab>
-                          <Tab title="Textbook">Test 3</Tab>
+                          <Tab title="Course content" /*active*/ /* course.content */>
+                            Test 1 
+                          </Tab>
+                          <Tab title="Course outcomes" /* course.outcomes */>
+                            Test 2
+                          </Tab>
+                          <Tab title="Textbook" /* course.textbook */>
+                            Test 3
+                          </Tab>
                         </Tabs>
                       </CollapsibleItem>
                     )

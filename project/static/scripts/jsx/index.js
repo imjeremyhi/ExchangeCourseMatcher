@@ -5,22 +5,40 @@ class HomePage extends React.Component {
   constructor(props){
     super(props);
 
+    const courses = this.formatData(props.courses);
+    const countries = this.formatData(props.countries);
+    const universities = this.formatData(props.universities);
+
     this.state = { 
-      // courses: props.courses,
-      // countries: props.countries,
-      // universities: props.universities
+      courses: courses,
+      countries: countries,
+      universities: universities,
       results: props.results,
       isLoading: false,
       showArrowLine: false
     };
 
+    this.formatData = this.formatData.bind(this);
     this.getResults = this.getResults.bind(this);
     this.updateResultValues = this.updateResultValues.bind(this);
   }
-//          <Results results={ this.state.results } />
-  // displayResults() {
 
-  // }
+  formatData(values) {
+    var formattedData = {};
+
+    if (values[0] != null && values[0]["id"] != null) {
+      values.forEach((data) => {
+        formattedData[data["name"]] = null;
+        formattedData[data["id"]] = null;
+      });
+    } else {
+      values.forEach((data) => {
+        formattedData[data["name"]] = null;
+      });
+    }
+    return formattedData;
+  }
+
   getResults() {
     // button onClick ajax call
     var self = this;
@@ -32,8 +50,8 @@ class HomePage extends React.Component {
     };
 
     var courses = [];
-    $(".search-list-item-Courses").each(function() {
-      courses.push($(this).text());
+    $(".search-list-item-Courses-ids").each(function() {
+      courses.push($(this).val());
     });
     var universities = [];
     $(".search-list-item-Universities").each(function() {
@@ -62,6 +80,12 @@ class HomePage extends React.Component {
     this.setState({
       isLoading: true
     });
+
+    setTimeout(() => {
+      $("#Courses").children().first().val("");
+      $("#Universities").children().first().val("");
+      $("#Countries").children().first().val("");
+    }, 1);
   }
 
   // Get value of all form elements to send to ajax request
@@ -73,14 +97,20 @@ class HomePage extends React.Component {
       showArrowLine: true
     });
     console.log(responseText);
+
+    setTimeout(() => {
+      $("#Courses").children().first().val("");
+      $("#Universities").children().first().val("");
+      $("#Countries").children().first().val("");
+    }, 1);
   }
 
   render() {
     return (
       <div>
-        <Search data={ this.props.courses } dataType="Courses" />
-        <Search data={ this.props.countries } dataType="Countries" />
-        <Search data={ this.props.universities } dataType="Universities" />
+        <Search data={ this.state.courses } dataType="Courses" />
+        <Search data={ this.state.countries } dataType="Countries" />
+        <Search data={ this.state.universities } dataType="Universities" />
         <br/>
         <Button waves='light' type="button" onClick={this.getResults} id="match-button">MATCH</Button>
         { this.state.isLoading == true ? <img src="static/imgs/loading.gif" id="loading-img" /> : <img src="" /> }

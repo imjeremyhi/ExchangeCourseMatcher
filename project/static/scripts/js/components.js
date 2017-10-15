@@ -26310,15 +26310,13 @@ var Search = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
-    var data = _this.formatData();
     _this.state = {
       searchedText: '',
       appendedList: [],
-      data: data
+      data: props.data
     };
 
     _this.handleChange = _this.handleChange.bind(_this);
-    _this.formatData = _this.formatData.bind(_this);
     _this.add = _this.add.bind(_this);
     _this.remove = _this.remove.bind(_this);
     return _this;
@@ -26381,17 +26379,6 @@ var Search = function (_React$Component) {
         $("#" + _this3.props.dataType).children().first().val("");
       }, 1);
     }
-  }, {
-    key: 'formatData',
-    value: function formatData() {
-      var formattedData = {};
-
-      this.props.data.forEach(function (data) {
-        formattedData[data["name"]] = null;
-      });
-
-      return formattedData;
-    }
 
     // todo collection onClick delete, have hover effect of bin
     //         <h1 style={{backgroundColor: "#C0C0C0", color: "#FFFFFF", textTransform: "uppercase"}}>Add { this.props.dataType }</h1>
@@ -26425,14 +26412,14 @@ var Search = function (_React$Component) {
               return React.createElement(
                 _reactMaterialize.Row,
                 null,
-                React.createElement(_reactMaterialize.Input, { name: _this4.props.dataType, value: listItem, type: 'hidden' }),
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
+                  React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: listItem.id }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
                     { className: "search-list-item-" + _this4.props.dataType },
-                    listItem
+                    listItem.name
                   )
                 ),
                 React.createElement(
@@ -26456,25 +26443,6 @@ var Search = function (_React$Component) {
 
   return Search;
 }(React.Component);
-/*
-will need to map return tabs and inner content map return
-  <Tabs className='tab-demo z-depth-1'>
-    <Tab title="Test 1">Test 1</Tab>
-    <Tab title="Test 2" active>Test 2</Tab>
-    <Tab title="Test 3">Test 3</Tab>
-    <Tab title="Test 4">Test 4</Tab>
-  </Tabs>
-
-        <Collection>
-        {this.state.appendedList.map((listItem) => {
-          return (
-              <CollectionItem>listItem</CollectionItem>
-          )
-          })
-        }
-        </Collection>
-*/
-//<Button onClick={this.remove(listItem)}>Remove</Button>
 
 var ResultsTable = function (_React$Component2) {
   _inherits(ResultsTable, _React$Component2);
@@ -26528,7 +26496,7 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       'a',
                       { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare, className: 'compare-img' },
-                      React.createElement('img', { src: './static/imgs/scales.png' })
+                      React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                     ),
                     React.createElement(
                       'p',
@@ -26550,17 +26518,17 @@ var ResultsTable = function (_React$Component2) {
                       { className: 'tab-demo z-depth-1' },
                       React.createElement(
                         _reactMaterialize.Tab,
-                        { title: 'Course content' },
+                        { title: 'Course content' /*active*/ /* course.content */ },
                         'Test 1'
                       ),
                       React.createElement(
                         _reactMaterialize.Tab,
-                        { title: 'Course outcomes', active: true },
+                        { title: 'Course outcomes' /* course.outcomes */ },
                         'Test 2'
                       ),
                       React.createElement(
                         _reactMaterialize.Tab,
-                        { title: 'Textbook' },
+                        { title: 'Textbook' /* course.textbook */ },
                         'Test 3'
                       )
                     )

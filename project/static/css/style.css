@@ -98,6 +98,10 @@ thead {
 	float: right;
 }
 
+#compare-img-actual-img {
+	height: 30px;
+}
+
 #instructions-popup {
 	float: right;
 }
