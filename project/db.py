@@ -87,7 +87,7 @@ def get_target_courses(courses, universities):
     for course in courses:
         courses_mysql_list += course +", "
 
-    query = "SELECT course_code, course_title, url FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
+    query = "SELECT course_code, course_title, url, id FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
     unsw_courses = execute_query(query)
 
     uni_dict_list = []
@@ -105,6 +105,12 @@ def get_target_courses(courses, universities):
         for course in results:
             if course[1] is None or course[2] is None:
                 continue
+
+            similarity_score = get_similarity(unsw_course[3], course[3])
+            if similarity_score is None or similarity_score < 0.82:
+                continue
+            # similarity_score = "90%"
+
             target_dict = None
             for uni_dict in uni_dict_list:
                 if uni_dict["university"] == course[0]:
@@ -112,7 +118,7 @@ def get_target_courses(courses, universities):
                     break
 
             emails = []
-            if course[5] != "":
+            if course[5] is not None and course[5] != "":
                 emails = course[5].split(",")
 
             # bad making queries per course will change later if have time
@@ -135,11 +141,14 @@ def get_target_courses(courses, universities):
             unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
             unsw_url = "./static/files/unsw/" + unsw_url
 
+            keywords_from_db = get_course_keywords_by_id(course[3])
+            keywords = keywords_from_db[0]
+
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
                 "id": course[3],
                 "keywords": course[4],
-                "similarity_score": "50%",
+                "similarity_score": similarity_score,
                 "emails": emails,
                 "url": course[6],
                 "url2": unsw_url,
@@ -147,7 +156,8 @@ def get_target_courses(courses, universities):
                 "contact_hours": sentences_in_classes["contact_hours"],
                 "course_content": sentences_in_classes["course_content"],
                 "course_outcomes": sentences_in_classes["course_outcomes"],
-                "textbooks": sentences_in_classes["textbooks"]
+                "textbooks": sentences_in_classes["textbooks"],
+                "keywords": keywords
             })
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)

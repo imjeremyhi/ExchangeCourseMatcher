@@ -159,89 +159,104 @@ class ResultsTable extends React.Component {
                     return (
                       <Tabs>
                         <Tab title={ unswCourse.name }>
+                        { unswCourse.courses.length > 0 ? 
                         <Collapsible>
-                        { unswCourse.courses.map((course) => {
-                          return (
-                            <CollapsibleItem header={ course.similarity_score + " - " + course.name } icon="expand_more">
-                              <a data-fancybox data-type="iframe" data-src={ course.url } href="javascript:;" onClick={() => this.compare(course.url2) } className="compare-img">
-                                <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
-                              </a>
-                              <p className="results-course-field">Emails:</p>
-                              { course.emails.length > 0 ? 
-                                <div>
-                                { course.emails.map(email => {
-                                  return (
-                                    <p>{email}</p>
-                                  )})
-                                }
-                                </div> :
-                                <p>Not available</p>
-                              }
-                              <p className="results-course-field">Assessments:</p>
-                              { course.assessments.length > 0 ? 
-                                <div>
-                                { course.assessments.map(assessment => {
-                                  return (
-                                    <p>{assessment}</p>
-                                  )})
-                                }
-                                </div> :
-                                <p>Not available</p>
-                              }
-                              <p className="results-course-field">Contact hours:</p>
-                              { course.contact_hours.length > 0 ? 
-                                <div>
-                                { course.contact_hours.map(contact_hour => {
-                                  return (
-                                    <p>{contact_hour}</p>
-                                  )})
-                                }
-                                </div> :
-                                <p>Not available</p>
-                              }
-                              <Tabs className='tab-demo z-depth-1'>
-                                <Tab title="Course content">
-                                  { course.course_content.length > 0 ? 
-                                    <div>
-                                    { course.course_content.map(course_content => {
-                                      return (
-                                        <p>{course_content}</p>
-                                      )})
-                                    } 
-                                    </div> :
-                                    <p>Not available</p>
+                          { unswCourse.courses.map((course) => {
+                            return (
+                              <CollapsibleItem header={ course.similarity_score + " - " + course.name } icon="expand_more">
+                                <a data-fancybox data-type="iframe" data-src={ course.url } href="javascript:;" onClick={() => this.compare(course.url2) } className="compare-img">
+                                  <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
+                                </a>
+                                <p className="results-course-field">Emails:</p>
+                                { course.emails.length > 0 ? 
+                                  <div>
+                                  { course.emails.map(email => {
+                                    return (
+                                      <p>{email}</p>
+                                    )})
                                   }
-                                </Tab>
-                                <Tab title="Course outcomes">
-                                  { course.course_outcomes.length > 0 ? 
-                                    <div>
-                                    { course.course_outcomes.map(course_outcome => {
-                                      return (
-                                        <p>{course_outcome}</p>
-                                      )})
-                                    } 
-                                    </div> :
-                                    <p>Not available</p>
+                                  </div> :
+                                  <p>Not available</p>
+                                }
+                                <p className="results-course-field">Assessments:</p>
+                                { course.assessments.length > 0 ? 
+                                  <div>
+                                  { course.assessments.map(assessment => {
+                                    return (
+                                      <p>{assessment}</p>
+                                    )})
                                   }
-                                </Tab>
-                                <Tab title="Textbook">
-                                  { course.textbooks.length > 0 ? 
-                                    <div>
-                                    { course.textbooks.map(textbook => {
-                                      return (
-                                        <p>{textbook}</p>
-                                      )})
-                                    } 
-                                    </div> :
-                                    <p>Not available</p>
+                                  </div> :
+                                  <p>Not available</p>
+                                }
+                                <p className="results-course-field">Contact hours:</p>
+                                { course.contact_hours.length > 0 ? 
+                                  <div>
+                                  { course.contact_hours.map(contact_hour => {
+                                    return (
+                                      <p>{contact_hour}</p>
+                                    )})
                                   }
-                                </Tab>
-                              </Tabs>
-                            </CollapsibleItem>
-                          )
-                        })
-                        }
+                                  </div> :
+                                  <p>Not available</p>
+                                }
+                                <Tabs className='tab-demo z-depth-1'>
+                                  <Tab title="Course content">
+                                    { course.course_content.length > 0 ? 
+                                      <div>
+                                      { course.course_content.map(course_content => {
+                                        return (
+                                          <p>{course_content}</p>
+                                        )})
+                                      } 
+                                      </div> :
+                                      <p>Not available</p>
+                                    }
+                                  </Tab>
+                                  <Tab title="Course outcomes">
+                                    { course.course_outcomes.length > 0 ? 
+                                      <div>
+                                      { course.course_outcomes.map(course_outcome => {
+                                        return (
+                                          <p>{course_outcome}</p>
+                                        )})
+                                      } 
+                                      </div> :
+                                      <p>Not available</p>
+                                    }
+                                  </Tab>
+                                  <Tab title="Textbooks">
+                                    { course.textbooks.length > 0 ? 
+                                      <div>
+                                      { course.textbooks.map(textbook => {
+                                        return (
+                                          <p>{textbook}</p>
+                                        )})
+                                      } 
+                                      </div> :
+                                      <p>Not available</p>
+                                    }
+                                  </Tab>
+                                  <Tab title="Keywords">
+                                    { course.keywords.length > 0 ? 
+                                      <div>
+                                      { course.keywords.map(keyword => {
+                                        return (
+                                          <p>{keyword}</p>
+                                        )})
+                                      } 
+                                      </div> :
+                                      <p>Not available</p>
+                                    }
+                                  </Tab>
+                                </Tabs>
+                              </CollapsibleItem>
+                            )
+                          })
+                          }
                         </Collapsible>
+                        : <p>No course matches</p>
+                        }
                         </Tab>
                       </Tabs>
                     )

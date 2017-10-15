@@ -26523,7 +26523,7 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       _reactMaterialize.Tab,
                       { title: unswCourse.name },
-                      React.createElement(
+                      unswCourse.courses.length > 0 ? React.createElement(
                         _reactMaterialize.Collapsible,
                         null,
                         unswCourse.courses.map(function (course) {
@@ -26640,7 +26640,7 @@ var ResultsTable = function (_React$Component2) {
                               ),
                               React.createElement(
                                 _reactMaterialize.Tab,
-                                { title: 'Textbook' },
+                                { title: 'Textbooks' },
                                 course.textbooks.length > 0 ? React.createElement(
                                   'div',
                                   null,
@@ -26656,10 +26656,33 @@ var ResultsTable = function (_React$Component2) {
                                   null,
                                   'Not available'
                                 )
+                              ),
+                              React.createElement(
+                                _reactMaterialize.Tab,
+                                { title: 'Keywords' },
+                                course.keywords.length > 0 ? React.createElement(
+                                  'div',
+                                  null,
+                                  course.keywords.map(function (keyword) {
+                                    return React.createElement(
+                                      'p',
+                                      null,
+                                      keyword
+                                    );
+                                  })
+                                ) : React.createElement(
+                                  'p',
+                                  null,
+                                  'Not available'
+                                )
                               )
                             )
                           );
                         })
+                      ) : React.createElement(
+                        'p',
+                        null,
+                        'No course matches'
                       )
                     )
                   );
