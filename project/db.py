@@ -27,6 +27,7 @@ def execute_query(query):
     return results
 
 def get_courses():
+    print "Getting UNSW course list..."
     query = "SELECT course_code, course_title, id from course_scrape where university = 'University of New South Wales'"
     results = execute_query(query)
 
@@ -42,11 +43,13 @@ def get_courses():
     return returned_results
 
 def get_countries():
+    print "Getting countries..."
     query = "SELECT distinct country from university"
     results = execute_query(query)
     return results
 
 def get_universities():
+    print "Getting universities..."
     query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
     results = execute_query(query)
     return results
@@ -54,9 +57,9 @@ def get_universities():
 def get_matches(courses, universities, countries):
     # similarity table = similarity_score, components_of_score, unsw_course, partner_course, partner_uni
     # precondition at least one course passed
-
+    print "Getting matches..."
     target_course_list = get_target_courses(courses, universities)
-    # print target_course_list
+    print target_course_list
 
     # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
     #
@@ -75,12 +78,14 @@ def get_matches(courses, universities, countries):
     return results
 
 def get_target_courses(courses, universities):
+    print "Getting target courses..."
     uni_mysql_list = ""
     for uni in universities:
         uni_mysql_list += "'"+uni+"', "
 
+
     query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    # print query
+    print query
     results = execute_query(query)
 
     courses_mysql_list = ""
@@ -88,8 +93,10 @@ def get_target_courses(courses, universities):
         courses_mysql_list += course +", "
 
     query = "SELECT course_code, course_title, url, id FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
+    print query
     unsw_courses = execute_query(query)
 
+    sentence_dict_by_uni = {}
     uni_dict_list = []
     for uni in universities:
         uni_dict = {}
@@ -97,20 +104,32 @@ def get_target_courses(courses, universities):
         uni_dict["unsw_courses"] = []
         uni_dict_list.append(uni_dict)
 
+        sentences_by_uni = get_sentences_by_uni(uni)
+        sentences_by_course = {}
+        for sent_uni, sent_course, sent_text, sent_class in sentences_by_uni:
+            if sent_course not in sentences_by_course:
+                sentences_by_course[sent_course] = []
+
+            sentences_by_course[sent_course].append((sent_text, sent_class))
+
+        sentence_dict_by_uni[uni] = sentences_by_course
+
     for unsw_course in unsw_courses:
+        print "For " + unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert = {}
         unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert["courses"] = []
 
         for course in results:
+            print course
             if course[1] is None or course[2] is None:
                 continue
+            # similarity_score = get_similarity(unsw_course[3], course[3])
+            # if similarity_score is None or similarity_score < 0.82:
+            #     continue
+            # # similarity_score = "90%"
 
-            similarity_score = get_similarity(unsw_course[3], course[3])
-            if similarity_score is None or similarity_score < 0.82:
-                continue
-            # similarity_score = "90%"
-
+            # find the uni dict to add to
             target_dict = None
             for uni_dict in uni_dict_list:
                 if uni_dict["university"] == course[0]:
@@ -122,7 +141,7 @@ def get_target_courses(courses, universities):
                 emails = course[5].split(",")
 
             # bad making queries per course will change later if have time
-            sentence_table_list = get_text_from_sentence_table(course[3])
+            sentence_table_list = sentence_dict_by_uni[course[0]][course[3]]
             sentences_in_classes = {
                 "assessments": [],
                 "contact_hours": [],
@@ -141,14 +160,14 @@ def get_target_courses(courses, universities):
             unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
             unsw_url = "./static/files/unsw/" + unsw_url
 
-            keywords_from_db = get_course_keywords_by_id(course[3])
+            keywords_from_db = course[4]
             keywords = keywords_from_db[0]
 
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
                 "id": course[3],
                 "keywords": course[4],
-                "similarity_score": similarity_score,
+                "similarity_score": 0.00,
                 "emails": emails,
                 "url": course[6],
                 "url2": unsw_url,
@@ -160,11 +179,11 @@ def get_target_courses(courses, universities):
                 "keywords": keywords
             })
 
-        unsw_course_to_insert["courses"].sort(key=lambda x: x.similarity_score, reverse=True)
+        # unsw_course_to_insert["courses"].sort(key=lambda x: x.similarity_score, reverse=True)
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
-    # print uni_dict_list
+    print uni_dict_list
     return uni_dict_list
 
 def get_similarity(course1, course2):
@@ -176,7 +195,7 @@ def get_similarity(course1, course2):
         # do the sim
         return None
     else:
-        return results[0][2]
+        return results[0][0]
 
 def get_course_keywords_by_id(course):
     query = "SELECT keywords FROM course_scrape WHERE id = %d;" % int(course)
@@ -186,6 +205,11 @@ def get_course_keywords_by_id(course):
 #assessments, contact_hours, course_content, course_outcomes, textbooks
 def get_text_from_sentence_table(course):
     query = "SELECT text, class FROM sentence where course = %d;" % (int(course))
+    results = execute_query(query)
+    return results
+
+def get_sentences_by_uni(university):
+    query = "SELECT b.university, b.id, a.text, a.class FROM sentence a JOIN course_scrape b ON a.course = b.id WHERE b.university = '%s';" % university
     results = execute_query(query)
     return results
 #conn = get_connection(app)
