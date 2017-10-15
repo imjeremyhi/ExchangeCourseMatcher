@@ -163,11 +163,15 @@ def get_target_courses(courses, universities):
             keywords_from_db = course[4]
             keywords = keywords_from_db[0]
 
+            keywords = keywords.replace("\"", "")
+            keywords = keywords.split(", ")
+
+
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
                 "id": course[3],
                 "keywords": course[4],
-                "similarity_score": 0.00,
+                "similarity_score": 1.00,
                 "emails": emails,
                 "url": course[6],
                 "url2": unsw_url,
