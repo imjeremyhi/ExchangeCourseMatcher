@@ -26349,6 +26349,10 @@ var Search = function (_React$Component) {
             data: data
           });
 
+          if (_this2.props.dataType == "Countries") {
+            _this2.props.handleCountriesFilterChange(_this2.state.appendedList);
+          }
+
           $("#" + _this2.props.dataType).children().first().val("");
         }
       }, 100);
@@ -26374,6 +26378,10 @@ var Search = function (_React$Component) {
         appendedList: curList,
         data: data
       });
+
+      if (this.props.dataType == "Countries") {
+        this.props.handleCountriesFilterChange(this.state.appendedList);
+      }
 
       setTimeout(function () {
         $("#" + _this3.props.dataType).children().first().val("");

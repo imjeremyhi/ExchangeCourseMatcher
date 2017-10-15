@@ -26325,6 +26325,8 @@ var HomePage = function (_React$Component) {
     };
 
     _this.formatData = _this.formatData.bind(_this);
+    _this.getCourseIds = _this.getCourseIds.bind(_this);
+    _this.handleCountriesFilterChange = _this.handleCountriesFilterChange.bind(_this);
     _this.getResults = _this.getResults.bind(_this);
     _this.updateResultValues = _this.updateResultValues.bind(_this);
     return _this;
@@ -26348,6 +26350,9 @@ var HomePage = function (_React$Component) {
       });
       return formattedData;
     }
+  }, {
+    key: 'handleCountriesFilterChange',
+    value: function handleCountriesFilterChange() {}
   }, {
     key: 'getResults',
     value: function getResults() {
@@ -26425,7 +26430,7 @@ var HomePage = function (_React$Component) {
         'div',
         null,
         React.createElement(_components.Search, { data: this.state.courses, ids: this.state.coursesids, dataType: 'Courses' }),
-        React.createElement(_components.Search, { data: this.state.countries, dataType: 'Countries' }),
+        React.createElement(_components.Search, { data: this.state.countries, handleCountriesFilterChange: this.handleCountriesFilterChange, dataType: 'Countries' }),
         React.createElement(_components.Search, { data: this.state.universities, dataType: 'Universities' }),
         React.createElement('br', null),
         React.createElement(
@@ -26531,6 +26536,10 @@ var Search = function (_React$Component) {
             data: data
           });
 
+          if (_this2.props.dataType == "Countries") {
+            _this2.props.handleCountriesFilterChange(_this2.state.appendedList);
+          }
+
           $("#" + _this2.props.dataType).children().first().val("");
         }
       }, 100);
@@ -26556,6 +26565,10 @@ var Search = function (_React$Component) {
         appendedList: curList,
         data: data
       });
+
+      if (this.props.dataType == "Countries") {
+        this.props.handleCountriesFilterChange(this.state.appendedList);
+      }
 
       setTimeout(function () {
         $("#" + _this3.props.dataType).children().first().val("");

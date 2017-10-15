@@ -37,6 +37,10 @@ class Search extends React.Component {
           data: data
         });
 
+        if (this.props.dataType == "Countries") {
+          this.props.handleCountriesFilterChange(this.state.appendedList);
+        }
+
         $("#" + this.props.dataType).children().first().val("");
       }
     }, 100);
@@ -59,6 +63,10 @@ class Search extends React.Component {
       appendedList: curList,
       data: data
     });
+
+    if (this.props.dataType == "Countries") {
+      this.props.handleCountriesFilterChange(this.state.appendedList);
+    }
 
     setTimeout(() => {
       $("#" + this.props.dataType).children().first().val("");

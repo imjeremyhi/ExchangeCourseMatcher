@@ -21,6 +21,8 @@ class HomePage extends React.Component {
     };
 
     this.formatData = this.formatData.bind(this);
+    this.getCourseIds = this.getCourseIds.bind(this);
+    this.handleCountriesFilterChange = this.handleCountriesFilterChange.bind(this);
     this.getResults = this.getResults.bind(this);
     this.updateResultValues = this.updateResultValues.bind(this);
   }
@@ -39,6 +41,12 @@ class HomePage extends React.Component {
       formattedData[data["name"]] = data["id"];
     });
     return formattedData;
+  }
+
+  handleCountriesFilterChange(countriesSelected) {
+    countriesSelected.forEach(country => {
+      
+    });
   }
 
   getResults() {
@@ -111,7 +119,7 @@ class HomePage extends React.Component {
     return (
       <div>
         <Search data={ this.state.courses } ids={ this.state.coursesids } dataType="Courses" />
-        <Search data={ this.state.countries } dataType="Countries" />
+        <Search data={ this.state.countries } handleCountriesFilterChange= { this.handleCountriesFilterChange } dataType="Countries" />
         <Search data={ this.state.universities } dataType="Universities" />
         <br/>
         <Button waves='light' type="button" onClick={this.getResults} id="match-button">MATCH</Button>
