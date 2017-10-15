@@ -46,7 +46,7 @@ def get_countries():
     return results
 
 def get_universities():
-    query = "SELECT distinct university from course_scrape where university <> 'University of New South Wales'"
+    query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
     results = execute_query(query)
     return results
 
@@ -55,7 +55,7 @@ def get_matches(courses, universities, countries):
     # precondition at least one course passed
 
     target_course_list = get_target_courses(universities)
-    print target_course_list
+    # print target_course_list
 
     # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
     #
@@ -80,7 +80,7 @@ def get_target_courses(universities):
 
 
     query = "SELECT university, course_code, course_title, id FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    print query
+    # print query
     results = execute_query(query)
 
     uni_dict_list = []
@@ -101,7 +101,7 @@ def get_target_courses(universities):
             "id": course[3],
             "similarity_score": "50%"
         })
-    print uni_dict_list
+    # print uni_dict_list
     return uni_dict_list
 
 

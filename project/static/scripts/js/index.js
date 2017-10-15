@@ -26313,18 +26313,22 @@ var HomePage = function (_React$Component) {
     var coursesids = _this.getCourseIds(props.courses);
     var countries = _this.formatData(props.countries);
     var universities = _this.formatData(props.universities);
+    var universitiesCountries = _this.getUniversitiesCountries(props.universities);
 
     _this.state = {
       courses: courses,
       coursesids: coursesids,
       countries: countries,
       universities: universities,
+      universitiesCountries: universitiesCountries,
       results: props.results,
       isLoading: false,
       showArrowLine: false
     };
 
     _this.formatData = _this.formatData.bind(_this);
+    _this.getCourseIds = _this.getCourseIds.bind(_this);
+    _this.handleCountriesFilterChange = _this.handleCountriesFilterChange.bind(_this);
     _this.getResults = _this.getResults.bind(_this);
     _this.updateResultValues = _this.updateResultValues.bind(_this);
     return _this;
@@ -26347,6 +26351,30 @@ var HomePage = function (_React$Component) {
         formattedData[data["name"]] = data["id"];
       });
       return formattedData;
+    }
+  }, {
+    key: 'getUniversitiesCountries',
+    value: function getUniversitiesCountries(values) {
+      var formattedData = {};
+      values.forEach(function (data) {
+        formattedData[data["country"]] = [];
+      });
+      values.forEach(function (data) {
+        formattedData[data["country"]].push(data["name"]);
+      });
+      return formattedData;
+    }
+  }, {
+    key: 'handleCountriesFilterChange',
+    value: function handleCountriesFilterChange(countriesSelected) {
+      var _this2 = this;
+
+      var curUniversities = [];
+      countriesSelected.forEach(function (country) {
+        _this2.state.universitiesCountries["country"].forEach(function (university) {
+          curUniversities.push(university);
+        });
+      });
     }
   }, {
     key: 'getResults',
@@ -26425,7 +26453,7 @@ var HomePage = function (_React$Component) {
         'div',
         null,
         React.createElement(_components.Search, { data: this.state.courses, ids: this.state.coursesids, dataType: 'Courses' }),
-        React.createElement(_components.Search, { data: this.state.countries, dataType: 'Countries' }),
+        React.createElement(_components.Search, { data: this.state.countries, handleCountriesFilterChange: this.handleCountriesFilterChange, dataType: 'Countries' }),
         React.createElement(_components.Search, { data: this.state.universities, dataType: 'Universities' }),
         React.createElement('br', null),
         React.createElement(
@@ -26531,6 +26559,10 @@ var Search = function (_React$Component) {
             data: data
           });
 
+          if (_this2.props.dataType == "Countries") {
+            _this2.props.handleCountriesFilterChange(_this2.state.appendedList);
+          }
+
           $("#" + _this2.props.dataType).children().first().val("");
         }
       }, 100);
@@ -26556,6 +26588,10 @@ var Search = function (_React$Component) {
         appendedList: curList,
         data: data
       });
+
+      if (this.props.dataType == "Countries") {
+        this.props.handleCountriesFilterChange(this.state.appendedList);
+      }
 
       setTimeout(function () {
         $("#" + _this3.props.dataType).children().first().val("");

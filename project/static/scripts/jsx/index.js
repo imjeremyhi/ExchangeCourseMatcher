@@ -9,18 +9,22 @@ class HomePage extends React.Component {
     const coursesids = this.getCourseIds(props.courses);
     const countries = this.formatData(props.countries);
     const universities = this.formatData(props.universities);
+    const universitiesCountries = this.getUniversitiesCountries(props.universities);
 
     this.state = { 
       courses: courses,
       coursesids: coursesids,
       countries: countries,
       universities: universities,
+      universitiesCountries: universitiesCountries,
       results: props.results,
       isLoading: false,
       showArrowLine: false
     };
 
     this.formatData = this.formatData.bind(this);
+    this.getCourseIds = this.getCourseIds.bind(this);
+    this.handleCountriesFilterChange = this.handleCountriesFilterChange.bind(this);
     this.getResults = this.getResults.bind(this);
     this.updateResultValues = this.updateResultValues.bind(this);
   }
@@ -39,6 +43,26 @@ class HomePage extends React.Component {
       formattedData[data["name"]] = data["id"];
     });
     return formattedData;
+  }
+
+  getUniversitiesCountries(values) {
+    var formattedData = {};
+    values.forEach((data) => {
+      formattedData[data["country"]] = [];
+    });
+    values.forEach((data) => {
+      formattedData[data["country"]].push(data["name"]);
+    });
+    return formattedData;
+  }
+
+  handleCountriesFilterChange(countriesSelected) {
+    var curUniversities = [];
+    countriesSelected.forEach(country => {
+      this.state.universitiesCountries["country"].forEach(university => {
+        curUniversities.push(university);
+      });
+    });
   }
 
   getResults() {
@@ -111,7 +135,7 @@ class HomePage extends React.Component {
     return (
       <div>
         <Search data={ this.state.courses } ids={ this.state.coursesids } dataType="Courses" />
-        <Search data={ this.state.countries } dataType="Countries" />
+        <Search data={ this.state.countries } handleCountriesFilterChange= { this.handleCountriesFilterChange } dataType="Countries" />
         <Search data={ this.state.universities } dataType="Universities" />
         <br/>
         <Button waves='light' type="button" onClick={this.getResults} id="match-button">MATCH</Button>
