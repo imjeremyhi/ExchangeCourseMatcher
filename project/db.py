@@ -98,6 +98,8 @@ def get_target_courses(courses, universities):
         uni_dict_list.append(uni_dict)
 
     for course in results:
+        if course[1] is None or course[2] is None:
+            continue
         target_dict = None
         for uni_dict in uni_dict_list:
             if uni_dict["university"] == course[0]:
@@ -140,7 +142,7 @@ def get_target_courses(courses, universities):
             "url": course[6],
             "url2": url2,
             "assessments": sentences_in_classes["assessments"],
-            "contact_hours": sentences_in_classes["contact_hours"], 
+            "contact_hours": sentences_in_classes["contact_hours"],
             "course_content": sentences_in_classes["course_content"],
             "course_outcomes": sentences_in_classes["course_outcomes"],
             "textbooks": sentences_in_classes["textbooks"]
@@ -165,7 +167,7 @@ def get_course_keywords_by_id(course):
     results = execute_query(query)
     return results
 
-#assessments, contact_hours, course_content, course_outcomes, textbooks 
+#assessments, contact_hours, course_content, course_outcomes, textbooks
 def get_text_from_sentence_table(course):
     query = "SELECT text, class FROM sentence where course = %d;" % (int(course))
     results = execute_query(query)
