@@ -57,18 +57,18 @@ def get_matches(courses, universities, countries):
     target_course_list = get_target_courses(universities)
     print target_course_list
 
-    query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
+    # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
+    #
+    # for course in courses:
+    #     query += " or unsw_course = '%s'" % course
+    #
+    # for university in universities:
+    #     query += " or university = '%s'" % university
+    #
+    # for country in countries:
+    #     query += " or country = '%s'" % country
 
-    for course in courses:
-        query += " or unsw_course = '%s'" % course
-
-    for university in universities:
-        query += " or university = '%s'" % university
-
-    for country in countries:
-        query += " or country = '%s'" % country
-
-    results = []#execute_query(query)
+    results = target_course_list#execute_query(query)
     # todo add to query the or conditions from input
     # eg for all courses add or blah etc to the query and execute that
     return results
