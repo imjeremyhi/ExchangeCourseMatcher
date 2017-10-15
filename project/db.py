@@ -35,7 +35,7 @@ def get_courses():
     for result in results:
         course_title = re.search(course_title_pattern, result[1]).group(0)
         if course_title not in results_without_duplicates:
-            returned_results.append((result[0], course_title))
+            returned_results.append((result[0], course_title, result[2]))
             results_without_duplicates.append(course_title)
 
     return returned_results
@@ -53,6 +53,10 @@ def get_universities():
 def get_matches(courses, universities, countries):
     # similarity table = similarity_score, components_of_score, unsw_course, partner_course, partner_uni
     # precondition at least one course passed
+
+    target_course_list = get_target_courses(universities)
+    print target_course_list
+
     query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
 
     for course in courses:
@@ -67,6 +71,42 @@ def get_matches(courses, universities, countries):
     results = []#execute_query(query)
     # todo add to query the or conditions from input
     # eg for all courses add or blah etc to the query and execute that
+    return results
+
+def get_target_courses(universities):
+    uni_mysql_list = ""
+    for uni in universities:
+        uni_mysql_list += "'"+uni+"', "
+
+
+    query = "SELECT university, course_code, course_title, id FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
+    print query
+    results = execute_query(query)
+
+    uni_dict_list = []
+    for uni in universities:
+        uni_dict = {}
+        uni_dict["university"] = uni
+        uni_dict["courses"] = []
+        uni_dict_list.append(uni_dict)
+
+    for course in results:
+        target_dict = None
+        for uni_dict in uni_dict_list:
+            if uni_dict["university"] == course[0]:
+                target_dict = uni_dict
+                break
+        uni_dict["courses"].append( {
+            "name": course[1] + " " + course[2],
+            "id": course[3],
+            "similarity_score": "50%"
+        })
+    print uni_dict_list
+    return uni_dict_list
+
+
+
+
     return results
 
 #conn = get_connection(app)
