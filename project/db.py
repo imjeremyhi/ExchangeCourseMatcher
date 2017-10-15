@@ -83,70 +83,71 @@ def get_target_courses(courses, universities):
     # print query
     results = execute_query(query)
 
-    # courses_mysql_list = ""
-    # for course in courses:
-    #     courses_mysql_list += course +", "
+    courses_mysql_list = ""
+    for course in courses:
+        courses_mysql_list += course +", "
 
-    # query = "SELECT course_code, course_title, url FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
-    # unsw_courses = execute_query(query)
+    query = "SELECT course_code, course_title, url FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
+    unsw_courses = execute_query(query)
 
     uni_dict_list = []
     for uni in universities:
         uni_dict = {}
         uni_dict["university"] = uni
-        uni_dict["courses"] = []
+        uni_dict["unsw_courses"] = []
         uni_dict_list.append(uni_dict)
 
-    for course in results:
-        if course[1] is None or course[2] is None:
-            continue
-        target_dict = None
-        for uni_dict in uni_dict_list:
-            if uni_dict["university"] == course[0]:
-                target_dict = uni_dict
-                break
+    for unsw_course in unsw_courses:
+        unsw_course_to_insert = {}
+        unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
+        unsw_course_to_insert["courses"] = []
 
-        emails = []
-        if course[5] != "":
-            emails = course[5].split(",")
+        for course in results:
+            if course[1] is None or course[2] is None:
+                continue
+            target_dict = None
+            for uni_dict in uni_dict_list:
+                if uni_dict["university"] == course[0]:
+                    target_dict = uni_dict
+                    break
 
-        name2 = "Unsw course hardcoded"
-        # for unsw_course in unsw_courses:
-        #     if 
-        url2 = "https://codepen.io/about/"
+            emails = []
+            if course[5] != "":
+                emails = course[5].split(",")
 
-        # bad making queries per course will change later if have time
-        sentence_table_list = get_text_from_sentence_table(course[3])
-        sentences_in_classes = {
-            "assessments": [],
-            "contact_hours": [],
-            "course_content": [],
-            "course_outcomes": [],
-            "textbooks": []
-        }
-        for sentence in sentence_table_list:
-            # sentence[0] is text, sentence[1] is class
-            sentences_in_classes[sentence[1]].append(sentence[0])
-        # print("stderr", file=sys.stderr)
-        # print(sentence_table_list, file=sys.stderr)
-        # print("stdout", file=sys.stdout)
-        # print(sentence_table_list, file=sys.stdout)
+            # bad making queries per course will change later if have time
+            sentence_table_list = get_text_from_sentence_table(course[3])
+            sentences_in_classes = {
+                "assessments": [],
+                "contact_hours": [],
+                "course_content": [],
+                "course_outcomes": [],
+                "textbooks": []
+            }
+            for sentence in sentence_table_list:
+                # sentence[0] is text, sentence[1] is class
+                sentences_in_classes[sentence[1]].append(sentence[0])
+            # print("stderr", file=sys.stderr)
+            # print(sentence_table_list, file=sys.stderr)
+            # print("stdout", file=sys.stdout)
+            # print(sentence_table_list, file=sys.stdout)
 
-        uni_dict["courses"].append( {
-            "name": course[1] + " " + course[2],
-            "name2": name2,
-            "id": course[3],
-            "keywords": course[4],
-            "similarity_score": "50%",
-            "emails": emails,
-            "url": course[6],
-            "url2": url2,
-            "assessments": sentences_in_classes["assessments"],
-            "contact_hours": sentences_in_classes["contact_hours"],
-            "course_content": sentences_in_classes["course_content"],
-            "course_outcomes": sentences_in_classes["course_outcomes"],
-            "textbooks": sentences_in_classes["textbooks"]
-        })
+            unsw_course_to_insert["courses"].append( {
+                "name": course[1] + " " + course[2],
+                "id": course[3],
+                "keywords": course[4],
+                "similarity_score": "50%",
+                "emails": emails,
+                "url": course[6],
+                "url2": unsw_course[2],
+                "assessments": sentences_in_classes["assessments"],
+                "contact_hours": sentences_in_classes["contact_hours"],
+                "course_content": sentences_in_classes["course_content"],
+                "course_outcomes": sentences_in_classes["course_outcomes"],
+                "textbooks": sentences_in_classes["textbooks"]
+            })
+
+        uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
     # print uni_dict_list
     return uni_dict_list

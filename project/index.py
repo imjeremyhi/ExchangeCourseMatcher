@@ -35,7 +35,7 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
             # acct1501
             for university_dict in results:
             # gatech
-                for target_course in university_dict["courses"]:
+                for target_course in university_dict["unsw_courses"]:
                     pass
                     # print target_course
 

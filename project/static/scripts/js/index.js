@@ -26738,144 +26738,154 @@ var ResultsTable = function (_React$Component2) {
               return React.createElement(
                 _reactMaterialize.CollapsibleItem,
                 { header: result.university, id: 'university-result-header' },
-                React.createElement(
-                  _reactMaterialize.Collapsible,
-                  null,
-                  result.courses.map(function (course) {
-                    return React.createElement(
-                      _reactMaterialize.CollapsibleItem,
-                      { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
+                result.unsw_courses.length > 0 && result.unsw_courses.map(function (unswCourse) {
+                  return React.createElement(
+                    _reactMaterialize.Tabs,
+                    null,
+                    React.createElement(
+                      _reactMaterialize.Tab,
+                      { title: unswCourse.name },
                       React.createElement(
-                        'a',
-                        { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': course.url, href: 'javascript:;', onClick: function onClick() {
-                            return _this7.compare(course.url2);
-                          }, className: 'compare-img' },
-                        React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
-                      ),
-                      React.createElement(
-                        'p',
-                        { className: 'results-course-field' },
-                        'Emails:'
-                      ),
-                      course.emails.length > 0 ? React.createElement(
-                        'div',
+                        _reactMaterialize.Collapsible,
                         null,
-                        course.emails.map(function (email) {
+                        unswCourse.courses.map(function (course) {
                           return React.createElement(
-                            'p',
-                            null,
-                            email
+                            _reactMaterialize.CollapsibleItem,
+                            { header: course.similarity_score + " - " + course.name, icon: 'expand_more' },
+                            React.createElement(
+                              'a',
+                              { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': course.url, href: 'javascript:;', onClick: function onClick() {
+                                  return _this7.compare(course.url2);
+                                }, className: 'compare-img' },
+                              React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
+                            ),
+                            React.createElement(
+                              'p',
+                              { className: 'results-course-field' },
+                              'Emails:'
+                            ),
+                            course.emails.length > 0 ? React.createElement(
+                              'div',
+                              null,
+                              course.emails.map(function (email) {
+                                return React.createElement(
+                                  'p',
+                                  null,
+                                  email
+                                );
+                              })
+                            ) : React.createElement(
+                              'p',
+                              null,
+                              'Not available'
+                            ),
+                            React.createElement(
+                              'p',
+                              { className: 'results-course-field' },
+                              'Assessments:'
+                            ),
+                            course.assessments.length > 0 ? React.createElement(
+                              'div',
+                              null,
+                              course.assessments.map(function (assessment) {
+                                return React.createElement(
+                                  'p',
+                                  null,
+                                  assessment
+                                );
+                              })
+                            ) : React.createElement(
+                              'p',
+                              null,
+                              'Not available'
+                            ),
+                            React.createElement(
+                              'p',
+                              { className: 'results-course-field' },
+                              'Contact hours:'
+                            ),
+                            course.contact_hours.length > 0 ? React.createElement(
+                              'div',
+                              null,
+                              course.contact_hours.map(function (contact_hour) {
+                                return React.createElement(
+                                  'p',
+                                  null,
+                                  contact_hour
+                                );
+                              })
+                            ) : React.createElement(
+                              'p',
+                              null,
+                              'Not available'
+                            ),
+                            React.createElement(
+                              _reactMaterialize.Tabs,
+                              { className: 'tab-demo z-depth-1' },
+                              React.createElement(
+                                _reactMaterialize.Tab,
+                                { title: 'Course content' },
+                                course.course_content.length > 0 ? React.createElement(
+                                  'div',
+                                  null,
+                                  course.course_content.map(function (course_content) {
+                                    return React.createElement(
+                                      'p',
+                                      null,
+                                      course_content
+                                    );
+                                  })
+                                ) : React.createElement(
+                                  'p',
+                                  null,
+                                  'Not available'
+                                )
+                              ),
+                              React.createElement(
+                                _reactMaterialize.Tab,
+                                { title: 'Course outcomes' },
+                                course.course_outcomes.length > 0 ? React.createElement(
+                                  'div',
+                                  null,
+                                  course.course_outcomes.map(function (course_outcome) {
+                                    return React.createElement(
+                                      'p',
+                                      null,
+                                      course_outcome
+                                    );
+                                  })
+                                ) : React.createElement(
+                                  'p',
+                                  null,
+                                  'Not available'
+                                )
+                              ),
+                              React.createElement(
+                                _reactMaterialize.Tab,
+                                { title: 'Textbook' },
+                                course.textbooks.length > 0 ? React.createElement(
+                                  'div',
+                                  null,
+                                  course.textbooks.map(function (textbook) {
+                                    return React.createElement(
+                                      'p',
+                                      null,
+                                      textbook
+                                    );
+                                  })
+                                ) : React.createElement(
+                                  'p',
+                                  null,
+                                  'Not available'
+                                )
+                              )
+                            )
                           );
                         })
-                      ) : React.createElement(
-                        'p',
-                        null,
-                        'Not available'
-                      ),
-                      React.createElement(
-                        'p',
-                        { className: 'results-course-field' },
-                        'Assessments:'
-                      ),
-                      course.assessments.length > 0 ? React.createElement(
-                        'div',
-                        null,
-                        course.assessments.map(function (assessment) {
-                          return React.createElement(
-                            'p',
-                            null,
-                            assessment
-                          );
-                        })
-                      ) : React.createElement(
-                        'p',
-                        null,
-                        'Not available'
-                      ),
-                      React.createElement(
-                        'p',
-                        { className: 'results-course-field' },
-                        'Contact hours:'
-                      ),
-                      course.contact_hours.length > 0 ? React.createElement(
-                        'div',
-                        null,
-                        course.contact_hours.map(function (contact_hour) {
-                          return React.createElement(
-                            'p',
-                            null,
-                            contact_hour
-                          );
-                        })
-                      ) : React.createElement(
-                        'p',
-                        null,
-                        'Not available'
-                      ),
-                      React.createElement(
-                        _reactMaterialize.Tabs,
-                        { className: 'tab-demo z-depth-1' },
-                        React.createElement(
-                          _reactMaterialize.Tab,
-                          { title: 'Course content' },
-                          course.course_content.length > 0 ? React.createElement(
-                            'div',
-                            null,
-                            course.course_content.map(function (course_content) {
-                              return React.createElement(
-                                'p',
-                                null,
-                                course_content
-                              );
-                            })
-                          ) : React.createElement(
-                            'p',
-                            null,
-                            'Not available'
-                          )
-                        ),
-                        React.createElement(
-                          _reactMaterialize.Tab,
-                          { title: 'Course outcomes' },
-                          course.course_outcomes.length > 0 ? React.createElement(
-                            'div',
-                            null,
-                            course.course_outcomes.map(function (course_outcome) {
-                              return React.createElement(
-                                'p',
-                                null,
-                                course_outcome
-                              );
-                            })
-                          ) : React.createElement(
-                            'p',
-                            null,
-                            'Not available'
-                          )
-                        ),
-                        React.createElement(
-                          _reactMaterialize.Tab,
-                          { title: 'Textbook' },
-                          course.textbooks.length > 0 ? React.createElement(
-                            'div',
-                            null,
-                            course.textbooks.map(function (textbook) {
-                              return React.createElement(
-                                'p',
-                                null,
-                                textbook
-                              );
-                            })
-                          ) : React.createElement(
-                            'p',
-                            null,
-                            'Not available'
-                          )
-                        )
                       )
-                    );
-                  })
-                )
+                    )
+                  );
+                })
               );
             })
           )
