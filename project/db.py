@@ -99,7 +99,17 @@ def get_target_courses(universities):
                 break
 
         # bad making queries per course will change later if have time
-        # sentence_table_list = 
+        sentence_table_list = get_text_from_sentence_table(course[3])
+        sentences_in_classes = {
+            "assessments": [],
+            "contact_hours": [],
+            "course_content": [],
+            "course_outcomes": [],
+            "textbooks": []
+        }
+        for sentence in sentence_table_list:
+            # sentence[0] is text, sentence[1] is class
+            sentences_in_classes[sentence[1]].append(sentence[0])
         # print("stderr", file=sys.stderr)
         # print(sentence_table_list, file=sys.stderr)
         # print("stdout", file=sys.stdout)
@@ -111,11 +121,11 @@ def get_target_courses(universities):
             "keywords": course[4],
             "similarity_score": "50%",
             "emails": course[5],
-            "assessments": get_field_from_sentence_table("assessments", course[3]),
-            "contact_hours": get_field_from_sentence_table( "contact_hours", course[3]), 
-            "course_content": get_field_from_sentence_table("course_content", course[3]),
-            "course_outcomes": get_field_from_sentence_table("course_outcomes", course[3]),
-            "textbooks": get_field_from_sentence_table("textbooks", course[3]) 
+            "assessments": sentences_in_classes["assessments"],
+            "contact_hours": sentences_in_classes["contact_hours"], 
+            "course_content": sentences_in_classes["course_content"],
+            "course_outcomes": sentences_in_classes["course_outcomes"],
+            "textbooks": sentences_in_classes["textbooks"]
         })
 
     # print uni_dict_list
@@ -138,8 +148,8 @@ def get_course_keywords_by_id(course):
     return results
 
 #assessments, contact_hours, course_content, course_outcomes, textbooks 
-def get_field_from_sentence_table(field, course):
-    query = "SELECT text FROM sentence where class = '%s' and course = %d;" % (field, int(course))
+def get_text_from_sentence_table(course):
+    query = "SELECT text, class FROM sentence where course = %d;" % (int(course))
     results = execute_query(query)
     return results
 #conn = get_connection(app)
