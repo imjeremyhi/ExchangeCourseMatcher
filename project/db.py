@@ -131,6 +131,9 @@ def get_target_courses(courses, universities):
             # print(sentence_table_list, file=sys.stderr)
             # print("stdout", file=sys.stdout)
             # print(sentence_table_list, file=sys.stdout)
+            unsw_url_pattern = re.compile("([^/]*$)")
+            unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
+            unsw_url = "./static/files/unsw/" + unsw_url
 
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
@@ -139,7 +142,7 @@ def get_target_courses(courses, universities):
                 "similarity_score": "50%",
                 "emails": emails,
                 "url": course[6],
-                "url2": unsw_course[2],
+                "url2": unsw_url,
                 "assessments": sentences_in_classes["assessments"],
                 "contact_hours": sentences_in_classes["contact_hours"],
                 "course_content": sentences_in_classes["course_content"],
