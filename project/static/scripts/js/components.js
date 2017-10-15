@@ -26525,7 +26525,7 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       'p',
                       null,
-                      "Emails: " /*+ course.email*/
+                      "Emails: " /*+ course.emails*/
                     ),
                     React.createElement(
                       'p',

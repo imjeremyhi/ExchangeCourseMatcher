@@ -64,10 +64,17 @@ class HomePage extends React.Component {
         curUniversities[university] = null;
       });
     });
+    
     console.log(curUniversities);
-    this.setState({
-      universities: curUniversities
-    });
+    if (countriesSelected.length === 0) {
+      this.setState({
+        universities: this.formatData(this.props.universities)
+      });
+    } else {
+      this.setState({
+        universities: curUniversities
+      });
+    }
   }
 
   getResults() {
