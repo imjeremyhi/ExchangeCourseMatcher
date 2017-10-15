@@ -163,20 +163,74 @@ class ResultsTable extends React.Component {
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
                         { course.emails.length > 0 ? 
-                          <p>{ "Emails: " + course.emails.forEach(email => {return email}) /*+ course.emails*/ }</p> :
-                          <p>{ "Emails: None"}</p>
+                          <div>
+                            <p>Emails:</p>
+                            { course.emails.map(email => {
+                              return (
+                                <p>{email}</p>
+                              )})
+                            } 
+                          </div> :
+                          <p>Emails: Not available</p>
                         }
-                        <p>{ "Assessments: " /*+ course.assessments*/ }</p>
-                        <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
+                        { course.assessments.length > 0 ? 
+                          <div>
+                            <p>Assessments:</p>
+                            { course.assessments.map(assessment => {
+                              return (
+                                <p>{assessment}</p>
+                              )})
+                            } 
+                          </div> :
+                          <p>Assessments: Not available</p>
+                        }
+                        { course.contact_hours.length > 0 ? 
+                          <div>
+                            <p>Contact hours:</p>
+                            { course.contact_hours.map(contact_hour => {
+                              return (
+                                <p>{contact_hour}</p>
+                              )})
+                            } 
+                          </div> :
+                          <p>Contact hours: Not available"</p>
+                        }
                         <Tabs className='tab-demo z-depth-1'>
-                          <Tab title="Course content" /*active*/ /* course.content */>
-                            Test 1 
+                          <Tab title="Course content">
+                            { course.course_content.length > 0 ? 
+                              <div>
+                              { course.course_content.map(course_content => {
+                                return (
+                                  <p>{course_content}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
-                          <Tab title="Course outcomes" /* course.outcomes */>
-                            Test 2
+                          <Tab title="Course outcomes">
+                            { course.course_outcomes.length > 0 ? 
+                              <div>
+                              { course.course_outcomes.map(course_outcome => {
+                                return (
+                                  <p>{course_outcome}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
                           <Tab title="Textbook" /* course.textbook */>
-                            Test 3
+                            { course.textbooks.length > 0 ? 
+                              <div>
+                              { course.textbooks.map(textbook => {
+                                return (
+                                  <p>{textbook}</p>
+                                )})
+                              } 
+                              </div> :
+                              <p>Not available</p>
+                            }
                           </Tab>
                         </Tabs>
                       </CollapsibleItem>
