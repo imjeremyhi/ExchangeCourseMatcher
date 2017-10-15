@@ -57,11 +57,16 @@ class HomePage extends React.Component {
   }
 
   handleCountriesFilterChange(countriesSelected) {
-    var curUniversities = [];
+    console.log(countriesSelected);
+    var curUniversities = {};
     countriesSelected.forEach(country => {
-      this.state.universitiesCountries["country"].forEach(university => {
-        curUniversities.push(university);
+      this.state.universitiesCountries[country].forEach(university => {
+        curUniversities[university] = null;
       });
+    });
+    console.log(curUniversities);
+    this.setState({
+      universities: curUniversities
     });
   }
 

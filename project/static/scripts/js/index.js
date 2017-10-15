@@ -26369,11 +26369,16 @@ var HomePage = function (_React$Component) {
     value: function handleCountriesFilterChange(countriesSelected) {
       var _this2 = this;
 
-      var curUniversities = [];
+      console.log(countriesSelected);
+      var curUniversities = {};
       countriesSelected.forEach(function (country) {
-        _this2.state.universitiesCountries["country"].forEach(function (university) {
-          curUniversities.push(university);
+        _this2.state.universitiesCountries[country].forEach(function (university) {
+          curUniversities[university] = null;
         });
+      });
+      console.log(curUniversities);
+      this.setState({
+        universities: curUniversities
       });
     }
   }, {
@@ -26533,6 +26538,13 @@ var Search = function (_React$Component) {
   }
 
   _createClass(Search, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({
+        data: nextProps.data
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(event) {
       this.setState({ searchedText: event.target.value });

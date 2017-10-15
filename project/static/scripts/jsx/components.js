@@ -15,6 +15,12 @@ class Search extends React.Component {
     this.remove = this.remove.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: nextProps.data
+    });
+  }
+
   handleChange(event) {
     this.setState({searchedText: event.target.value });
     console.log("text updated!");
