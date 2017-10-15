@@ -26323,6 +26323,13 @@ var Search = function (_React$Component) {
   }
 
   _createClass(Search, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({
+        data: nextProps.data
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(event) {
       this.setState({ searchedText: event.target.value });

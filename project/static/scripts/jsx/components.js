@@ -15,6 +15,12 @@ class Search extends React.Component {
     this.remove = this.remove.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: nextProps.data
+    });
+  }
+
   handleChange(event) {
     this.setState({searchedText: event.target.value });
     console.log("text updated!");
@@ -120,13 +126,14 @@ class ResultsTable extends React.Component {
     this.compare = this.compare.bind(this)
   }
 
-  compare() {
+  compare(secondUrl) {
     console.log('here in compare')
     setTimeout(() => {
       $("iframe").width("50%")
       $("iframe").css({'float': 'left'})
 
-      var node = $("<iframe class='fancybox-iframe' src='https://codepen.io/about/' style='width: 50%; float: right'>")
+      // will be src = secondUrl
+      var node = $("<iframe class='fancybox-iframe' src=" + "'https://codepen.io/about/' style='width: 50%; float: right'>")
       $(".fancybox-content").append(node)
     }, 1000)
   }
@@ -146,7 +153,7 @@ class ResultsTable extends React.Component {
                   result.courses.map((course) => {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
-                        <a data-fancybox data-type="iframe" data-src="https://codepen.io/about/" href="javascript:;" onClick={this.compare} className="compare-img">
+                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" + /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
                         <p>{ "Email: " /*+ course.email*/ }</p>
