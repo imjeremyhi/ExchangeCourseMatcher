@@ -162,38 +162,38 @@ class ResultsTable extends React.Component {
                         <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
+                        <p className="results-course-field">Emails:</p>
                         { course.emails.length > 0 ? 
                           <div>
-                            <p>Emails:</p>
-                            { course.emails.map(email => {
-                              return (
-                                <p>{email}</p>
-                              )})
-                            } 
+                          { course.emails.map(email => {
+                            return (
+                              <p>{email}</p>
+                            )})
+                          }
                           </div> :
-                          <p>Emails: Not available</p>
+                          <p>Not available</p>
                         }
+                        <p className="results-course-field">Assessments:</p>
                         { course.assessments.length > 0 ? 
                           <div>
-                            <p>Assessments:</p>
-                            { course.assessments.map(assessment => {
-                              return (
-                                <p>{assessment}</p>
-                              )})
-                            } 
+                          { course.assessments.map(assessment => {
+                            return (
+                              <p>{assessment}</p>
+                            )})
+                          }
                           </div> :
-                          <p>Assessments: Not available</p>
+                          <p>Not available</p>
                         }
+                        <p className="results-course-field">Contact hours:</p>
                         { course.contact_hours.length > 0 ? 
                           <div>
-                            <p>Contact hours:</p>
-                            { course.contact_hours.map(contact_hour => {
-                              return (
-                                <p>{contact_hour}</p>
-                              )})
-                            } 
+                          { course.contact_hours.map(contact_hour => {
+                            return (
+                              <p>{contact_hour}</p>
+                            )})
+                          }
                           </div> :
-                          <p>Contact hours: Not available"</p>
+                          <p>Not available</p>
                         }
                         <Tabs className='tab-demo z-depth-1'>
                           <Tab title="Course content">

@@ -26752,14 +26752,14 @@ var ResultsTable = function (_React$Component2) {
                           }, className: 'compare-img' },
                         React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                       ),
+                      React.createElement(
+                        'p',
+                        { className: 'results-course-field' },
+                        'Emails:'
+                      ),
                       course.emails.length > 0 ? React.createElement(
                         'div',
                         null,
-                        React.createElement(
-                          'p',
-                          null,
-                          'Emails:'
-                        ),
                         course.emails.map(function (email) {
                           return React.createElement(
                             'p',
@@ -26770,16 +26770,16 @@ var ResultsTable = function (_React$Component2) {
                       ) : React.createElement(
                         'p',
                         null,
-                        'Emails: Not available'
+                        'Not available'
+                      ),
+                      React.createElement(
+                        'p',
+                        { className: 'results-course-field' },
+                        'Assessments:'
                       ),
                       course.assessments.length > 0 ? React.createElement(
                         'div',
                         null,
-                        React.createElement(
-                          'p',
-                          null,
-                          'Assessments:'
-                        ),
                         course.assessments.map(function (assessment) {
                           return React.createElement(
                             'p',
@@ -26790,16 +26790,16 @@ var ResultsTable = function (_React$Component2) {
                       ) : React.createElement(
                         'p',
                         null,
-                        'Assessments: Not available'
+                        'Not available'
+                      ),
+                      React.createElement(
+                        'p',
+                        { className: 'results-course-field' },
+                        'Contact hours:'
                       ),
                       course.contact_hours.length > 0 ? React.createElement(
                         'div',
                         null,
-                        React.createElement(
-                          'p',
-                          null,
-                          'Contact hours:'
-                        ),
                         course.contact_hours.map(function (contact_hour) {
                           return React.createElement(
                             'p',
@@ -26810,7 +26810,7 @@ var ResultsTable = function (_React$Component2) {
                       ) : React.createElement(
                         'p',
                         null,
-                        'Contact hours: Not available"'
+                        'Not available'
                       ),
                       React.createElement(
                         _reactMaterialize.Tabs,
