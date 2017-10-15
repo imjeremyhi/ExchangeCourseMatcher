@@ -37,7 +37,9 @@ def courses_from_db_to_json(courses_from_db):
         course = {}
         course_code = record[0]
         course_title = record[1]
+        course_id = record[2]
         course["name"] = course_code + " - " + course_title
+        course["id"] = course_id
         courses.append(course)
     return courses
 
