@@ -121,3 +121,7 @@ html {
 	margin-right: auto;
 	margin-bottom: 20px;
 }
+
+#matches-title-header {
+	background-color: #282828;
+}

@@ -98,6 +98,9 @@ def get_target_courses(universities):
                 target_dict = uni_dict
                 break
 
+        emails = []
+        if course[5] != "":
+            emails = course[5].split(",")
         # bad making queries per course will change later if have time
         sentence_table_list = get_text_from_sentence_table(course[3])
         sentences_in_classes = {
@@ -120,7 +123,7 @@ def get_target_courses(universities):
             "id": course[3],
             "keywords": course[4],
             "similarity_score": "50%",
-            "emails": course[5],
+            "emails": emails,
             "assessments": sentences_in_classes["assessments"],
             "contact_hours": sentences_in_classes["contact_hours"], 
             "course_content": sentences_in_classes["course_content"],

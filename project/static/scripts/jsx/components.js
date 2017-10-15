@@ -147,6 +147,8 @@ class ResultsTable extends React.Component {
     return (
       <div id="results-table">
       { this.props.data.length > 0 &&
+        <div>
+        <div id="matches-title-header">MATCHES</div>
         <Collapsible>
         { 
           this.props.data.map((result) => {
@@ -160,7 +162,10 @@ class ResultsTable extends React.Component {
                         <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
-                        <p>{ "Emails: " /*+ course.emails*/ }</p>
+                        { course.emails.length > 0 ? 
+                          <p>{ "Emails: " + course.emails.forEach(email => {return email}) /*+ course.emails*/ }</p> :
+                          <p>{ "Emails: None"}</p>
+                        }
                         <p>{ "Assessments: " /*+ course.assessments*/ }</p>
                         <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
                         <Tabs className='tab-demo z-depth-1'>
@@ -184,6 +189,7 @@ class ResultsTable extends React.Component {
           })
         }
         </Collapsible>
+        </div>
       }
       </div>
     )

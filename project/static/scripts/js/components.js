@@ -26502,65 +26502,80 @@ var ResultsTable = function (_React$Component2) {
         'div',
         { id: 'results-table' },
         this.props.data.length > 0 && React.createElement(
-          _reactMaterialize.Collapsible,
+          'div',
           null,
-          this.props.data.map(function (result) {
-            return React.createElement(
-              _reactMaterialize.CollapsibleItem,
-              { header: result.university, id: 'university-result-header' },
-              React.createElement(
-                _reactMaterialize.Collapsible,
-                null,
-                result.courses.map(function (course) {
-                  return React.createElement(
-                    _reactMaterialize.CollapsibleItem,
-                    { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
-                    React.createElement(
-                      'a',
-                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': "https://codepen.io/about/" /* course.url1 */, href: 'javascript:;', onClick: function onClick() {
-                          return _this7.compare();
-                        }, className: 'compare-img' },
-                      React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
-                    ),
-                    React.createElement(
-                      'p',
-                      null,
-                      "Emails: " /*+ course.emails*/
-                    ),
-                    React.createElement(
-                      'p',
-                      null,
-                      "Assessments: " /*+ course.assessments*/
-                    ),
-                    React.createElement(
-                      'p',
-                      null,
-                      "Contact hours: " /*+ course.contactHours*/
-                    ),
-                    React.createElement(
-                      _reactMaterialize.Tabs,
-                      { className: 'tab-demo z-depth-1' },
+          React.createElement(
+            'div',
+            { id: 'matches-title-header' },
+            'MATCHES'
+          ),
+          React.createElement(
+            _reactMaterialize.Collapsible,
+            null,
+            this.props.data.map(function (result) {
+              return React.createElement(
+                _reactMaterialize.CollapsibleItem,
+                { header: result.university, id: 'university-result-header' },
+                React.createElement(
+                  _reactMaterialize.Collapsible,
+                  null,
+                  result.courses.map(function (course) {
+                    return React.createElement(
+                      _reactMaterialize.CollapsibleItem,
+                      { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
                       React.createElement(
-                        _reactMaterialize.Tab,
-                        { title: 'Course content' /*active*/ /* course.content */ },
-                        'Test 1'
+                        'a',
+                        { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': "https://codepen.io/about/" /* course.url1 */, href: 'javascript:;', onClick: function onClick() {
+                            return _this7.compare();
+                          }, className: 'compare-img' },
+                        React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
+                      ),
+                      course.emails.length > 0 ? React.createElement(
+                        'p',
+                        null,
+                        "Emails: " + course.emails.forEach(function (email) {
+                          return email;
+                        }) /*+ course.emails*/
+                      ) : React.createElement(
+                        'p',
+                        null,
+                        "Emails: None"
                       ),
                       React.createElement(
-                        _reactMaterialize.Tab,
-                        { title: 'Course outcomes' /* course.outcomes */ },
-                        'Test 2'
+                        'p',
+                        null,
+                        "Assessments: " /*+ course.assessments*/
                       ),
                       React.createElement(
-                        _reactMaterialize.Tab,
-                        { title: 'Textbook' /* course.textbook */ },
-                        'Test 3'
+                        'p',
+                        null,
+                        "Contact hours: " /*+ course.contactHours*/
+                      ),
+                      React.createElement(
+                        _reactMaterialize.Tabs,
+                        { className: 'tab-demo z-depth-1' },
+                        React.createElement(
+                          _reactMaterialize.Tab,
+                          { title: 'Course content' /*active*/ /* course.content */ },
+                          'Test 1'
+                        ),
+                        React.createElement(
+                          _reactMaterialize.Tab,
+                          { title: 'Course outcomes' /* course.outcomes */ },
+                          'Test 2'
+                        ),
+                        React.createElement(
+                          _reactMaterialize.Tab,
+                          { title: 'Textbook' /* course.textbook */ },
+                          'Test 3'
+                        )
                       )
-                    )
-                  );
-                })
-              )
-            );
-          })
+                    );
+                  })
+                )
+              );
+            })
+          )
         )
       );
     }

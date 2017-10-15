@@ -64,7 +64,7 @@ class HomePage extends React.Component {
         curUniversities[university] = null;
       });
     });
-    
+
     console.log(curUniversities);
     if (countriesSelected.length === 0) {
       this.setState({
@@ -123,24 +123,24 @@ class HomePage extends React.Component {
       $("#Courses").children().first().val("");
       $("#Universities").children().first().val("");
       $("#Countries").children().first().val("");
-    }, 1);
+    }, 100);
   }
 
   // Get value of all form elements to send to ajax request
   updateResultValues(responseText) {
-    console.log(typeof(responseText))
+    console.log(typeof(responseText));
+    console.log(responseText);
     this.setState({
       results: JSON.parse(responseText),
       isLoading: false,
       showArrowLine: true
     });
-    console.log(responseText);
 
     setTimeout(() => {
       $("#Courses").children().first().val("");
       $("#Universities").children().first().val("");
       $("#Countries").children().first().val("");
-    }, 1);
+    }, 100);
   }
 
   render() {
