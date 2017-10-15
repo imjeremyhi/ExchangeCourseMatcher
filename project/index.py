@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, json, redirect, url_for
-from db import get_courses, get_countries, get_universities
+from db import get_courses, get_countries, get_universities, get_matches
 
 index_page = Blueprint('index_page', __name__, template_folder='templates')
 
@@ -25,8 +25,22 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
 
     if len(courses_query_list) > 0:
         #json.loads(courses)
-        #get_matches(courses_query_list, universities_query_list, countries_query_list)
-        results = [{"university": "Georgia Tech", "courses": [{"name": "ACCT1821 - Something", "similarity_score": "45%"}, {"name": "TEST1231 - Something different", "similarity_score": "37%"}]}]
+        results = get_matches(courses_query_list, universities_query_list, countries_query_list)
+        # results = [
+        #     {
+        #         "university": "Georgia Tech",
+        #         "courses": [
+        #             {
+        #                 "name": "ACCT1821 - Something",
+        #                 "similarity_score": "45%"
+        #             },
+        #             {
+        #                 "name": "TEST1231 - Something different",
+        #                 "similarity_score": "37%"
+        #             }
+        #         ]
+        #     }
+        # ]
         return json.dumps(results)
     else:
         return json.dumps([])
