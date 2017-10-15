@@ -26313,12 +26313,14 @@ var HomePage = function (_React$Component) {
     var coursesids = _this.getCourseIds(props.courses);
     var countries = _this.formatData(props.countries);
     var universities = _this.formatData(props.universities);
+    var universitiesCountries = _this.getUniversitiesCountries(props.universities);
 
     _this.state = {
       courses: courses,
       coursesids: coursesids,
       countries: countries,
       universities: universities,
+      universitiesCountries: universitiesCountries,
       results: props.results,
       isLoading: false,
       showArrowLine: false
@@ -26351,8 +26353,29 @@ var HomePage = function (_React$Component) {
       return formattedData;
     }
   }, {
+    key: 'getUniversitiesCountries',
+    value: function getUniversitiesCountries(values) {
+      var formattedData = {};
+      values.forEach(function (data) {
+        formattedData[data["country"]] = [];
+      });
+      values.forEach(function (data) {
+        formattedData[data["country"]].push(data["name"]);
+      });
+      return formattedData;
+    }
+  }, {
     key: 'handleCountriesFilterChange',
-    value: function handleCountriesFilterChange() {}
+    value: function handleCountriesFilterChange(countriesSelected) {
+      var _this2 = this;
+
+      var curUniversities = [];
+      countriesSelected.forEach(function (country) {
+        _this2.state.universitiesCountries["country"].forEach(function (university) {
+          curUniversities.push(university);
+        });
+      });
+    }
   }, {
     key: 'getResults',
     value: function getResults() {

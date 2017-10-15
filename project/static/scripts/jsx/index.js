@@ -9,7 +9,7 @@ class HomePage extends React.Component {
     const coursesids = this.getCourseIds(props.courses);
     const countries = this.formatData(props.countries);
     const universities = this.formatData(props.universities);
-    const universitiesCountries = this.formatData(props.universities);
+    const universitiesCountries = this.getUniversitiesCountries(props.universities);
 
     this.state = { 
       courses: courses,
@@ -45,11 +45,23 @@ class HomePage extends React.Component {
     return formattedData;
   }
 
+  getUniversitiesCountries(values) {
+    var formattedData = {};
+    values.forEach((data) => {
+      formattedData[data["country"]] = [];
+    });
+    values.forEach((data) => {
+      formattedData[data["country"]].push(data["name"]);
+    });
+    return formattedData;
+  }
+
   handleCountriesFilterChange(countriesSelected) {
+    var curUniversities = [];
     countriesSelected.forEach(country => {
-      if (this.state.universitiesCountries) {
-        
-      }
+      this.state.universitiesCountries["country"].forEach(university => {
+        curUniversities.push(university);
+      });
     });
   }
 

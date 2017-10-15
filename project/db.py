@@ -46,7 +46,7 @@ def get_countries():
     return results
 
 def get_universities():
-    query = "SELECT distinct university, country from course_scrape where university <> 'University of New South Wales'"
+    query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
     results = execute_query(query)
     return results
 
