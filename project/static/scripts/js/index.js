@@ -26424,7 +26424,7 @@ var HomePage = function (_React$Component) {
       return React.createElement(
         'div',
         null,
-        React.createElement(_components.Search, { data: this.state.courses, dataType: 'Courses' }),
+        React.createElement(_components.Search, { data: this.state.courses, ids: this.state.coursesids, dataType: 'Courses' }),
         React.createElement(_components.Search, { data: this.state.countries, dataType: 'Countries' }),
         React.createElement(_components.Search, { data: this.state.universities, dataType: 'Universities' }),
         React.createElement('br', null),
@@ -26597,11 +26597,11 @@ var Search = function (_React$Component) {
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
-                  React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: listItem.id }),
+                  _this4.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: _this4.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
                     { className: "search-list-item-" + _this4.props.dataType },
-                    listItem.name
+                    listItem
                   )
                 ),
                 React.createElement(

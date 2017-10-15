@@ -88,8 +88,8 @@ class Search extends React.Component {
               return (
                 <Row>
                   <Col s={9}>
-                    <input type="hidden" className={"search-list-item-" + this.props.dataType + "-ids"} value={listItem.id} />
-                    <CollectionItem className={"search-list-item-" + this.props.dataType}>{listItem.name}</CollectionItem>
+                    { this.props.dataType == "Courses" ? <input type="hidden" className={"search-list-item-" + this.props.dataType + "-ids"} value={this.props.ids[listItem]} /> : <input type="hidden" />}
+                    <CollectionItem className={"search-list-item-" + this.props.dataType}>{listItem}</CollectionItem>
                   </Col>
                   <Col s={2}>
                     <Button href="#" type="button" onClick={() => this.remove(listItem)} style={{margin:"5px", float: "right", marginRight: "-40%"}}>Remove</Button>

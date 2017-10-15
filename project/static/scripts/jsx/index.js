@@ -28,7 +28,7 @@ class HomePage extends React.Component {
   formatData(values) {
     var formattedData = {};
     values.forEach((data) => {
-      formattedData[data["name"]] = data["id"];
+      formattedData[data["name"]] = null;
     });
     return formattedData;
   }
@@ -110,7 +110,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <Search data={ this.state.courses } dataType="Courses" />
+        <Search data={ this.state.courses } ids={ this.state.coursesids } dataType="Courses" />
         <Search data={ this.state.countries } dataType="Countries" />
         <Search data={ this.state.universities } dataType="Universities" />
         <br/>

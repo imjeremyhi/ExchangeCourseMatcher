@@ -26415,11 +26415,11 @@ var Search = function (_React$Component) {
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
-                  React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: listItem.id }),
+                  _this4.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: _this4.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
                     { className: "search-list-item-" + _this4.props.dataType },
-                    listItem.name
+                    listItem
                   )
                 ),
                 React.createElement(
