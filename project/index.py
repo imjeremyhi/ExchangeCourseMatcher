@@ -26,6 +26,17 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
     if len(courses_query_list) > 0:
         #json.loads(courses)
         results = get_matches(courses_query_list, universities_query_list, countries_query_list)
+        for unsw_course in courses:
+
+          for university_dict in results:
+
+               for target_course in university_dict["courses"]:
+                  print target_course
+
+        #      
+
+        # for course in results
+
         # results = [
         #     {
         #         "university": "Georgia Tech",
