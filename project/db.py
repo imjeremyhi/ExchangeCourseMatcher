@@ -59,7 +59,7 @@ def get_matches(courses, universities, countries):
     # precondition at least one course passed
     # print "Getting matches..."
     target_course_list = get_target_courses(courses, universities)
-    print target_course_list
+    # print target_course_list
 
     # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
     #
@@ -115,7 +115,7 @@ def get_target_courses(courses, universities):
         sentence_dict_by_uni[uni] = sentences_by_course
 
     for unsw_course in unsw_courses:
-        print "For " + unsw_course[0] + " " + unsw_course[1]
+        # print "For " + unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert = {}
         unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert["courses"] = []
