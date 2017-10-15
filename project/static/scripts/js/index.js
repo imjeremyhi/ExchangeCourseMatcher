@@ -26310,11 +26310,13 @@ var HomePage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (HomePage.__proto__ || Object.getPrototypeOf(HomePage)).call(this, props));
 
     var courses = _this.formatData(props.courses);
+    var coursesids = _this.getCourseIds(props.courses);
     var countries = _this.formatData(props.countries);
     var universities = _this.formatData(props.universities);
 
     _this.state = {
       courses: courses,
+      coursesids: coursesids,
       countries: countries,
       universities: universities,
       results: props.results,
@@ -26332,17 +26334,18 @@ var HomePage = function (_React$Component) {
     key: 'formatData',
     value: function formatData(values) {
       var formattedData = {};
-
-      if (values[0] != null && values[0]["id"] != null) {
-        values.forEach(function (data) {
-          formattedData[data["name"]] = null;
-          formattedData[data["id"]] = null;
-        });
-      } else {
-        values.forEach(function (data) {
-          formattedData[data["name"]] = null;
-        });
-      }
+      values.forEach(function (data) {
+        formattedData[data["name"]] = null;
+      });
+      return formattedData;
+    }
+  }, {
+    key: 'getCourseIds',
+    value: function getCourseIds(values) {
+      var formattedData = {};
+      values.forEach(function (data) {
+        formattedData[data["name"]] = data["id"];
+      });
       return formattedData;
     }
   }, {

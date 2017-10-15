@@ -35,7 +35,7 @@ def get_courses():
     for result in results:
         course_title = re.search(course_title_pattern, result[1]).group(0)
         if course_title not in results_without_duplicates:
-            returned_results.append((result[0], course_title, results[2]))
+            returned_results.append((result[0], course_title, result[2]))
             results_without_duplicates.append(course_title)
 
     return returned_results

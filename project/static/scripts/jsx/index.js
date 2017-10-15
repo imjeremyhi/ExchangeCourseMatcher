@@ -6,11 +6,13 @@ class HomePage extends React.Component {
     super(props);
 
     const courses = this.formatData(props.courses);
+    const coursesids = this.getCourseIds(props.courses);
     const countries = this.formatData(props.countries);
     const universities = this.formatData(props.universities);
 
     this.state = { 
       courses: courses,
+      coursesids: coursesids,
       countries: countries,
       universities: universities,
       results: props.results,
@@ -25,17 +27,17 @@ class HomePage extends React.Component {
 
   formatData(values) {
     var formattedData = {};
+    values.forEach((data) => {
+      formattedData[data["name"]] = data["id"];
+    });
+    return formattedData;
+  }
 
-    if (values[0] != null && values[0]["id"] != null) {
-      values.forEach((data) => {
-        formattedData[data["name"]] = null;
-        formattedData[data["id"]] = null;
-      });
-    } else {
-      values.forEach((data) => {
-        formattedData[data["name"]] = null;
-      });
-    }
+  getCourseIds(values) {
+    var formattedData = {};
+    values.forEach((data) => {
+      formattedData[data["name"]] = data["id"];
+    });
     return formattedData;
   }
 
