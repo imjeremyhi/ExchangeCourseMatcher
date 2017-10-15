@@ -4,7 +4,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       searchedText: '',
       appendedList: [],
       data: props.data
@@ -126,6 +126,9 @@ class Search extends React.Component {
 
 class ResultsTable extends React.Component {
   constructor(props) {
+    console.log("props")
+    console.log(props)
+
     super(props)
     this.compare = this.compare.bind(this)
   }
@@ -144,13 +147,14 @@ class ResultsTable extends React.Component {
   // // need to have unsw course and this course - unsw courses as tabs
   // need course unsw name few spaces and then course other name
   render() {
+    console.log("this.props.data.length: " + this.props.data.length)
     return (
       <div id="results-table">
       { this.props.data.length > 0 &&
         <div>
         <div id="matches-title-header">MATCHES</div>
         <Collapsible>
-        { 
+        {
           this.props.data.map((result) => {
             return (
               <CollapsibleItem header={result.university} id="university-result-header">
@@ -159,7 +163,7 @@ class ResultsTable extends React.Component {
                     return (
                       <Tabs>
                         <Tab title={ unswCourse.name }>
-                        { unswCourse.courses.length > 0 ? 
+                        { unswCourse.courses.length > 0 ?
                         <Collapsible>
                           { unswCourse.courses.map((course) => {
                             return (
@@ -168,7 +172,7 @@ class ResultsTable extends React.Component {
                                   <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                                 </a>
                                 <p className="results-course-field">Emails:</p>
-                                { course.emails.length > 0 ? 
+                                { course.emails.length > 0 ?
                                   <div>
                                   { course.emails.map(email => {
                                     return (
@@ -179,7 +183,7 @@ class ResultsTable extends React.Component {
                                   <p>Not available</p>
                                 }
                                 <p className="results-course-field">Assessments:</p>
-                                { course.assessments.length > 0 ? 
+                                { course.assessments.length > 0 ?
                                   <div>
                                   { course.assessments.map(assessment => {
                                     return (
@@ -190,7 +194,7 @@ class ResultsTable extends React.Component {
                                   <p>Not available</p>
                                 }
                                 <p className="results-course-field">Contact hours:</p>
-                                { course.contact_hours.length > 0 ? 
+                                { course.contact_hours.length > 0 ?
                                   <div>
                                   { course.contact_hours.map(contact_hour => {
                                     return (
@@ -202,49 +206,49 @@ class ResultsTable extends React.Component {
                                 }
                                 <Tabs className='tab-demo z-depth-1'>
                                   <Tab title="Course content">
-                                    { course.course_content.length > 0 ? 
+                                    { course.course_content.length > 0 ?
                                       <div>
                                       { course.course_content.map(course_content => {
                                         return (
                                           <p>{course_content}</p>
                                         )})
-                                      } 
+                                      }
                                       </div> :
                                       <p>Not available</p>
                                     }
                                   </Tab>
                                   <Tab title="Course outcomes">
-                                    { course.course_outcomes.length > 0 ? 
+                                    { course.course_outcomes.length > 0 ?
                                       <div>
                                       { course.course_outcomes.map(course_outcome => {
                                         return (
                                           <p>{course_outcome}</p>
                                         )})
-                                      } 
+                                      }
                                       </div> :
                                       <p>Not available</p>
                                     }
                                   </Tab>
                                   <Tab title="Textbooks">
-                                    { course.textbooks.length > 0 ? 
+                                    { course.textbooks.length > 0 ?
                                       <div>
                                       { course.textbooks.map(textbook => {
                                         return (
                                           <p>{textbook}</p>
                                         )})
-                                      } 
+                                      }
                                       </div> :
                                       <p>Not available</p>
                                     }
                                   </Tab>
                                   <Tab title="Keywords">
-                                    { course.keywords.length > 0 ? 
+                                    { course.keywords.length > 0 ?
                                       <div>
                                       { course.keywords.map(keyword => {
                                         return (
                                           <p>{keyword}</p>
                                         )})
-                                      } 
+                                      }
                                       </div> :
                                       <p>Not available</p>
                                     }
@@ -289,7 +293,7 @@ class UniversitiesTable extends React.Component {
         universitiesSelected[university.name] = university
       }
     })
-    this.state = { 
+    this.state = {
       universities: props.universities,
       universitiesSelected: universitiesSelected,
       selectAll: false,
@@ -319,7 +323,7 @@ class UniversitiesTable extends React.Component {
     } else if (cur.name in universitiesSelected) {
       delete universitiesSelected[cur.name]
     }
-    this.setState({ 
+    this.setState({
       universities: universities,
       universitiesSelected: universitiesSelected
     })
@@ -345,10 +349,10 @@ class UniversitiesTable extends React.Component {
       })
     }
 
-    this.setState({ 
-      universities: universities, 
-      universitiesSelected: universitiesSelected, 
-      selectAll: selectVal 
+    this.setState({
+      universities: universities,
+      universitiesSelected: universitiesSelected,
+      selectAll: selectVal
     })
   }
 
@@ -366,7 +370,7 @@ class UniversitiesTable extends React.Component {
     var universitiesNext = this.filterByCountry(this.state.countriesFilter, this.props.universities)
     var universitiesNextNext = this.filterByUniversity(event.target.value, universitiesNext)
     var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext)
-    this.setState({ 
+    this.setState({
       universities: universitiesWithPriorSelection,
       universitiesFilter: event.target.value,
     })
@@ -384,9 +388,9 @@ class UniversitiesTable extends React.Component {
     var universitiesNext = this.filterByUniversity(this.state.universitiesFilter, this.props.universities)
     var universitiesNextNext = this.filterByCountry(event.target.value, universitiesNext)
     var universitiesWithPriorSelection = this.mapOverPriorSelection(universitiesNextNext)
-    this.setState({ 
-      universities: universitiesWithPriorSelection, 
-      countriesFilter: event.target.value 
+    this.setState({
+      universities: universitiesWithPriorSelection,
+      countriesFilter: event.target.value
     })
   }
 
@@ -408,8 +412,8 @@ class UniversitiesTable extends React.Component {
             <th>
               <Input list="universities" value={this.state.universitiesFilter} onChange={this.handleUniversityFilterChange} label="University" id="universityFilter" />
               <datalist id="universities">
-                { this.state.universities.map((universityFilter) => { 
-                  return <option value={universityFilter.name}/> 
+                { this.state.universities.map((universityFilter) => {
+                  return <option value={universityFilter.name}/>
                 }
                 )}
               </datalist>
@@ -417,8 +421,8 @@ class UniversitiesTable extends React.Component {
             <th>
               <Input list="countries" value={this.state.countriesFilter} onChange={this.handleCountryFilterChange} label="Country" id="countryFilter" />
               <datalist id="countries">
-                { this.props.countries.map((countryFilter) => { 
-                  return <option value={countryFilter}/> 
+                { this.props.countries.map((countryFilter) => {
+                  return <option value={countryFilter}/>
                 }
                 )}
               </datalist>

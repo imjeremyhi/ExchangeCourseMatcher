@@ -27,7 +27,7 @@ def execute_query(query):
     return results
 
 def get_courses():
-    print "Getting UNSW course list..."
+    # print "Getting UNSW course list..."
     query = "SELECT course_code, course_title, id from course_scrape where university = 'University of New South Wales'"
     results = execute_query(query)
 
@@ -43,13 +43,13 @@ def get_courses():
     return returned_results
 
 def get_countries():
-    print "Getting countries..."
+    # print "Getting countries..."
     query = "SELECT distinct country from university"
     results = execute_query(query)
     return results
 
 def get_universities():
-    print "Getting universities..."
+    # print "Getting universities..."
     query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
     results = execute_query(query)
     return results
@@ -57,7 +57,7 @@ def get_universities():
 def get_matches(courses, universities, countries):
     # similarity table = similarity_score, components_of_score, unsw_course, partner_course, partner_uni
     # precondition at least one course passed
-    print "Getting matches..."
+    # print "Getting matches..."
     target_course_list = get_target_courses(courses, universities)
     print target_course_list
 
@@ -78,14 +78,14 @@ def get_matches(courses, universities, countries):
     return results
 
 def get_target_courses(courses, universities):
-    print "Getting target courses..."
+    # print "Getting target courses..."
     uni_mysql_list = ""
     for uni in universities:
         uni_mysql_list += "'"+uni+"', "
 
 
     query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    print query
+    # print query
     results = execute_query(query)
 
     courses_mysql_list = ""
@@ -93,7 +93,7 @@ def get_target_courses(courses, universities):
         courses_mysql_list += course +", "
 
     query = "SELECT course_code, course_title, url, id FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
-    print query
+    # print query
     unsw_courses = execute_query(query)
 
     sentence_dict_by_uni = {}
@@ -121,7 +121,7 @@ def get_target_courses(courses, universities):
         unsw_course_to_insert["courses"] = []
 
         for course in results:
-            print course
+            # print course
             if course[1] is None or course[2] is None:
                 continue
             # similarity_score = get_similarity(unsw_course[3], course[3])
@@ -187,7 +187,7 @@ def get_target_courses(courses, universities):
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
-    print uni_dict_list
+    # print uni_dict_list
     return uni_dict_list
 
 def get_similarity(course1, course2):
