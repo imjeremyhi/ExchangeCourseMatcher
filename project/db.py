@@ -80,9 +80,10 @@ def get_target_courses(universities):
 
 
     query = "SELECT university, course_code, course_title, id, keywords FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    # print query
+    print query
     results = execute_query(query)
 
+    print "Number of results: " + str(len(results))
     uni_dict_list = []
     for uni in universities:
         uni_dict = {}
@@ -91,6 +92,8 @@ def get_target_courses(universities):
         uni_dict_list.append(uni_dict)
 
     for course in results:
+        if course[1] is None or course[2] is None:
+            continue
         target_dict = None
         for uni_dict in uni_dict_list:
             if uni_dict["university"] == course[0]:

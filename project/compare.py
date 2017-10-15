@@ -8,7 +8,8 @@ def break_phrases(list_to_break):
 
     for word in list_to_break:
         for word_token in word_tokenize(word):
-            broken_list.append(word_token)
+            if word_token not in broken_list:
+                broken_list.append(word_token)
     # print broken_list
     return broken_list
 
