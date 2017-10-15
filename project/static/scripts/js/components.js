@@ -26486,7 +26486,7 @@ var ResultsTable = function (_React$Component2) {
         $("iframe").css({ 'float': 'left' });
 
         // will be src = secondUrl
-        var node = $("<iframe class='fancybox-iframe' src=" + "'https://codepen.io/about/' style='width: 50%; float: right'>");
+        var node = $("<iframe class='fancybox-iframe' src='" + secondUrl + "' style='width: 50%; float: right'>");
         $(".fancybox-content").append(node);
       }, 1000);
     }
@@ -26525,8 +26525,8 @@ var ResultsTable = function (_React$Component2) {
                       { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
                       React.createElement(
                         'a',
-                        { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': "https://codepen.io/about/" /* course.url1 */, href: 'javascript:;', onClick: function onClick() {
-                            return _this7.compare();
+                        { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': course.url, href: 'javascript:;', onClick: function onClick() {
+                            return _this7.compare(course.url2);
                           }, className: 'compare-img' },
                         React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                       ),
@@ -26633,7 +26633,7 @@ var ResultsTable = function (_React$Component2) {
                         ),
                         React.createElement(
                           _reactMaterialize.Tab,
-                          { title: 'Textbook' /* course.textbook */ },
+                          { title: 'Textbook' },
                           course.textbooks.length > 0 ? React.createElement(
                             'div',
                             null,

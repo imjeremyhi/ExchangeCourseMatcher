@@ -137,7 +137,7 @@ class ResultsTable extends React.Component {
       $("iframe").css({'float': 'left'})
 
       // will be src = secondUrl
-      var node = $("<iframe class='fancybox-iframe' src=" + "'https://codepen.io/about/' style='width: 50%; float: right'>")
+      var node = $("<iframe class='fancybox-iframe' src='" + secondUrl + "' style='width: 50%; float: right'>")
       $(".fancybox-content").append(node)
     }, 1000)
   }
@@ -159,7 +159,7 @@ class ResultsTable extends React.Component {
                   result.courses.map((course) => {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
-                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
+                        <a data-fancybox data-type="iframe" data-src={ course.url } href="javascript:;" onClick={() => this.compare(course.url2) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
                         <p className="results-course-field">Emails:</p>
@@ -220,7 +220,7 @@ class ResultsTable extends React.Component {
                               <p>Not available</p>
                             }
                           </Tab>
-                          <Tab title="Textbook" /* course.textbook */>
+                          <Tab title="Textbook">
                             { course.textbooks.length > 0 ? 
                               <div>
                               { course.textbooks.map(textbook => {

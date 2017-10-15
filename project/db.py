@@ -55,7 +55,7 @@ def get_matches(courses, universities, countries):
     # similarity table = similarity_score, components_of_score, unsw_course, partner_course, partner_uni
     # precondition at least one course passed
 
-    target_course_list = get_target_courses(universities)
+    target_course_list = get_target_courses(courses, universities)
     # print target_course_list
 
     # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
@@ -74,15 +74,21 @@ def get_matches(courses, universities, countries):
     # eg for all courses add or blah etc to the query and execute that
     return results
 
-def get_target_courses(universities):
+def get_target_courses(courses, universities):
     uni_mysql_list = ""
     for uni in universities:
         uni_mysql_list += "'"+uni+"', "
 
-
-    query = "SELECT university, course_code, course_title, id, keywords, emails FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
+    query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
     # print query
     results = execute_query(query)
+
+    # courses_mysql_list = ""
+    # for course in courses:
+    #     courses_mysql_list += course +", "
+
+    # query = "SELECT course_code, course_title, url FROM course_scrape WHERE university = 'University of New South Wales' and id IN (%s);" % courses_mysql_list[:-2]
+    # unsw_courses = execute_query(query)
 
     uni_dict_list = []
     for uni in universities:
@@ -101,6 +107,12 @@ def get_target_courses(universities):
         emails = []
         if course[5] != "":
             emails = course[5].split(",")
+
+        name2 = "Unsw course hardcoded"
+        # for unsw_course in unsw_courses:
+        #     if 
+        url2 = "https://codepen.io/about/"
+
         # bad making queries per course will change later if have time
         sentence_table_list = get_text_from_sentence_table(course[3])
         sentences_in_classes = {
@@ -120,10 +132,13 @@ def get_target_courses(universities):
 
         uni_dict["courses"].append( {
             "name": course[1] + " " + course[2],
+            "name2": name2,
             "id": course[3],
             "keywords": course[4],
             "similarity_score": "50%",
             "emails": emails,
+            "url": course[6],
+            "url2": url2,
             "assessments": sentences_in_classes["assessments"],
             "contact_hours": sentences_in_classes["contact_hours"], 
             "course_content": sentences_in_classes["course_content"],
