@@ -26540,9 +26540,15 @@ var Search = function (_React$Component) {
   _createClass(Search, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
+      var _this2 = this;
+
       this.setState({
         data: nextProps.data
       });
+
+      setTimeout(function () {
+        $("#" + _this2.props.dataType).children().first().val("");
+      }, 100);
     }
   }, {
     key: 'handleChange',
@@ -26553,36 +26559,36 @@ var Search = function (_React$Component) {
   }, {
     key: 'add',
     value: function add(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       setTimeout(function () {
-        var curVal = $("#" + _this2.props.dataType).children().first().val();
-        var data = _this2.state.data;
+        var curVal = $("#" + _this3.props.dataType).children().first().val();
+        var data = _this3.state.data;
 
         if (curVal in data) {
-          var curList = _this2.state.appendedList;
+          var curList = _this3.state.appendedList;
           curList.push(curVal);
 
           delete data[curVal];
 
-          _this2.setState({
+          _this3.setState({
             searchedText: "",
             appendedList: curList,
             data: data
           });
 
-          if (_this2.props.dataType == "Countries") {
-            _this2.props.handleCountriesFilterChange(_this2.state.appendedList);
+          if (_this3.props.dataType == "Countries") {
+            _this3.props.handleCountriesFilterChange(_this3.state.appendedList);
           }
 
-          $("#" + _this2.props.dataType).children().first().val("");
+          $("#" + _this3.props.dataType).children().first().val("");
         }
       }, 100);
     }
   }, {
     key: 'remove',
     value: function remove(listItem) {
-      var _this3 = this;
+      var _this4 = this;
 
       var curList = this.state.appendedList;
 
@@ -26606,8 +26612,8 @@ var Search = function (_React$Component) {
       }
 
       setTimeout(function () {
-        $("#" + _this3.props.dataType).children().first().val("");
-      }, 1);
+        $("#" + _this4.props.dataType).children().first().val("");
+      }, 100);
     }
 
     // todo collection onClick delete, have hover effect of bin
@@ -26616,7 +26622,7 @@ var Search = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return React.createElement(
         _reactMaterialize.Card,
@@ -26645,10 +26651,10 @@ var Search = function (_React$Component) {
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
-                  _this4.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: _this4.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
+                  _this5.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this5.props.dataType + "-ids", value: _this5.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
-                    { className: "search-list-item-" + _this4.props.dataType },
+                    { className: "search-list-item-" + _this5.props.dataType },
                     listItem
                   )
                 ),
@@ -26658,7 +26664,7 @@ var Search = function (_React$Component) {
                   React.createElement(
                     _reactMaterialize.Button,
                     { href: '#', type: 'button', onClick: function onClick() {
-                        return _this4.remove(listItem);
+                        return _this5.remove(listItem);
                       }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
                     'Remove'
                   )
@@ -26680,10 +26686,10 @@ var ResultsTable = function (_React$Component2) {
   function ResultsTable(props) {
     _classCallCheck(this, ResultsTable);
 
-    var _this5 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
+    var _this6 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
 
-    _this5.compare = _this5.compare.bind(_this5);
-    return _this5;
+    _this6.compare = _this6.compare.bind(_this6);
+    return _this6;
   }
 
   _createClass(ResultsTable, [{
@@ -26705,7 +26711,7 @@ var ResultsTable = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       return React.createElement(
         'div',
@@ -26727,14 +26733,14 @@ var ResultsTable = function (_React$Component2) {
                     React.createElement(
                       'a',
                       { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': "https://codepen.io/about/" /* course.url1 */, href: 'javascript:;', onClick: function onClick() {
-                          return _this6.compare();
+                          return _this7.compare();
                         }, className: 'compare-img' },
                       React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                     ),
                     React.createElement(
                       'p',
                       null,
-                      "Email: " /*+ course.email*/
+                      "Emails: " /*+ course.emails*/
                     ),
                     React.createElement(
                       'p',
@@ -26790,7 +26796,7 @@ var UniversitiesTable = function (_React$Component3) {
   function UniversitiesTable(props) {
     _classCallCheck(this, UniversitiesTable);
 
-    var _this7 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
+    var _this8 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
 
     var universitiesSelected = {};
     props.universities.forEach(function (university) {
@@ -26798,21 +26804,21 @@ var UniversitiesTable = function (_React$Component3) {
         universitiesSelected[university.name] = university;
       }
     });
-    _this7.state = {
+    _this8.state = {
       universities: props.universities,
       universitiesSelected: universitiesSelected,
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
     };
-    _this7.toggleSelected = _this7.toggleSelected.bind(_this7);
-    _this7.selectAll = _this7.selectAll.bind(_this7);
-    _this7.handleUniversityFilterChange = _this7.handleUniversityFilterChange.bind(_this7);
-    _this7.handleCountryFilterChange = _this7.handleCountryFilterChange.bind(_this7);
-    _this7.filterByUniversity = _this7.filterByUniversity.bind(_this7);
-    _this7.filterByCountry = _this7.filterByCountry.bind(_this7);
-    _this7.mapOverPriorSelection = _this7.mapOverPriorSelection.bind(_this7);
-    return _this7;
+    _this8.toggleSelected = _this8.toggleSelected.bind(_this8);
+    _this8.selectAll = _this8.selectAll.bind(_this8);
+    _this8.handleUniversityFilterChange = _this8.handleUniversityFilterChange.bind(_this8);
+    _this8.handleCountryFilterChange = _this8.handleCountryFilterChange.bind(_this8);
+    _this8.filterByUniversity = _this8.filterByUniversity.bind(_this8);
+    _this8.filterByCountry = _this8.filterByCountry.bind(_this8);
+    _this8.mapOverPriorSelection = _this8.mapOverPriorSelection.bind(_this8);
+    return _this8;
   }
 
   _createClass(UniversitiesTable, [{
@@ -26867,10 +26873,10 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'mapOverPriorSelection',
     value: function mapOverPriorSelection(universities) {
-      var _this8 = this;
+      var _this9 = this;
 
       var universitiesWithPriorSelection = universities.map(function (university) {
-        if (university.name in _this8.state.universitiesSelected) {
+        if (university.name in _this9.state.universitiesSelected) {
           university.isSelected = true;
         }
         return university;
@@ -26920,7 +26926,7 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'render',
     value: function render() {
-      var _this9 = this;
+      var _this10 = this;
 
       console.log('rerendering table');
       return React.createElement(
@@ -26973,7 +26979,7 @@ var UniversitiesTable = function (_React$Component3) {
               React.createElement(
                 'td',
                 null,
-                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this9.toggleSelected, checked: university.isSelected })
+                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this10.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',

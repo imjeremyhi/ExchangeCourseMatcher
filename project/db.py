@@ -1,5 +1,6 @@
 from flask.ext.mysql import MySQL
 import re
+import sys
 
 conn = None
 
@@ -79,7 +80,7 @@ def get_target_courses(universities):
         uni_mysql_list += "'"+uni+"', "
 
 
-    query = "SELECT university, course_code, course_title, id, keywords FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
+    query = "SELECT university, course_code, course_title, id, keywords, emails FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
     # print query
     results = execute_query(query)
 
@@ -96,12 +97,27 @@ def get_target_courses(universities):
             if uni_dict["university"] == course[0]:
                 target_dict = uni_dict
                 break
+
+        # bad making queries per course will change later if have time
+        # sentence_table_list = 
+        # print("stderr", file=sys.stderr)
+        # print(sentence_table_list, file=sys.stderr)
+        # print("stdout", file=sys.stdout)
+        # print(sentence_table_list, file=sys.stdout)
+
         uni_dict["courses"].append( {
             "name": course[1] + " " + course[2],
             "id": course[3],
             "keywords": course[4],
-            "similarity_score": "50%"
+            "similarity_score": "50%",
+            "emails": course[5],
+            "assessments": get_field_from_sentence_table("assessments", course[3]),
+            "contact_hours": get_field_from_sentence_table( "contact_hours", course[3]), 
+            "course_content": get_field_from_sentence_table("course_content", course[3]),
+            "course_outcomes": get_field_from_sentence_table("course_outcomes", course[3]),
+            "textbooks": get_field_from_sentence_table("textbooks", course[3]) 
         })
+
     # print uni_dict_list
     return uni_dict_list
 
@@ -121,4 +137,9 @@ def get_course_keywords_by_id(course):
     results = execute_query(query)
     return results
 
+#assessments, contact_hours, course_content, course_outcomes, textbooks 
+def get_field_from_sentence_table(field, course):
+    query = "SELECT text FROM sentence where class = '%s' and course = %d;" % (field, int(course))
+    results = execute_query(query)
+    return results
 #conn = get_connection(app)

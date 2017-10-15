@@ -36,18 +36,18 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
             for university_dict in results:
             # gatech
                 for target_course in university_dict["courses"]:
-
+                    pass
                     # print target_course
 
                     #compare unsw_course vs target_course
-                    similarity = get_similarity(unsw_course, target_course["id"])
+                    # similarity = get_similarity(unsw_course, target_course["id"])
 
-                    if similarity == None:
-                        # print "No existing sim found for %d vs %d. Processing..." % (int(unsw_course), int(target_course["id"]))
-                        # do sim
-                        # print get_course_keywords_by_id(unsw_course)
-                        sim = compare.compare_keywords(get_course_keywords_by_id(unsw_course)[0],[target_course["keywords"]])
-                        # print sim
+                    # if similarity == None:
+                    #     # print "No existing sim found for %d vs %d. Processing..." % (int(unsw_course), int(target_course["id"]))
+                    #     # do sim
+                    #     # print get_course_keywords_by_id(unsw_course)
+                    #     sim = compare.compare_keywords(get_course_keywords_by_id(unsw_course)[0],[target_course["keywords"]])
+                    #     # print sim
 
 
 

@@ -19,6 +19,10 @@ class Search extends React.Component {
     this.setState({
       data: nextProps.data
     });
+
+    setTimeout(() => {
+      $("#" + this.props.dataType).children().first().val("");
+    }, 100);
   }
 
   handleChange(event) {
@@ -76,7 +80,7 @@ class Search extends React.Component {
 
     setTimeout(() => {
       $("#" + this.props.dataType).children().first().val("");
-    }, 1);
+    }, 100);
   }
 
   // todo collection onClick delete, have hover effect of bin
@@ -156,7 +160,7 @@ class ResultsTable extends React.Component {
                         <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
-                        <p>{ "Email: " /*+ course.email*/ }</p>
+                        <p>{ "Emails: " /*+ course.emails*/ }</p>
                         <p>{ "Assessments: " /*+ course.assessments*/ }</p>
                         <p>{ "Contact hours: " /*+ course.contactHours*/ }</p>
                         <Tabs className='tab-demo z-depth-1'>
