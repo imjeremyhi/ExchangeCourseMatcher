@@ -59,13 +59,13 @@ def compare_keywords(list1, list2, sim_type="path"):
                 syn_sum = 0
                 avg_similarity = 0
 
-                print "For " + list1_word + " vs " + list2_word
-                print "Comparing synset1: " + str(synsetlist1)
-                print "to synset2: " + str(synsetlist2)
+                # print "For " + list1_word + " vs " + list2_word
+                # print "Comparing synset1: " + str(synsetlist1)
+                # print "to synset2: " + str(synsetlist2)
                 best = max((wordnet.wup_similarity(s1, s2) or 0, s1, s2) for s1, s2 in
                         product(synsetlist1, synsetlist2))
-                print best
-                print "\n"
+                # print best
+                # print "\n"
 
                 if best[0] > max_similarity:
                     max_similarity = best[0]
@@ -104,7 +104,7 @@ def compare_keywords(list1, list2, sim_type="path"):
             similarity_dict[list1_word] = max_similarity
             # similarity_list.append(max_sim_obj)
         except Exception as e:
-            print "Exception: " + str(e)
+            # print "Exception: " + str(e)
             continue
     return simdict_avg(similarity_dict)
 

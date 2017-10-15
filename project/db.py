@@ -109,7 +109,7 @@ def get_similarity(course1, course2):
     query = "SELECT similarity FROM similarity WHERE course1 = %d and course2 = %d;" % (int(course1), int(course2))
 
     results = execute_query(query)
-    print results
+    # print results
     if len(results) == 0:
         # do the sim
         return None

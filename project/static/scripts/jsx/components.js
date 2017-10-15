@@ -153,7 +153,7 @@ class ResultsTable extends React.Component {
                   result.courses.map((course) => {
                     return (
                       <CollapsibleItem header={ course.similarity_score + "   " + course.name} icon="expand_more">
-                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" + /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
+                        <a data-fancybox data-type="iframe" data-src={"https://codepen.io/about/" /* course.url1 */} href="javascript:;" onClick={() => this.compare(/*course.url2*/) } className="compare-img">
                           <img src="./static/imgs/scales.png" id="compare-img-actual-img" />
                         </a>
                         <p>{ "Email: " /*+ course.email*/ }</p>

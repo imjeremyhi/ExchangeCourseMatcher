@@ -26688,13 +26688,14 @@ var ResultsTable = function (_React$Component2) {
 
   _createClass(ResultsTable, [{
     key: 'compare',
-    value: function compare() {
+    value: function compare(secondUrl) {
       console.log('here in compare');
       setTimeout(function () {
         $("iframe").width("50%");
         $("iframe").css({ 'float': 'left' });
 
-        var node = $("<iframe class='fancybox-iframe' src='https://codepen.io/about/' style='width: 50%; float: right'>");
+        // will be src = secondUrl
+        var node = $("<iframe class='fancybox-iframe' src=" + "'https://codepen.io/about/' style='width: 50%; float: right'>");
         $(".fancybox-content").append(node);
       }, 1000);
     }
@@ -26725,7 +26726,9 @@ var ResultsTable = function (_React$Component2) {
                     { header: course.similarity_score + "   " + course.name, icon: 'expand_more' },
                     React.createElement(
                       'a',
-                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': 'https://codepen.io/about/', href: 'javascript:;', onClick: _this6.compare, className: 'compare-img' },
+                      { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': "https://codepen.io/about/" /* course.url1 */, href: 'javascript:;', onClick: function onClick() {
+                          return _this6.compare();
+                        }, className: 'compare-img' },
                       React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                     ),
                     React.createElement(
