@@ -118,7 +118,7 @@ def get_target_courses(courses, universities):
                     break
 
             emails = []
-            if course[5] is not None and course[5] != "":
+            if course[5] != "" and course[5] is not None:
                 emails = course[5].split(",")
 
             # bad making queries per course will change later if have time
@@ -159,6 +159,8 @@ def get_target_courses(courses, universities):
                 "textbooks": sentences_in_classes["textbooks"],
                 "keywords": keywords
             })
+
+        unsw_course_to_insert["courses"].sort(key=lambda x: x.similarity_score, reverse=True)
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
