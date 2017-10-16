@@ -164,22 +164,11 @@ def get_target_courses(courses, universities):
             unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
             unsw_url = "./static/files/unsw/" + unsw_url
 
-
-            # keywords_from_db = course[4]
-            # try:
-            #     keywords = keywords_from_db[0]
-            # except IndexError as e:
-            #     keywords = ""
-
-            # keywords = keywords.replace("\"", "")
-            # keywords = keywords.split(", ")
             keywords_from_db = course[4]
             keywords = []
-            try:
-                if keywords_from_db[0] != "":
-                    keywords_split = keywords_from_db[0].split(", ")
-            except IndexErrror as e:
-                pass
+            if keywords_from_db != "":
+                keywords.append(keywords_from_db)
+
 
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
@@ -193,8 +182,7 @@ def get_target_courses(courses, universities):
                 "contact_hours": sentences_in_classes["contact_hours"],
                 "course_content": sentences_in_classes["course_content"],
                 "course_outcomes": sentences_in_classes["course_outcomes"],
-                "textbooks": sentences_in_classes["textbooks"],
-                "keywords": keywords
+                "textbooks": sentences_in_classes["textbooks"]
             })
 
         # unsw_course_to_insert["courses"].sort(key=lambda x: x.similarity_score, reverse=True)
