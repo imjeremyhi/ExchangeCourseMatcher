@@ -26693,6 +26693,9 @@ var ResultsTable = function (_React$Component2) {
   function ResultsTable(props) {
     _classCallCheck(this, ResultsTable);
 
+    console.log("props");
+    console.log(props);
+
     var _this6 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
 
     _this6.compare = _this6.compare.bind(_this6);
@@ -26720,6 +26723,7 @@ var ResultsTable = function (_React$Component2) {
     value: function render() {
       var _this7 = this;
 
+      console.log("this.props.data.length: " + this.props.data.length);
       return React.createElement(
         'div',
         { id: 'results-table' },
@@ -26740,11 +26744,11 @@ var ResultsTable = function (_React$Component2) {
                 { header: result.university, id: 'university-result-header' },
                 result.unsw_courses.length > 0 && result.unsw_courses.map(function (unswCourse) {
                   return React.createElement(
-                    _reactMaterialize.Tabs,
+                    _reactMaterialize.Collapsible,
                     null,
                     React.createElement(
-                      _reactMaterialize.Tab,
-                      { title: unswCourse.name },
+                      _reactMaterialize.CollapsibleItem,
+                      { header: unswCourse.name },
                       unswCourse.courses.length > 0 ? React.createElement(
                         _reactMaterialize.Collapsible,
                         null,

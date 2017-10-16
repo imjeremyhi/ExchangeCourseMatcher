@@ -165,20 +165,26 @@ def get_target_courses(courses, universities):
             unsw_url = "./static/files/unsw/" + unsw_url
 
 
+            # keywords_from_db = course[4]
+            # try:
+            #     keywords = keywords_from_db[0]
+            # except IndexError as e:
+            #     keywords = ""
+
+            # keywords = keywords.replace("\"", "")
+            # keywords = keywords.split(", ")
             keywords_from_db = course[4]
+            keywords = []
             try:
-                keywords = keywords_from_db[0]
-            except IndexError as e:
-                keywords = ""
-
-            keywords = keywords.replace("\"", "")
-            keywords = keywords.split(", ")
-
+                if keywords_from_db[0] != "":
+                    keywords_split = keywords_from_db[0].split(", ")
+            except IndexErrror as e:
+                pass
 
             unsw_course_to_insert["courses"].append( {
                 "name": course[1] + " " + course[2],
                 "id": course[3],
-                "keywords": course[4],
+                "keywords": keywords,
                 "similarity_score": 1.00,
                 "emails": emails,
                 "url": course[6],
