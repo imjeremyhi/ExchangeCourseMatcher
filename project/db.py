@@ -115,7 +115,7 @@ def get_target_courses(courses, universities):
         sentence_dict_by_uni[uni] = sentences_by_course
 
     for unsw_course in unsw_courses:
-        # print "For " + unsw_course[0] + " " + unsw_course[1]
+        print "For " + unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert = {}
         unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert["courses"] = []
@@ -141,7 +141,11 @@ def get_target_courses(courses, universities):
                 emails = course[5].split(",")
 
             # bad making queries per course will change later if have time
-            sentence_table_list = sentence_dict_by_uni[course[0]][course[3]]
+            try:
+                sentence_table_list = sentence_dict_by_uni[course[0]][course[3]]
+            except KeyError as e:
+                continue
+
             sentences_in_classes = {
                 "assessments": [],
                 "contact_hours": [],
@@ -160,8 +164,12 @@ def get_target_courses(courses, universities):
             unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
             unsw_url = "./static/files/unsw/" + unsw_url
 
+
             keywords_from_db = course[4]
-            keywords = keywords_from_db[0]
+            try:
+                keywords = keywords_from_db[0]
+            except IndexError as e:
+                keywords = ""
 
             keywords = keywords.replace("\"", "")
             keywords = keywords.split(", ")

@@ -161,8 +161,8 @@ class ResultsTable extends React.Component {
                 { result.unsw_courses.length > 0 &&
                   result.unsw_courses.map(unswCourse => {
                     return (
-                      <Tabs>
-                        <Tab title={ unswCourse.name }>
+                      <CollapsibleItem header={unswCourse.name}>
+                        //<Tab title={ unswCourse.name }>
                         { unswCourse.courses.length > 0 ?
                         <Collapsible>
                           { unswCourse.courses.map((course) => {
@@ -244,10 +244,12 @@ class ResultsTable extends React.Component {
                                   <Tab title="Keywords">
                                     { course.keywords.length > 0 ?
                                       <div>
-                                      { course.keywords.map(keyword => {
-                                        return (
-                                          <p>{keyword}</p>
-                                        )})
+                                      { //course.keywords.map(keyword => {
+                                        //return (
+                                          //<p>{keyword}</p>
+                                        //)})
+                                        {course.keywords}
+                                        hello
                                       }
                                       </div> :
                                       <p>Not available</p>
@@ -262,7 +264,7 @@ class ResultsTable extends React.Component {
                         : <p>No course matches</p>
                         }
                         </Tab>
-                      </Tabs>
+                      </CollapsibleItem>
                     )
                   })
                 }

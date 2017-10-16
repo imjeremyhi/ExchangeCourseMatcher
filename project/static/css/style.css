@@ -21,6 +21,7 @@ thead {
 
 .collapsible-body {
 	padding: 0px !important;
+  margin: 1em;
 }
 
 .collapsible {
