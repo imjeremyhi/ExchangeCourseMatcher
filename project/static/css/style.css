@@ -130,3 +130,7 @@ html {
 .results-course-field {
 	font-weight: bold;
 }
+
+.btn {
+	background-color: #FEC412 !important;
+}

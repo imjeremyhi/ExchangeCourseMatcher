@@ -1,4 +1,5 @@
-import { Input, Table, Row, Autocomplete, Button, Collection, CollectionItem, Collapsible, CollapsibleItem, Icon, Col, Tabs, Tab, Card, CardTitle } from 'react-materialize'
+import { Input, Table, Row, Button, Collection, CollectionItem, Collapsible, CollapsibleItem, Icon, Col, Tabs, Tab, Card, CardTitle } from 'react-materialize'
+import Autocomplete from './Autocomplete.js'
 
 class Search extends React.Component {
   constructor(props) {
