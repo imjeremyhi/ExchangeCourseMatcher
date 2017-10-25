@@ -61,7 +61,7 @@ def get_matches(courses, universities, countries):
     target_course_list = get_target_courses(courses, universities)
     # print target_course_list
 
-    # query = "SELECT similarity_score from similarity where unsw_course = '%s'" % courses[0]
+    query = "SELECT similarity from similarity where unsw_course = '%s'" % courses[0]
     #
     # for course in courses:
     #     query += " or unsw_course = '%s'" % course
@@ -79,15 +79,89 @@ def get_matches(courses, universities, countries):
 
 def get_target_courses(courses, universities):
     # print "Getting target courses..."
-    uni_mysql_list = ""
-    for uni in universities:
-        uni_mysql_list += "'"+uni+"', "
+
+    # We can get the top 10 matches with only course and uni, so let's do it first
+
+    # the structure will be (i translated the course ids in this examples to make it easier to understand):
+    # {
+    #     "INFS2607": # course_list
+    #     {
+    #         "University of Glasgow": # course_uni_list
+    #         [
+    #             (4987, 0.23),
+    #             (4977, 0.21),
+    #             ...
+    #             (4944, 0.03)
+    #         ],
+    #         "University of Auckland":
+    #         [
+    #             (4330, 0.51),
+    #             (4221, 0.33),
+    #             ...
+    #             (3222, 0.32)
+    #         ]
+    #     },
+    #     "INFS3634":
+    #     {
+    #         "University of Glasgow": # course_uni_list
+    #         [
+    #             (4987, 0.23),
+    #             (4977, 0.21),
+    #             ...
+    #             (4944, 0.03)
+    #         ],
+    #         "University of Auckland":
+    #         [
+    #             (4330, 0.51),
+    #             (4221, 0.33),
+    #             ...
+    #             (3222, 0.32)
+    #         ]
+    #     }
+    # }
+    #
+    #
+
+    # a list of unis per unsw course
+    course_list = {}
+
+    # for quick lookup of similarity
+    course_similarity_dict = {}
+    # a list of courses that we will need to query later, for better performance
+    courses_to_query = []
+    for course in courses:
+        # e.g. INFS3634 id: 5618
+        course_uni_list = {}
+        for uni in universities:
+            # e.g. University of Glasgow
+            top_matches_query = """
+                select a.course2, a.similarity from
+                    scrape.similarity a join scrape.course_scrape b
+                    on a.course2 = b.id
+                    where a.course1 = {0} and
+                    b.university = '{1}'
+                    order by a.similarity desc
+                    limit 10;
+            """.format(course, uni)
+            top_matches = execute_query(top_matches_query)
+            for match in top_matches:
+                courses_to_query.append(match[0])
+                course_similarity_dict[match[0]] = match[1]
+            course_uni_list[uni] = top_matches
+        course_list[course] = course_uni_list
 
 
-    query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE university IN (%s);" % uni_mysql_list[:-2]
-    # print query
-    results = execute_query(query)
 
+    # now we need to query those courses
+    courses_to_query_string = ""
+    for course_to_query in courses_to_query:
+        courses_to_query_string += "'"+str(course_to_query)+"', "
+
+    query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE id IN (%s);" % courses_to_query_string[:-2]
+    print query
+    external_uni_results = execute_query(query)
+
+    # and also get the unsw course details
     courses_mysql_list = ""
     for course in courses:
         courses_mysql_list += course +", "
@@ -96,7 +170,8 @@ def get_target_courses(courses, universities):
     # print query
     unsw_courses = execute_query(query)
 
-    sentence_dict_by_uni = {}
+
+
     uni_dict_list = []
     for uni in universities:
         uni_dict = {}
@@ -104,25 +179,34 @@ def get_target_courses(courses, universities):
         uni_dict["unsw_courses"] = []
         uni_dict_list.append(uni_dict)
 
-        sentences_by_uni = get_sentences_by_uni(uni)
-        sentences_by_course = {}
-        for sent_uni, sent_course, sent_text, sent_class in sentences_by_uni:
-            if sent_course not in sentences_by_course:
-                sentences_by_course[sent_course] = []
 
-            sentences_by_course[sent_course].append((sent_text, sent_class))
+    sentence_dict_by_course = {}
+    # {
+    #     "5498": [
+    #         ("sentence text", "Textbook"),
+    #         ("more senten", "Contact Hours"
+    #     ]
+    # }
 
-        sentence_dict_by_uni[uni] = sentences_by_course
+    for course in courses_to_query:
+        sentence_dict_by_course[course] = []
+        sentences_by_course = get_sentences_by_course(course)
+
+        for sent_uni, sent_course, sent_text, sent_class in sentences_by_course:
+            sentence_dict_by_course[sent_course].append((sent_text, sent_class))
+    print sentence_dict_by_course
 
     for unsw_course in unsw_courses:
+
         # print "For " + unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert = {}
         unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
         unsw_course_to_insert["courses"] = []
 
-        for course in results:
-            # print course
-            if course[1] is None or course[2] is None:
+        for external_course in external_uni_results:
+            print external_course
+            if external_course[1] is None or external_course[2] is None:
+                print "!--- Course code or course title is None ---!"
                 continue
             # similarity_score = get_similarity(unsw_course[3], course[3])
             # if similarity_score is None or similarity_score < 0.82:
@@ -132,17 +216,17 @@ def get_target_courses(courses, universities):
             # find the uni dict to add to
             target_dict = None
             for uni_dict in uni_dict_list:
-                if uni_dict["university"] == course[0]:
+                if uni_dict["university"] == external_course[0]:
                     target_dict = uni_dict
                     break
 
             emails = []
-            if course[5] != "" and course[5] is not None:
-                emails = course[5].split(",")
+            if external_course[5] != "" and external_course[5] is not None:
+                emails = external_course[5].split(",")
 
             # bad making queries per course will change later if have time
             try:
-                sentence_table_list = sentence_dict_by_uni[course[0]][course[3]]
+                sentence_table_list = sentence_dict_by_course[external_course[3]]
             except KeyError as e:
                 continue
 
@@ -164,19 +248,20 @@ def get_target_courses(courses, universities):
             unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
             unsw_url = "./static/files/unsw/" + unsw_url
 
-            keywords_from_db = course[4]
+            keywords_from_db = external_course[4]
             keywords = []
             if keywords_from_db != "":
                 keywords.append(keywords_from_db)
 
-
+            print course_list
+            # each one of these is an external course
             unsw_course_to_insert["courses"].append( {
-                "name": course[1] + " " + course[2],
-                "id": course[3],
+                "name": external_course[1] + " " + external_course[2],
+                "id": external_course[3],
                 "keywords": keywords,
-                "similarity_score": 1.00,
+                "similarity_score": course_similarity_dict[external_course[3]],
                 "emails": emails,
-                "url": course[6],
+                "url": external_course[6],
                 "url2": unsw_url,
                 "assessments": sentences_in_classes["assessments"],
                 "contact_hours": sentences_in_classes["contact_hours"],
@@ -185,11 +270,12 @@ def get_target_courses(courses, universities):
                 "textbooks": sentences_in_classes["textbooks"]
             })
 
-        # unsw_course_to_insert["courses"].sort(key=lambda x: x.similarity_score, reverse=True)
+        unsw_course_to_insert["courses"].sort(key=lambda x: x['similarity_score'], reverse=True)
+        print unsw_course_to_insert
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
-    # print uni_dict_list
+    print uni_dict_list
     return uni_dict_list
 
 def get_similarity(course1, course2):
@@ -218,4 +304,10 @@ def get_sentences_by_uni(university):
     query = "SELECT b.university, b.id, a.text, a.class FROM sentence a JOIN course_scrape b ON a.course = b.id WHERE b.university = '%s';" % university
     results = execute_query(query)
     return results
+
+def get_sentences_by_course(course):
+    query = "SELECT b.university, b.id, a.text, a.class FROM sentence a JOIN course_scrape b ON a.course = b.id WHERE a.course = '%s';" % course
+    results = execute_query(query)
+    return results
+
 #conn = get_connection(app)
