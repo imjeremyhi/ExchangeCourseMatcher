@@ -4750,12 +4750,16 @@ var Autocomplete = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Autocomplete.__proto__ || Object.getPrototypeOf(Autocomplete)).call(this, props));
 
     _this.state = {
-      value: props.value || ''
+      value: props.value || '',
+      maybeShowAll: false
     };
 
     _this.renderIcon = _this.renderIcon.bind(_this);
     _this.renderDropdown = _this.renderDropdown.bind(_this);
     _this._onChange = _this._onChange.bind(_this);
+    // added myself
+    _this._setMaybeShowAll = _this._setMaybeShowAll.bind(_this);
+    _this._hideSuggestions = _this._hideSuggestions.bind(_this);
     return _this;
   }
 
@@ -4766,6 +4770,10 @@ var Autocomplete = function (_Component) {
 
       if (value !== undefined) {
         this.setState({ value: value });
+      }
+
+      if (this.state.maybeShowAll === true) {
+        this.setState({ maybeShowAll: false });
       }
     }
   }, {
@@ -4782,17 +4790,29 @@ var Autocomplete = function (_Component) {
     value: function renderDropdown(data, minLength, limit) {
       var _this2 = this;
 
-      var value = this.state.value;
+      var _state = this.state,
+          value = _state.value,
+          maybeShowAll = _state.maybeShowAll;
 
 
-      if (minLength && minLength > value.length || !value) {
+      if (minLength && minLength > value.length || !maybeShowAll && !value) {
         return null;
       }
 
-      var matches = Object.keys(data).filter(function (key) {
-        var index = key.toUpperCase().indexOf(value.toUpperCase());
-        return index !== -1 && value.length < key.length;
-      });
+      var matches = [];
+      if (maybeShowAll) {
+        matches = Object.keys(data).filter(function (key) {
+          var index = key.toUpperCase().indexOf(value.toUpperCase());
+          return (/*index !== -1 && */value.length < key.length
+          );
+        });
+      } else {
+        matches = Object.keys(data).filter(function (key) {
+          var index = key.toUpperCase().indexOf(value.toUpperCase());
+          return index !== -1 && value.length < key.length;
+        });
+      }
+
       if (limit) matches = matches.slice(0, limit);
       if (matches.length === 0) {
         return null;
@@ -4814,7 +4834,7 @@ var Autocomplete = function (_Component) {
               _react2.default.createElement(
                 'span',
                 { className: 'highlight' },
-                value
+                /*key.substring(index, value.length)*/value
               ),
               key.length !== index + value.length ? key.substring(index + value.length) : ''
             )
@@ -4850,6 +4870,19 @@ var Autocomplete = function (_Component) {
 
       this.setState({ value: value });
     }
+
+    // added myself
+
+  }, {
+    key: '_setMaybeShowAll',
+    value: function _setMaybeShowAll() {
+      this.setState({ maybeShowAll: true });
+    }
+  }, {
+    key: '_hideSuggestions',
+    value: function _hideSuggestions() {
+      this.setState({ maybeShowAll: false });
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -4879,7 +4912,7 @@ var Autocomplete = function (_Component) {
       _constants2.default.SIZES.forEach(function (size) {
         classes[size + sizes[size]] = sizes[size];
       });
-
+      // added myself onclick
       return _react2.default.createElement(
         'div',
         _extends({
@@ -4891,7 +4924,9 @@ var Autocomplete = function (_Component) {
           id: _id,
           onChange: this._onChange,
           type: 'text',
-          value: this.state.value
+          value: this.state.value,
+          onFocus: this._setMaybeShowAll,
+          onBlur: this._hideSuggestions
         }),
         _react2.default.createElement(
           'label',

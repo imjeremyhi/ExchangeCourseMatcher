@@ -31,30 +31,28 @@ class Search extends React.Component {
     console.log("text updated!");
   }
 
-  add(event) {
-    setTimeout(() => {
-      var curVal = $("#" + this.props.dataType).children().first().val();
-      var data = this.state.data;
+  add(value) {
+    var curVal = value;
+    var data = this.state.data;
 
-      if (curVal in data) {
-        var curList = this.state.appendedList;
-        curList.push(curVal);
+    if (curVal in data) {
+      var curList = this.state.appendedList;
+      curList.push(curVal);
 
-        delete data[curVal];
+      delete data[curVal];
 
-        this.setState({
-          searchedText: "",
-          appendedList: curList,
-          data: data
-        });
+      this.setState({
+        searchedText: "",
+        appendedList: curList,
+        data: data
+      });
 
-        if (this.props.dataType == "Countries") {
-          this.props.handleCountriesFilterChange(this.state.appendedList);
-        }
-
-        $("#" + this.props.dataType).children().first().val("");
+      if (this.props.dataType == "Countries") {
+        this.props.handleCountriesFilterChange(this.state.appendedList);
       }
-    }, 100);
+
+      //$("#" + this.props.dataType).children().first().val("");
+    }
   }
 
   remove(listItem) {
@@ -97,7 +95,7 @@ class Search extends React.Component {
               this.state.data
             }
             value=""
-            onClick={this.add}
+            onAutocomplete={this.add}
           />
         </Row>
         <Row id={"collection-" + this.props.dataType}>

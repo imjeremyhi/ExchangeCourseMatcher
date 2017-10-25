@@ -26335,12 +26335,16 @@ var Autocomplete = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Autocomplete.__proto__ || Object.getPrototypeOf(Autocomplete)).call(this, props));
 
     _this.state = {
-      value: props.value || ''
+      value: props.value || '',
+      maybeShowAll: false
     };
 
     _this.renderIcon = _this.renderIcon.bind(_this);
     _this.renderDropdown = _this.renderDropdown.bind(_this);
     _this._onChange = _this._onChange.bind(_this);
+    // added myself
+    _this._setMaybeShowAll = _this._setMaybeShowAll.bind(_this);
+    _this._hideSuggestions = _this._hideSuggestions.bind(_this);
     return _this;
   }
 
@@ -26351,6 +26355,10 @@ var Autocomplete = function (_Component) {
 
       if (value !== undefined) {
         this.setState({ value: value });
+      }
+
+      if (this.state.maybeShowAll === true) {
+        this.setState({ maybeShowAll: false });
       }
     }
   }, {
@@ -26367,17 +26375,29 @@ var Autocomplete = function (_Component) {
     value: function renderDropdown(data, minLength, limit) {
       var _this2 = this;
 
-      var value = this.state.value;
+      var _state = this.state,
+          value = _state.value,
+          maybeShowAll = _state.maybeShowAll;
 
 
-      if (minLength && minLength > value.length || !value) {
+      if (minLength && minLength > value.length || !maybeShowAll && !value) {
         return null;
       }
 
-      var matches = Object.keys(data).filter(function (key) {
-        var index = key.toUpperCase().indexOf(value.toUpperCase());
-        return index !== -1 && value.length < key.length;
-      });
+      var matches = [];
+      if (maybeShowAll) {
+        matches = Object.keys(data).filter(function (key) {
+          var index = key.toUpperCase().indexOf(value.toUpperCase());
+          return (/*index !== -1 && */value.length < key.length
+          );
+        });
+      } else {
+        matches = Object.keys(data).filter(function (key) {
+          var index = key.toUpperCase().indexOf(value.toUpperCase());
+          return index !== -1 && value.length < key.length;
+        });
+      }
+
       if (limit) matches = matches.slice(0, limit);
       if (matches.length === 0) {
         return null;
@@ -26399,7 +26419,7 @@ var Autocomplete = function (_Component) {
               _react2.default.createElement(
                 'span',
                 { className: 'highlight' },
-                value
+                /*key.substring(index, value.length)*/value
               ),
               key.length !== index + value.length ? key.substring(index + value.length) : ''
             )
@@ -26435,6 +26455,19 @@ var Autocomplete = function (_Component) {
 
       this.setState({ value: value });
     }
+
+    // added myself
+
+  }, {
+    key: '_setMaybeShowAll',
+    value: function _setMaybeShowAll() {
+      this.setState({ maybeShowAll: true });
+    }
+  }, {
+    key: '_hideSuggestions',
+    value: function _hideSuggestions() {
+      this.setState({ maybeShowAll: false });
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -26464,7 +26497,7 @@ var Autocomplete = function (_Component) {
       _constants2.default.SIZES.forEach(function (size) {
         classes[size + sizes[size]] = sizes[size];
       });
-
+      // added myself onclick
       return _react2.default.createElement(
         'div',
         _extends({
@@ -26476,7 +26509,9 @@ var Autocomplete = function (_Component) {
           id: _id,
           onChange: this._onChange,
           type: 'text',
-          value: this.state.value
+          value: this.state.value,
+          onFocus: this._setMaybeShowAll,
+          onBlur: this._hideSuggestions
         }),
         _react2.default.createElement(
           'label',
@@ -26896,37 +26931,33 @@ var Search = function (_React$Component) {
     }
   }, {
     key: 'add',
-    value: function add(event) {
-      var _this3 = this;
+    value: function add(value) {
+      var curVal = value;
+      var data = this.state.data;
 
-      setTimeout(function () {
-        var curVal = $("#" + _this3.props.dataType).children().first().val();
-        var data = _this3.state.data;
+      if (curVal in data) {
+        var curList = this.state.appendedList;
+        curList.push(curVal);
 
-        if (curVal in data) {
-          var curList = _this3.state.appendedList;
-          curList.push(curVal);
+        delete data[curVal];
 
-          delete data[curVal];
+        this.setState({
+          searchedText: "",
+          appendedList: curList,
+          data: data
+        });
 
-          _this3.setState({
-            searchedText: "",
-            appendedList: curList,
-            data: data
-          });
-
-          if (_this3.props.dataType == "Countries") {
-            _this3.props.handleCountriesFilterChange(_this3.state.appendedList);
-          }
-
-          $("#" + _this3.props.dataType).children().first().val("");
+        if (this.props.dataType == "Countries") {
+          this.props.handleCountriesFilterChange(this.state.appendedList);
         }
-      }, 100);
+
+        //$("#" + this.props.dataType).children().first().val("");
+      }
     }
   }, {
     key: 'remove',
     value: function remove(listItem) {
-      var _this4 = this;
+      var _this3 = this;
 
       var curList = this.state.appendedList;
 
@@ -26950,7 +26981,7 @@ var Search = function (_React$Component) {
       }
 
       setTimeout(function () {
-        $("#" + _this4.props.dataType).children().first().val("");
+        $("#" + _this3.props.dataType).children().first().val("");
       }, 100);
     }
 
@@ -26960,7 +26991,7 @@ var Search = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this4 = this;
 
       return React.createElement(
         _reactMaterialize.Card,
@@ -26973,7 +27004,7 @@ var Search = function (_React$Component) {
             title: this.props.dataType,
             data: this.state.data,
             value: '',
-            onClick: this.add
+            onAutocomplete: this.add
           })
         ),
         React.createElement(
@@ -26989,10 +27020,10 @@ var Search = function (_React$Component) {
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
-                  _this5.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this5.props.dataType + "-ids", value: _this5.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
+                  _this4.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: _this4.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
-                    { className: "search-list-item-" + _this5.props.dataType },
+                    { className: "search-list-item-" + _this4.props.dataType },
                     listItem
                   )
                 ),
@@ -27002,7 +27033,7 @@ var Search = function (_React$Component) {
                   React.createElement(
                     _reactMaterialize.Button,
                     { href: '#', type: 'button', onClick: function onClick() {
-                        return _this5.remove(listItem);
+                        return _this4.remove(listItem);
                       }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
                     'Remove'
                   )
@@ -27027,10 +27058,10 @@ var ResultsTable = function (_React$Component2) {
     console.log("props");
     console.log(props);
 
-    var _this6 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
 
-    _this6.compare = _this6.compare.bind(_this6);
-    return _this6;
+    _this5.compare = _this5.compare.bind(_this5);
+    return _this5;
   }
 
   _createClass(ResultsTable, [{
@@ -27052,7 +27083,7 @@ var ResultsTable = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
-      var _this7 = this;
+      var _this6 = this;
 
       console.log("this.props.data.length: " + this.props.data.length);
       return React.createElement(
@@ -27090,7 +27121,7 @@ var ResultsTable = function (_React$Component2) {
                             React.createElement(
                               'a',
                               { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': course.url, href: 'javascript:;', onClick: function onClick() {
-                                  return _this7.compare(course.url2);
+                                  return _this6.compare(course.url2);
                                 }, className: 'compare-img' },
                               React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                             ),
@@ -27267,7 +27298,7 @@ var UniversitiesTable = function (_React$Component3) {
   function UniversitiesTable(props) {
     _classCallCheck(this, UniversitiesTable);
 
-    var _this8 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
 
     var universitiesSelected = {};
     props.universities.forEach(function (university) {
@@ -27275,21 +27306,21 @@ var UniversitiesTable = function (_React$Component3) {
         universitiesSelected[university.name] = university;
       }
     });
-    _this8.state = {
+    _this7.state = {
       universities: props.universities,
       universitiesSelected: universitiesSelected,
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
     };
-    _this8.toggleSelected = _this8.toggleSelected.bind(_this8);
-    _this8.selectAll = _this8.selectAll.bind(_this8);
-    _this8.handleUniversityFilterChange = _this8.handleUniversityFilterChange.bind(_this8);
-    _this8.handleCountryFilterChange = _this8.handleCountryFilterChange.bind(_this8);
-    _this8.filterByUniversity = _this8.filterByUniversity.bind(_this8);
-    _this8.filterByCountry = _this8.filterByCountry.bind(_this8);
-    _this8.mapOverPriorSelection = _this8.mapOverPriorSelection.bind(_this8);
-    return _this8;
+    _this7.toggleSelected = _this7.toggleSelected.bind(_this7);
+    _this7.selectAll = _this7.selectAll.bind(_this7);
+    _this7.handleUniversityFilterChange = _this7.handleUniversityFilterChange.bind(_this7);
+    _this7.handleCountryFilterChange = _this7.handleCountryFilterChange.bind(_this7);
+    _this7.filterByUniversity = _this7.filterByUniversity.bind(_this7);
+    _this7.filterByCountry = _this7.filterByCountry.bind(_this7);
+    _this7.mapOverPriorSelection = _this7.mapOverPriorSelection.bind(_this7);
+    return _this7;
   }
 
   _createClass(UniversitiesTable, [{
@@ -27344,10 +27375,10 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'mapOverPriorSelection',
     value: function mapOverPriorSelection(universities) {
-      var _this9 = this;
+      var _this8 = this;
 
       var universitiesWithPriorSelection = universities.map(function (university) {
-        if (university.name in _this9.state.universitiesSelected) {
+        if (university.name in _this8.state.universitiesSelected) {
           university.isSelected = true;
         }
         return university;
@@ -27397,7 +27428,7 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'render',
     value: function render() {
-      var _this10 = this;
+      var _this9 = this;
 
       console.log('rerendering table');
       return React.createElement(
@@ -27450,7 +27481,7 @@ var UniversitiesTable = function (_React$Component3) {
               React.createElement(
                 'td',
                 null,
-                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this10.toggleSelected, checked: university.isSelected })
+                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this9.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',

@@ -10,17 +10,25 @@ class Autocomplete extends Component {
     super(props);
 
     this.state = {
-      value: props.value || ''
+      value: props.value || '',
+      maybeShowAll: false
     };
 
     this.renderIcon = this.renderIcon.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
     this._onChange = this._onChange.bind(this);
+    // added myself
+    this._setMaybeShowAll = this._setMaybeShowAll.bind(this);
+    this._hideSuggestions = this._hideSuggestions.bind(this);
   }
 
   componentWillReceiveProps ({ value }) {
     if (value !== undefined) {
-      this.setState({ value });
+      this.setState({ value: value });
+    }
+
+    if (this.state.maybeShowAll === true) {
+      this.setState({ maybeShowAll: false})
     }
   }
 
@@ -29,16 +37,25 @@ class Autocomplete extends Component {
   }
 
   renderDropdown (data, minLength, limit) {
-    const { value } = this.state;
+    const { value, maybeShowAll } = this.state;
 
-    if (minLength && minLength > value.length || !value) {
+    if (minLength && minLength > value.length || (!maybeShowAll && !value)) {
       return null;
     }
 
-    let matches = Object.keys(data).filter(key => {
-      const index = key.toUpperCase().indexOf(value.toUpperCase());
-      return index !== -1 && value.length < key.length;
-    });
+    let matches = []
+    if (maybeShowAll) {
+      matches = Object.keys(data).filter(key => {
+        const index = key.toUpperCase().indexOf(value.toUpperCase());
+        return /*index !== -1 && */value.length < key.length;
+      });
+    } else {
+      matches = Object.keys(data).filter(key => {
+        const index = key.toUpperCase().indexOf(value.toUpperCase());
+        return index !== -1 && value.length < key.length;
+      });
+    }
+
     if (limit) matches = matches.slice(0, limit);
     if (matches.length === 0) {
       return null;
@@ -53,7 +70,7 @@ class Autocomplete extends Component {
               {data[key] ? <img src={data[key]} className='right circle' /> : null}
               <span>
                 {index !== 0 ? key.substring(0, index) : ''}
-                <span className='highlight'>{value}</span>
+                <span className='highlight'>{/*key.substring(index, value.length)*/value}</span>
                 {key.length !== index + value.length ? key.substring(index + value.length) : ''}
               </span>
             </li>
@@ -68,7 +85,7 @@ class Autocomplete extends Component {
     const value = evt.target.value;
     if (onChange) { onChange(evt, value); }
 
-    this.setState({ value });
+    this.setState({ value: value });
   }
 
   _onAutocomplete (value, evt) {
@@ -76,7 +93,16 @@ class Autocomplete extends Component {
     if (onAutocomplete) { onAutocomplete(value); }
     if (onChange) { onChange(evt, value); }
 
-    this.setState({ value });
+    this.setState({ value: value });
+  }
+
+  // added myself
+  _setMaybeShowAll () {
+    this.setState({ maybeShowAll: true });
+  }
+
+  _hideSuggestions () {
+    this.setState({ maybeShowAll: false });
   }
 
   render () {
@@ -108,7 +134,7 @@ class Autocomplete extends Component {
     constants.SIZES.forEach(size => {
       classes[size + sizes[size]] = sizes[size];
     });
-
+    // added myself onclick
     return (
       <div
         offset={offset} className={cx('input-field', className, classes)} {...props}>
@@ -120,6 +146,8 @@ class Autocomplete extends Component {
           onChange={this._onChange}
           type='text'
           value={this.state.value}
+          onFocus={this._setMaybeShowAll}
+          onBlur={this._hideSuggestions}
         />
         <label htmlFor={_id}>{title}</label>
         {this.renderDropdown(data, minLength, limit)}
