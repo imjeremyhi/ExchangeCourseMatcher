@@ -158,7 +158,7 @@ def get_target_courses(courses, universities):
         courses_to_query_string += "'"+str(course_to_query)+"', "
 
     query = "SELECT university, course_code, course_title, id, keywords, emails, url FROM course_scrape WHERE id IN (%s);" % courses_to_query_string[:-2]
-    print query
+    # print query
     external_uni_results = execute_query(query)
 
     # and also get the unsw course details
