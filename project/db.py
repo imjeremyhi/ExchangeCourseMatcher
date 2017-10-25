@@ -50,7 +50,8 @@ def get_countries():
 
 def get_universities():
     # print "Getting universities..."
-    query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
+    query = "select distinct university, country from course_scrape join university on name = university;"
+    # query = "SELECT distinct name, country from university where name <> 'University of New South Wales'"
     results = execute_query(query)
     return results
 
@@ -127,15 +128,19 @@ def get_target_courses(courses, universities):
 
     # for quick lookup of similarity
     course_similarity_dict = {}
+    # what course matched with what other course dict
+    course1_course2_dict = {}
+
     # a list of courses that we will need to query later, for better performance
     courses_to_query = []
     for course in courses:
         # e.g. INFS3634 id: 5618
+        course1_course2_dict[course] = []
         course_uni_list = {}
         for uni in universities:
             # e.g. University of Glasgow
             top_matches_query = """
-                select a.course2, a.similarity from
+                select a.course1, a.course2, a.similarity from
                     scrape.similarity a join scrape.course_scrape b
                     on a.course2 = b.id
                     where a.course1 = {0} and
@@ -145,12 +150,13 @@ def get_target_courses(courses, universities):
             """.format(course, uni)
             top_matches = execute_query(top_matches_query)
             for match in top_matches:
-                courses_to_query.append(match[0])
-                course_similarity_dict[match[0]] = match[1]
+                courses_to_query.append(match[1])
+                course_similarity_dict[match[1]] = match[2]
+                course1_course2_dict[str(match[0])].append(match[1])
             course_uni_list[uni] = top_matches
         course_list[course] = course_uni_list
 
-
+    # print course_list
 
     # now we need to query those courses
     courses_to_query_string = ""
@@ -212,6 +218,8 @@ def get_target_courses(courses, universities):
             for external_course in external_uni_results:
                 # print external_course
                 if external_course[0] != university:
+                    continue
+                if external_course[3] not in course1_course2_dict[str(unsw_course[3])]:
                     continue
                 if external_course[1] is None or external_course[2] is None:
                     # print "!--- Course code or course title is None ---!"
