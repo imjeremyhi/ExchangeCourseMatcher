@@ -194,7 +194,7 @@ def get_target_courses(courses, universities):
 
         for sent_uni, sent_course, sent_text, sent_class in sentences_by_course:
             sentence_dict_by_course[sent_course].append((sent_text, sent_class))
-    print sentence_dict_by_course
+    # print sentence_dict_by_course
 
     for unsw_course in unsw_courses:
 
@@ -204,9 +204,9 @@ def get_target_courses(courses, universities):
         unsw_course_to_insert["courses"] = []
 
         for external_course in external_uni_results:
-            print external_course
+            # print external_course
             if external_course[1] is None or external_course[2] is None:
-                print "!--- Course code or course title is None ---!"
+                # print "!--- Course code or course title is None ---!"
                 continue
             # similarity_score = get_similarity(unsw_course[3], course[3])
             # if similarity_score is None or similarity_score < 0.82:
@@ -253,7 +253,7 @@ def get_target_courses(courses, universities):
             if keywords_from_db != "":
                 keywords.append(keywords_from_db)
 
-            print course_list
+            # print course_list
             # each one of these is an external course
             unsw_course_to_insert["courses"].append( {
                 "name": external_course[1] + " " + external_course[2],
@@ -271,11 +271,11 @@ def get_target_courses(courses, universities):
             })
 
         unsw_course_to_insert["courses"].sort(key=lambda x: x['similarity_score'], reverse=True)
-        print unsw_course_to_insert
+        # print unsw_course_to_insert
 
         uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
-    print uni_dict_list
+    # print uni_dict_list
     return uni_dict_list
 
 def get_similarity(course1, course2):
