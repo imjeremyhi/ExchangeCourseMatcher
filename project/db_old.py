@@ -195,90 +195,87 @@ def get_target_courses(courses, universities):
         for sent_uni, sent_course, sent_text, sent_class in sentences_by_course:
             sentence_dict_by_course[sent_course].append((sent_text, sent_class))
     # print sentence_dict_by_course
-    for university in universities:
-        target_dict = None
-        for uni_dict in uni_dict_list:
-            if uni_dict["university"] == university:
-                target_dict = uni_dict
-                break
 
-        for unsw_course in unsw_courses:
+    for unsw_course in unsw_courses:
 
-            # print "For " + unsw_course[0] + " " + unsw_course[1]
-            unsw_course_to_insert = {}
-            unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
-            unsw_course_to_insert["courses"] = []
+        # print "For " + unsw_course[0] + " " + unsw_course[1]
+        unsw_course_to_insert = {}
+        unsw_course_to_insert["name"] = unsw_course[0] + " " + unsw_course[1]
+        unsw_course_to_insert["courses"] = []
 
-            for external_course in external_uni_results:
-                # print external_course
-                if external_course[0] != university:
-                    continue
-                if external_course[1] is None or external_course[2] is None:
-                    # print "!--- Course code or course title is None ---!"
-                    continue
-                # similarity_score = get_similarity(unsw_course[3], course[3])
-                # if similarity_score is None or similarity_score < 0.82:
-                #     continue
-                # # similarity_score = "90%"
+        for external_course in external_uni_results:
+            # print external_course
+            if external_course[1] is None or external_course[2] is None:
+                # print "!--- Course code or course title is None ---!"
+                continue
+            # similarity_score = get_similarity(unsw_course[3], course[3])
+            # if similarity_score is None or similarity_score < 0.82:
+            #     continue
+            # # similarity_score = "90%"
 
-                # find the uni dict to add to
+            # find the uni dict to add to
+            target_dict = None
+            for uni_dict in uni_dict_list:
+                if uni_dict["university"] == external_course[0]:
+                    target_dict = uni_dict
+                    break
 
-                emails = []
-                if external_course[5] != "" and external_course[5] is not None:
-                    emails = external_course[5].split(",")
+            emails = []
+            if external_course[5] != "" and external_course[5] is not None:
+                emails = external_course[5].split(",")
 
-                # bad making queries per course will change later if have time
-                try:
-                    sentence_table_list = sentence_dict_by_course[external_course[3]]
-                except KeyError as e:
-                    continue
+            # bad making queries per course will change later if have time
+            try:
+                sentence_table_list = sentence_dict_by_course[external_course[3]]
+            except KeyError as e:
+                continue
 
-                sentences_in_classes = {
-                    "assessments": [],
-                    "contact_hours": [],
-                    "course_content": [],
-                    "course_outcomes": [],
-                    "textbooks": []
-                }
-                for sentence in sentence_table_list:
-                    # sentence[0] is text, sentence[1] is class
-                    sentences_in_classes[sentence[1]].append(sentence[0])
-                # print("stderr", file=sys.stderr)
-                # print(sentence_table_list, file=sys.stderr)
-                # print("stdout", file=sys.stdout)
-                # print(sentence_table_list, file=sys.stdout)
-                unsw_url_pattern = re.compile("([^/]*$)")
-                unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
-                unsw_url = "./static/files/unsw/" + unsw_url
+            sentences_in_classes = {
+                "assessments": [],
+                "contact_hours": [],
+                "course_content": [],
+                "course_outcomes": [],
+                "textbooks": []
+            }
+            for sentence in sentence_table_list:
+                # sentence[0] is text, sentence[1] is class
+                sentences_in_classes[sentence[1]].append(sentence[0])
+            # print("stderr", file=sys.stderr)
+            # print(sentence_table_list, file=sys.stderr)
+            # print("stdout", file=sys.stdout)
+            # print(sentence_table_list, file=sys.stdout)
+            unsw_url_pattern = re.compile("([^/]*$)")
+            unsw_url = re.search(unsw_url_pattern, unsw_course[2]).group(0)
+            unsw_url = "./static/files/unsw/" + unsw_url
 
-                keywords_from_db = external_course[4]
-                keywords = []
-                if keywords_from_db != "":
-                    keywords.append(keywords_from_db)
+            keywords_from_db = external_course[4]
+            keywords = []
+            if keywords_from_db != "":
+                keywords.append(keywords_from_db)
 
-                # print course_list
-                # each one of these is an external course
-                unsw_course_to_insert["courses"].append( {
-                    "name": external_course[1] + " " + external_course[2],
-                    "similarity_score": course_similarity_dict[external_course[3]],
-                    "emails": emails,
-                    "url": external_course[6],
-                    "url2": unsw_url,
-                    "assessments": sentences_in_classes["assessments"],
-                    "contact_hours": sentences_in_classes["contact_hours"],
-                    "course_content": sentences_in_classes["course_content"],
-                    "course_outcomes": sentences_in_classes["course_outcomes"],
-                    "textbooks": sentences_in_classes["textbooks"],
-                    "keywords": keywords
-                })
+            # print course_list
+            # each one of these is an external course
+            unsw_course_to_insert["courses"].append( {
+                "name": external_course[1] + " " + external_course[2],
+                "id": external_course[3],
+                "keywords": keywords,
+                "similarity_score": course_similarity_dict[external_course[3]],
+                "emails": emails,
+                "url": external_course[6],
+                "url2": unsw_url,
+                "assessments": sentences_in_classes["assessments"],
+                "contact_hours": sentences_in_classes["contact_hours"],
+                "course_content": sentences_in_classes["course_content"],
+                "course_outcomes": sentences_in_classes["course_outcomes"],
+                "textbooks": sentences_in_classes["textbooks"]
+            })
 
-            unsw_course_to_insert["courses"].sort(key=lambda x: x['similarity_score'], reverse=True)
-            # print unsw_course_to_insert
-            target_dict["unsw_courses"].append(unsw_course_to_insert)
+        unsw_course_to_insert["courses"].sort(key=lambda x: x['similarity_score'], reverse=True)
+        # print unsw_course_to_insert
 
-            # print target_dict
+        uni_dict["unsw_courses"].append(unsw_course_to_insert)
 
-        # print uni_dict_list
+    # print uni_dict_list
     return uni_dict_list
 
 def get_similarity(course1, course2):
