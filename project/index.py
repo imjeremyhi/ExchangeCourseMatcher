@@ -28,15 +28,15 @@ def handle_ajax_request(courses = None, universities = None, countries = None):
     if len(courses_query_list) > 0:
         course_list = json.loads(courses)
         results = get_matches(courses_query_list, universities_query_list, countries_query_list)
-        for unsw_course in course_list:
+        # for unsw_course in course_list:
             # print unsw_course
-            unsw_keywords = get_course_keywords_by_id(unsw_course)[0]
+            #unsw_keywords = get_course_keywords_by_id(unsw_course)[0]
 
             # acct1501
-            for university_dict in results:
-            # gatech
-                for target_course in university_dict["unsw_courses"]:
-                    pass
+            # for university_dict in results:
+            # # gatech
+            #     for target_course in university_dict["unsw_courses"]:
+            #         pass
                     # print target_course
 
                     #compare unsw_course vs target_course

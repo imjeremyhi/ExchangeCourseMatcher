@@ -26357,9 +26357,9 @@ var Autocomplete = function (_Component) {
         this.setState({ value: value });
       }
 
-      if (this.state.maybeShowAll === true) {
-        this.setState({ maybeShowAll: false });
-      }
+      // if (this.state.maybeShowAll === true) {
+      //   this.setState({ maybeShowAll: false})
+      // }
     }
   }, {
     key: 'renderIcon',
@@ -26380,12 +26380,12 @@ var Autocomplete = function (_Component) {
           maybeShowAll = _state.maybeShowAll;
 
 
-      if (minLength && minLength > value.length || !maybeShowAll && !value) {
+      if (minLength && minLength > value.length || !maybeShowAll) {
         return null;
       }
 
       var matches = [];
-      if (maybeShowAll) {
+      if (maybeShowAll && !value) {
         matches = Object.keys(data).filter(function (key) {
           var index = key.toUpperCase().indexOf(value.toUpperCase());
           return (/*index !== -1 && */value.length < key.length
@@ -26419,7 +26419,7 @@ var Autocomplete = function (_Component) {
               _react2.default.createElement(
                 'span',
                 { className: 'highlight' },
-                /*key.substring(index, value.length)*/value
+                key.substring(index, index + value.length) /*value*/
               ),
               key.length !== index + value.length ? key.substring(index + value.length) : ''
             )
@@ -26442,6 +26442,7 @@ var Autocomplete = function (_Component) {
   }, {
     key: '_onAutocomplete',
     value: function _onAutocomplete(value, evt) {
+      console.log('in auto complete');
       var _props = this.props,
           onChange = _props.onChange,
           onAutocomplete = _props.onAutocomplete;
@@ -26453,7 +26454,8 @@ var Autocomplete = function (_Component) {
         onChange(evt, value);
       }
 
-      this.setState({ value: value });
+      this.setState({ value: "" });
+      //this.setState({ value: value });
     }
 
     // added myself
@@ -26466,7 +26468,11 @@ var Autocomplete = function (_Component) {
   }, {
     key: '_hideSuggestions',
     value: function _hideSuggestions() {
-      this.setState({ maybeShowAll: false });
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.setState({ maybeShowAll: false });
+      }, 100);
     }
   }, {
     key: 'render',
@@ -26677,12 +26683,10 @@ var Search = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
     _this.state = {
-      searchedText: '',
       appendedList: [],
       data: props.data
     };
 
-    _this.handleChange = _this.handleChange.bind(_this);
     _this.add = _this.add.bind(_this);
     _this.remove = _this.remove.bind(_this);
     return _this;
@@ -26691,25 +26695,18 @@ var Search = function (_React$Component) {
   _createClass(Search, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      var _this2 = this;
-
       this.setState({
         data: nextProps.data
       });
 
-      setTimeout(function () {
-        $("#" + _this2.props.dataType).children().first().val("");
-      }, 100);
-    }
-  }, {
-    key: 'handleChange',
-    value: function handleChange(event) {
-      this.setState({ searchedText: event.target.value });
-      console.log("text updated!");
+      // setTimeout(() => {
+      //   $("#" + this.props.dataType).children().first().val("");
+      // }, 100);
     }
   }, {
     key: 'add',
     value: function add(value) {
+      console.log('here');
       var curVal = value;
       var data = this.state.data;
 
@@ -26720,7 +26717,6 @@ var Search = function (_React$Component) {
         delete data[curVal];
 
         this.setState({
-          searchedText: "",
           appendedList: curList,
           data: data
         });
@@ -26735,8 +26731,6 @@ var Search = function (_React$Component) {
   }, {
     key: 'remove',
     value: function remove(listItem) {
-      var _this3 = this;
-
       var curList = this.state.appendedList;
 
       var index = curList.indexOf(listItem);
@@ -26749,7 +26743,6 @@ var Search = function (_React$Component) {
       data[item] = null;
 
       this.setState({
-        searchedText: "",
         appendedList: curList,
         data: data
       });
@@ -26758,9 +26751,9 @@ var Search = function (_React$Component) {
         this.props.handleCountriesFilterChange(this.state.appendedList);
       }
 
-      setTimeout(function () {
-        $("#" + _this3.props.dataType).children().first().val("");
-      }, 100);
+      // setTimeout(() => {
+      //   $("#" + this.props.dataType).children().first().val("");
+      // }, 100);
     }
 
     // todo collection onClick delete, have hover effect of bin
@@ -26769,7 +26762,7 @@ var Search = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this2 = this;
 
       return React.createElement(
         _reactMaterialize.Card,
@@ -26798,10 +26791,10 @@ var Search = function (_React$Component) {
                 React.createElement(
                   _reactMaterialize.Col,
                   { s: 9 },
-                  _this4.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this4.props.dataType + "-ids", value: _this4.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
+                  _this2.props.dataType == "Courses" ? React.createElement('input', { type: 'hidden', className: "search-list-item-" + _this2.props.dataType + "-ids", value: _this2.props.ids[listItem] }) : React.createElement('input', { type: 'hidden' }),
                   React.createElement(
                     _reactMaterialize.CollectionItem,
-                    { className: "search-list-item-" + _this4.props.dataType },
+                    { className: "search-list-item-" + _this2.props.dataType },
                     listItem
                   )
                 ),
@@ -26811,7 +26804,7 @@ var Search = function (_React$Component) {
                   React.createElement(
                     _reactMaterialize.Button,
                     { href: '#', type: 'button', onClick: function onClick() {
-                        return _this4.remove(listItem);
+                        return _this2.remove(listItem);
                       }, style: { margin: "5px", float: "right", marginRight: "-40%" } },
                     'Remove'
                   )
@@ -26836,10 +26829,10 @@ var ResultsTable = function (_React$Component2) {
     console.log("props");
     console.log(props);
 
-    var _this5 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
+    var _this3 = _possibleConstructorReturn(this, (ResultsTable.__proto__ || Object.getPrototypeOf(ResultsTable)).call(this, props));
 
-    _this5.compare = _this5.compare.bind(_this5);
-    return _this5;
+    _this3.compare = _this3.compare.bind(_this3);
+    return _this3;
   }
 
   _createClass(ResultsTable, [{
@@ -26861,7 +26854,7 @@ var ResultsTable = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this4 = this;
 
       console.log("this.props.data.length: " + this.props.data.length);
       return React.createElement(
@@ -26870,6 +26863,11 @@ var ResultsTable = function (_React$Component2) {
         this.props.data.length > 0 && React.createElement(
           'div',
           null,
+          React.createElement(
+            'p',
+            { id: 'note-for-user-results-table' },
+            'Please note only universities with matches will be shown below'
+          ),
           React.createElement(
             'div',
             { id: 'matches-title-header' },
@@ -26899,7 +26897,7 @@ var ResultsTable = function (_React$Component2) {
                             React.createElement(
                               'a',
                               { 'data-fancybox': true, 'data-type': 'iframe', 'data-src': course.url, href: 'javascript:;', onClick: function onClick() {
-                                  return _this6.compare(course.url2);
+                                  return _this4.compare(course.url2);
                                 }, className: 'compare-img' },
                               React.createElement('img', { src: './static/imgs/scales.png', id: 'compare-img-actual-img' })
                             ),
@@ -27076,7 +27074,7 @@ var UniversitiesTable = function (_React$Component3) {
   function UniversitiesTable(props) {
     _classCallCheck(this, UniversitiesTable);
 
-    var _this7 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (UniversitiesTable.__proto__ || Object.getPrototypeOf(UniversitiesTable)).call(this, props));
 
     var universitiesSelected = {};
     props.universities.forEach(function (university) {
@@ -27084,21 +27082,21 @@ var UniversitiesTable = function (_React$Component3) {
         universitiesSelected[university.name] = university;
       }
     });
-    _this7.state = {
+    _this5.state = {
       universities: props.universities,
       universitiesSelected: universitiesSelected,
       selectAll: false,
       universitiesFilter: '',
       countriesFilter: ''
     };
-    _this7.toggleSelected = _this7.toggleSelected.bind(_this7);
-    _this7.selectAll = _this7.selectAll.bind(_this7);
-    _this7.handleUniversityFilterChange = _this7.handleUniversityFilterChange.bind(_this7);
-    _this7.handleCountryFilterChange = _this7.handleCountryFilterChange.bind(_this7);
-    _this7.filterByUniversity = _this7.filterByUniversity.bind(_this7);
-    _this7.filterByCountry = _this7.filterByCountry.bind(_this7);
-    _this7.mapOverPriorSelection = _this7.mapOverPriorSelection.bind(_this7);
-    return _this7;
+    _this5.toggleSelected = _this5.toggleSelected.bind(_this5);
+    _this5.selectAll = _this5.selectAll.bind(_this5);
+    _this5.handleUniversityFilterChange = _this5.handleUniversityFilterChange.bind(_this5);
+    _this5.handleCountryFilterChange = _this5.handleCountryFilterChange.bind(_this5);
+    _this5.filterByUniversity = _this5.filterByUniversity.bind(_this5);
+    _this5.filterByCountry = _this5.filterByCountry.bind(_this5);
+    _this5.mapOverPriorSelection = _this5.mapOverPriorSelection.bind(_this5);
+    return _this5;
   }
 
   _createClass(UniversitiesTable, [{
@@ -27153,10 +27151,10 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'mapOverPriorSelection',
     value: function mapOverPriorSelection(universities) {
-      var _this8 = this;
+      var _this6 = this;
 
       var universitiesWithPriorSelection = universities.map(function (university) {
-        if (university.name in _this8.state.universitiesSelected) {
+        if (university.name in _this6.state.universitiesSelected) {
           university.isSelected = true;
         }
         return university;
@@ -27206,7 +27204,7 @@ var UniversitiesTable = function (_React$Component3) {
   }, {
     key: 'render',
     value: function render() {
-      var _this9 = this;
+      var _this7 = this;
 
       console.log('rerendering table');
       return React.createElement(
@@ -27259,7 +27257,7 @@ var UniversitiesTable = function (_React$Component3) {
               React.createElement(
                 'td',
                 null,
-                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this9.toggleSelected, checked: university.isSelected })
+                React.createElement(_reactMaterialize.Input, { type: 'checkbox', label: ' ', id: university.name, onChange: _this7.toggleSelected, checked: university.isSelected })
               ),
               React.createElement(
                 'td',

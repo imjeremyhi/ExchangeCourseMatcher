@@ -27,9 +27,9 @@ class Autocomplete extends Component {
       this.setState({ value: value });
     }
 
-    if (this.state.maybeShowAll === true) {
-      this.setState({ maybeShowAll: false})
-    }
+    // if (this.state.maybeShowAll === true) {
+    //   this.setState({ maybeShowAll: false})
+    // }
   }
 
   renderIcon (icon, iconClassName) {
@@ -39,12 +39,12 @@ class Autocomplete extends Component {
   renderDropdown (data, minLength, limit) {
     const { value, maybeShowAll } = this.state;
 
-    if (minLength && minLength > value.length || (!maybeShowAll && !value)) {
+    if (minLength && minLength > value.length || (!maybeShowAll)) {
       return null;
     }
 
     let matches = []
-    if (maybeShowAll) {
+    if (maybeShowAll && !value) {
       matches = Object.keys(data).filter(key => {
         const index = key.toUpperCase().indexOf(value.toUpperCase());
         return /*index !== -1 && */value.length < key.length;
@@ -70,7 +70,7 @@ class Autocomplete extends Component {
               {data[key] ? <img src={data[key]} className='right circle' /> : null}
               <span>
                 {index !== 0 ? key.substring(0, index) : ''}
-                <span className='highlight'>{/*key.substring(index, value.length)*/value}</span>
+                <span className='highlight'>{key.substring(index, index+value.length)/*value*/}</span>
                 {key.length !== index + value.length ? key.substring(index + value.length) : ''}
               </span>
             </li>
@@ -89,11 +89,13 @@ class Autocomplete extends Component {
   }
 
   _onAutocomplete (value, evt) {
+    console.log('in auto complete')
     const { onChange, onAutocomplete } = this.props;
     if (onAutocomplete) { onAutocomplete(value); }
     if (onChange) { onChange(evt, value); }
 
-    this.setState({ value: value });
+    this.setState({ value: "" });
+    //this.setState({ value: value });
   }
 
   // added myself
@@ -102,7 +104,9 @@ class Autocomplete extends Component {
   }
 
   _hideSuggestions () {
-    this.setState({ maybeShowAll: false });
+    setTimeout(() => {
+      this.setState({ maybeShowAll: false });
+    }, 100);
   }
 
   render () {

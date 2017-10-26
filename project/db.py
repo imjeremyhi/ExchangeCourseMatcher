@@ -62,7 +62,7 @@ def get_matches(courses, universities, countries):
     target_course_list = get_target_courses(courses, universities)
     # print target_course_list
 
-    query = "SELECT similarity from similarity where unsw_course = '%s'" % courses[0]
+    #query = "SELECT similarity from similarity where unsw_course = '%s'" % courses[0]
     #
     # for course in courses:
     #     query += " or unsw_course = '%s'" % course
@@ -287,6 +287,7 @@ def get_target_courses(courses, universities):
             # print target_dict
 
         # print uni_dict_list
+        # filter out universities with 0 matches for all courses
     return uni_dict_list
 
 def get_similarity(course1, course2):

@@ -81,6 +81,10 @@ thead {
 	position: relative !important;
 }
 
+.autocomplete-content > li > span {
+	color: #FEC412 !important;
+}
+
 #collection-Courses, #collection-Universities, #collection-Countries {
 	overflow-y: scroll !important;
 	height: 330px !important;
@@ -133,4 +137,8 @@ html {
 
 .btn {
 	background-color: #FEC412 !important;
+}
+
+.active {
+	color: #FEC412 !important;
 }

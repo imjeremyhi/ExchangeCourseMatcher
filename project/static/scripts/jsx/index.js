@@ -60,9 +60,11 @@ class HomePage extends React.Component {
     console.log(countriesSelected);
     var curUniversities = {};
     countriesSelected.forEach(country => {
-      this.state.universitiesCountries[country].forEach(university => {
-        curUniversities[university] = null;
-      });
+      if (this.state.universitiesCountries[country]) {
+        this.state.universitiesCountries[country].forEach(university => {
+          curUniversities[university] = null;
+        });
+      }
     });
 
     console.log(curUniversities);

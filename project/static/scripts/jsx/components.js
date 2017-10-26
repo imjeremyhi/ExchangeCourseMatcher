@@ -6,12 +6,10 @@ class Search extends React.Component {
     super(props);
 
     this.state = {
-      searchedText: '',
       appendedList: [],
       data: props.data
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.add = this.add.bind(this);
     this.remove = this.remove.bind(this);
   }
@@ -21,17 +19,13 @@ class Search extends React.Component {
       data: nextProps.data
     });
 
-    setTimeout(() => {
-      $("#" + this.props.dataType).children().first().val("");
-    }, 100);
-  }
-
-  handleChange(event) {
-    this.setState({searchedText: event.target.value });
-    console.log("text updated!");
+    // setTimeout(() => {
+    //   $("#" + this.props.dataType).children().first().val("");
+    // }, 100);
   }
 
   add(value) {
+    console.log('here');
     var curVal = value;
     var data = this.state.data;
 
@@ -42,7 +36,6 @@ class Search extends React.Component {
       delete data[curVal];
 
       this.setState({
-        searchedText: "",
         appendedList: curList,
         data: data
       });
@@ -68,7 +61,6 @@ class Search extends React.Component {
     data[item] = null;
 
     this.setState({
-      searchedText: "",
       appendedList: curList,
       data: data
     });
@@ -77,9 +69,9 @@ class Search extends React.Component {
       this.props.handleCountriesFilterChange(this.state.appendedList);
     }
 
-    setTimeout(() => {
-      $("#" + this.props.dataType).children().first().val("");
-    }, 100);
+    // setTimeout(() => {
+    //   $("#" + this.props.dataType).children().first().val("");
+    // }, 100);
   }
 
   // todo collection onClick delete, have hover effect of bin
@@ -151,6 +143,7 @@ class ResultsTable extends React.Component {
       <div id="results-table">
       { this.props.data.length > 0 &&
         <div>
+        <p id="note-for-user-results-table">Please note only universities with matches will be shown below</p>
         <div id="matches-title-header">MATCHES</div>
         <Collapsible>
         {

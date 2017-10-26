@@ -4772,9 +4772,9 @@ var Autocomplete = function (_Component) {
         this.setState({ value: value });
       }
 
-      if (this.state.maybeShowAll === true) {
-        this.setState({ maybeShowAll: false });
-      }
+      // if (this.state.maybeShowAll === true) {
+      //   this.setState({ maybeShowAll: false})
+      // }
     }
   }, {
     key: 'renderIcon',
@@ -4795,12 +4795,12 @@ var Autocomplete = function (_Component) {
           maybeShowAll = _state.maybeShowAll;
 
 
-      if (minLength && minLength > value.length || !maybeShowAll && !value) {
+      if (minLength && minLength > value.length || !maybeShowAll) {
         return null;
       }
 
       var matches = [];
-      if (maybeShowAll) {
+      if (maybeShowAll && !value) {
         matches = Object.keys(data).filter(function (key) {
           var index = key.toUpperCase().indexOf(value.toUpperCase());
           return (/*index !== -1 && */value.length < key.length
@@ -4834,7 +4834,7 @@ var Autocomplete = function (_Component) {
               _react2.default.createElement(
                 'span',
                 { className: 'highlight' },
-                /*key.substring(index, value.length)*/value
+                key.substring(index, index + value.length) /*value*/
               ),
               key.length !== index + value.length ? key.substring(index + value.length) : ''
             )
@@ -4857,6 +4857,7 @@ var Autocomplete = function (_Component) {
   }, {
     key: '_onAutocomplete',
     value: function _onAutocomplete(value, evt) {
+      console.log('in auto complete');
       var _props = this.props,
           onChange = _props.onChange,
           onAutocomplete = _props.onAutocomplete;
@@ -4868,7 +4869,8 @@ var Autocomplete = function (_Component) {
         onChange(evt, value);
       }
 
-      this.setState({ value: value });
+      this.setState({ value: "" });
+      //this.setState({ value: value });
     }
 
     // added myself
@@ -4881,7 +4883,11 @@ var Autocomplete = function (_Component) {
   }, {
     key: '_hideSuggestions',
     value: function _hideSuggestions() {
-      this.setState({ maybeShowAll: false });
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.setState({ maybeShowAll: false });
+      }, 100);
     }
   }, {
     key: 'render',
