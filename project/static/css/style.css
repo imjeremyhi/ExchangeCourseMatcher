@@ -127,8 +127,12 @@ html {
 	margin-bottom: 20px;
 }
 
-#matches-title-header {
+/*#matches-title-header {
 	background-color: #282828;
+}*/
+
+h3 {
+	text-align: center;
 }
 
 .results-course-field {
@@ -139,6 +143,28 @@ html {
 	background-color: #FEC412 !important;
 }
 
-.active {
+/*.active {
 	color: #FEC412 !important;
+}
+*/
+#note-for-user-results-table {
+	font-style: italic;
+	font-size: 12px;
+	margin: 0px;
+}
+
+li > a {
+	color: #FEC412 !important;
+}
+
+.indicator {
+	background-color: #FEC412 !important;
+}
+
+.input-field > .active {
+	color: #FEC412 !important;
+}
+
+input:focus {
+	border-bottom: solid 1px #FEC412 !important;
 }

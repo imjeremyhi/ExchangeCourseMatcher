@@ -86,6 +86,8 @@ class HomePage extends React.Component {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         self.updateResultValues(this.responseText);
+      } else if (this.readyState == 4 && this.status == 500) {
+        Materialize.toast('An error occured with your request', 4000);
       }
     };
 
@@ -113,7 +115,7 @@ class HomePage extends React.Component {
     }
 
     var params = "/ajax/" + JSON.stringify(courses) + "/" + JSON.stringify(universities) + "/" + JSON.stringify(countries);
-    console.log(params)
+    console.log(params);
     xhttp.open("GET", params);
     xhttp.send();
 

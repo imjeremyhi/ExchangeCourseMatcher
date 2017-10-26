@@ -26765,6 +26765,8 @@ var HomePage = function (_React$Component) {
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           self.updateResultValues(this.responseText);
+        } else if (this.readyState == 4 && this.status == 500) {
+          Materialize.toast('An error occured with your request', 4000);
         }
       };
 
@@ -27090,11 +27092,11 @@ var ResultsTable = function (_React$Component2) {
           React.createElement(
             'p',
             { id: 'note-for-user-results-table' },
-            'Please note only universities with matches will be shown below'
+            'Please note that only universities with matches will be shown below'
           ),
           React.createElement(
-            'div',
-            { id: 'matches-title-header' },
+            'h3',
+            null,
             'MATCHES'
           ),
           React.createElement(

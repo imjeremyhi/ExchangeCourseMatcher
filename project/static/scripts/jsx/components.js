@@ -143,8 +143,8 @@ class ResultsTable extends React.Component {
       <div id="results-table">
       { this.props.data.length > 0 &&
         <div>
-        <p id="note-for-user-results-table">Please note only universities with matches will be shown below</p>
-        <div id="matches-title-header">MATCHES</div>
+        <p id="note-for-user-results-table">Please note that only universities with matches will be shown below</p>
+        <h3>MATCHES</h3>
         <Collapsible>
         {
           this.props.data.map((result) => {
