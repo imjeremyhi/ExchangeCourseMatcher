@@ -38,7 +38,7 @@ requests==2.18.4
 shellescape==3.4.1
 six==1.10.0
 SQLAlchemy==1.1.14
-tensorflow==1.0.0
+tensorflow==2.6.4
 urllib3==1.22
 virtualenv==15.1.0
 webencodings==0.5.1
